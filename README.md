@@ -1,7 +1,7 @@
 EBV GRUPPE B4 — IMAGE STITCHING / PANORAMA
 
 verwendete Methoden:
-10 Gaussfilter 10
+10 Gaussfilter
 25 Bildpyramiden
 25 SIFT
 
