@@ -8,7 +8,7 @@ verwendete Methoden:
 Todo:
 - Skriptum lesen
 - Reference Papers suchen (SIFT, Image Stitching)
-- Git+GitHub einlernen
+- Git+GitHub einlernen (http://www.git-scm.com/book/en/Getting-Started)
 
 ZUSAMMENARBEIT
 GitHub
