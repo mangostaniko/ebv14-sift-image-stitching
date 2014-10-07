@@ -6,9 +6,9 @@ verwendete Methoden:
 25 SIFT
 
 Todo:
-- Skriptum lesen
+- Skriptum lesen (12,22,23,27 'Bildmosaik', evt 24 'Korrespondenzproblem')
 - Reference Papers suchen (SIFT, Image Stitching)
-- Git+GitHub einlernen (http://www.git-scm.com/book/en/Getting-Started)
+- Git einlernen (Kap. 1–3 git-scm.com/book/en/Getting-Started)
 
 ZUSAMMENARBEIT
 GitHub
