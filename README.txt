@@ -14,3 +14,7 @@ ZUSAMMENARBEIT
 GitHub
 Telegram
 Talky.io
+
+LINKS:
+sift keypoint detector by Lowe: http://www.cs.ubc.ca/~lowe/papers/ijcv04.pdf
+
