@@ -50,3 +50,4 @@ http://cseweb.ucsd.edu/classes/wi07/cse252a/homography_estimation/homography_est
 
 matlab:
 http://www.csse.uwa.edu.au/~pk/research/matlabfns/
+http://www.cheat-sheets.org/saved-copy/matlab_quickref.pdf
