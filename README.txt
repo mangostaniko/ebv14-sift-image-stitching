@@ -34,6 +34,7 @@ Talky.io video chat
 REFERENZEN
 
 overview:
+http://www.aishack.in/tutorials/sift-scale-invariant-feature-transform-introduction/ SIFT
 http://tobw.net/index.php?cat_id=2&project=Panorama+Stitching+Demo+in+Matlab
 https://courses.engr.illinois.edu/cs498dwh/fa2010/lectures/Lecture%2017%20-%20Photo%20Stitching.pdf
 http://cvrr.ucsd.edu/ece285/presentations/WI13/Alfredo_Presentation1.pdf
