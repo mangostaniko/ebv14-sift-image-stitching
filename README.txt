@@ -1,37 +1,18 @@
 EBV GRUPPE B4 — IMAGE STITCHING
 
-aus der Methodenliste:
-10 Gaussfilter
-25 Bildpyramiden
-25 SIFT
-
 TODO
-- Konzept bis 19.10.
-- Git einlernen (Kap. 1–3 http://git-scm.com/book/en/Getting-Started)
+nächstes Mal: Matlab Grundaufbau
+Recherche Matching
 
-VEREINFACHUNGEN (zu Beginn)
-- zu Beginn nur 2 Bilder, bereits richtig 'nebeneinandergelegt'
-- möglichst gleichmäßge belichtung
-- möglichst geringe verzerrung
-
-KONZEPT //TODO
-Image Registration
-- Bildpyramiden-Aufbau
-- Keypoint-Detection + Matching (SIFT)
-- Homographic Transformation (RANSAC)
-Image Calibration
-- Verzerrung und andere Defekte ausgleichen [optional]
-Image Blending
-- Projektion an richtige Position
-- Weiche Farbverläufe [optional]
+ARBEITSAUFTEILUNG ca. bis Zwischenabgabe
+Bildpyramiden: Ernad
+Min/Max in DoG + LowContrast removal: Patrick
+Remove Edge Keypoints: Sebastian
+Orientierung+Descriptor: Nikolaus
+Matching: Hanna
 
 
-ZUSAMMENARBEIT
-github.com/mangostaniko/ebvb4/
-Telegram chat
-Talky.io video chat
-
-REFERENZEN
+HELPFUL LINKS
 
 overview:
 http://www.aishack.in/tutorials/sift-scale-invariant-feature-transform-introduction/ SIFT
