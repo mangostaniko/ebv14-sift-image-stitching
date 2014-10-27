@@ -1,2 +1,0 @@
-Test halli hallo :)
-(leere ordner sind bei git nicht erlaubt)
