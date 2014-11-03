@@ -28,8 +28,8 @@ for i=1:n
     if (dist < phi_sort(2)*threshold)
         
         % check if keypoint has been chosen before
-        sameInd = find(matchIndex==ind);
-        if(isEmpty(sameInd))
+        sameInd = find(matchInd==ind);
+        if(length(sameInd)==0)
             matchInd(i) = ind;
             matchDist(i) = dist;
             
@@ -47,8 +47,9 @@ end
 
 matchInd=nonzeros(matchInd);
 firstInd = matchInd~=0;
+disp('matchInd'); disp(matchInd);
 matches(1:length(matchInd),1:2) = pos1(firstInd,:);
-matches(1:length(matchInd),3:4) = pos2(matchInd);
+matches(1:length(matchInd),3:4) = pos2(matchInd,:);
 
 
 
