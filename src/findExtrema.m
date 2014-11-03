@@ -3,21 +3,20 @@ function [ extrema ] = findExtrema( oct1, oct2, oct3, oct4 )
 % input: oct1 (4 Images), oct2 (4 Images), oct3 (4 Images), oct4 (4 Images) ... complete DoG pyramid
 % output: extrema ...  N*2-vector of N extrema points
 
-
-octaveExtrema(1) = findExtremaPerOctave(oct1);
-octaveExtrema(2) = findExtremaPerOctave(oct2);
-octaveExtrema(3) = findExtremaPerOctave(oct3);
-octaveExtrema(4) = findExtremaPerOctave(oct4);
+octaveExtrema1 = findExtremaPerOctave(oct1);
+octaveExtrema2 = 2*findExtremaPerOctave(oct2);
+octaveExtrema3 = 4*findExtremaPerOctave(oct3);
+octaveExtrema4 = 8*findExtremaPerOctave(oct4);
 
 % Simply add Extrema of all octaves together?
-extrema = cat(1,octaveExtrema(1),octaveExtrema(2));
-extrema = cat(1,extrema, octaveExtrema(2));
-extrema = cat(1,extrema, octaveExtrema(3));
-extrema = cat(1,extrema, octaveExtrema(4));
+extrema = cat(1,octaveExtrema1,octaveExtrema2);
+extrema = cat(1,extrema, octaveExtrema2);
+extrema = cat(1,extrema, octaveExtrema3);
+extrema = cat(1,extrema, octaveExtrema4);
 end
 
 function [extrema] = findExtremaPerOctave(oct)
-%Finding vertical extrema:
+%Finding vertical (different frequency levels) extrema:
 diff(1) = (oct(2) > oct(1)) && (oct(2)> oct(3));
 diff(2) = (oct(3) > oct(2)) && (oct(3)> oct(4));
 
@@ -27,7 +26,7 @@ verticalExtrema(2) = oct(3).*diff(2);
 %Finding horizontal extrema
 %Warning: Inefficient for-loops:
 %    for x = -1:+1
-%        for y = -1+1
+%        for y = -1:+1
 %            horizontalExtrema(1) = oct(2) > oct(2,:+x,:+y);
 %        end
 %    end
@@ -54,17 +53,19 @@ end
 extremaMatrix(1) = horizontalExtrema(1) && verticalExtrema(1);
 extremaMatrix(2) = horizontalExtrema(2) && verticalExtrema(2);
 
-% How to choose Extrema? I take them from both relevant Octaves
-extremaMatrix(3) = extremaMatrix(1) || extremaMatrix(2);
 
-pointer = 1;
-for x = 2:size(extremaMatrix(3),1)-1 %borders not considered because the can't be extrema
-   for y = 2:size(extremaMatrix(3),2)-1
-        if(extremaMatrix(3,x,y))
-           extrema(pointer,1) = x; %Consider allocating before the loop for speed? Size unknown.
-           extrema(pointer,2) = y;
-           pointer = pointer +1;
-        end
-   end
-end
+extremaMatrix(3) = extremaMatrix(1) || extremaMatrix(2);
+% 
+% pointer = 1;
+% for x = 2:size(extremaMatrix(3),1)-1 %borders not considered because they can't be extrema
+%    for y = 2:size(extremaMatrix(3),2)-1
+%         if(extremaMatrix(3,x,y))
+%            extrema(pointer,1) = x; %Consider allocating before the loop for speed? Size unknown.
+%            extrema(pointer,2) = y;
+%            pointer = pointer +1;
+%         end
+%    end
+% end
+
+extrema = cat(2,find(extremaMatrix(3)==1)); %Extract extrema coordinates (find ones)
 end
