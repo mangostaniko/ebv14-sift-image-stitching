@@ -30,6 +30,9 @@ for k = 1:size(keypoints,1)
             
             x = startX + i;
             y = startY + j;
+            if (x <= 0 || y <= 0 || x >= size(im,2) || y >= size(im,1))
+                continue;
+            end
             
             % find gradient magnitude and orientation of current neighbor
             gradMagnitude = sqrt((im(x+1,y) - im(x-1,y))^2 + (im(x,y+1) - im(x,y-1))^2);
@@ -44,9 +47,7 @@ for k = 1:size(keypoints,1)
     % the bin with greatest magnitude is our keypoint orientation (bin interval median)
     greatestBin = find(orientationHistogram == max(orientationHistogram), 1);
     orientations(k) = (greatestBin*binSize + (greatestBin+1)*binSize) / 2;
-            
-    % TODO: split keypoint in two if another bin has over 80 % of
-    % the greatest bin magnitude ???
+    
     
 end
     
