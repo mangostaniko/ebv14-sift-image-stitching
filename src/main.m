@@ -19,8 +19,8 @@ removeEdges();
 %% find keypoint orientation
 findOrientation();
 
-%% define descriptor
-defDescriptor();
+%% create descriptors
+createDescriptors();
 
 %% match keypoints
 matchKeypoints();
