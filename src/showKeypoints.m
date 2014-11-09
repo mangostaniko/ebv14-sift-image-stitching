@@ -16,53 +16,23 @@ hold off
 
 end
 
-function [] = showMatches( image1, image2, keypoints1, keypoints2 )
-% Author: Sebastian Kirchner
-% input: image1 ... image1 (RGB double)
-%        image2 ... image2 (RGB double)
-%        keypoints1 ... keypoints image1
-%        keypoints2 ... keypoints image2
-% 
-imcopy1 = im2double(image1);
-imcopy2 = im2double(image2);
-% 
-% %figure;
-% hold on;
-% imagesc([imcopy1 imcopy2]);
-% for i = 1:size(keypoints1, 1)
-%     m = keypoints1(i,:);
-%     drawBorders(imcopy1, m);
-%     
-%     n = keypoints2(i,:);
-%     drawBorders(imcopy2,n);
-% end
-% 
-% hold off;
-width = size(imcopy1, 2);
-
-kpXcoords = [keypoints1(:,1) keypoints2(:,1)+width];
-kpYcoords = [keypoints1(:,2) keypoints2(:,2)];
-jointImg = [imcopy1, imcopy2];
-
-figure;
-hold on;
-imshow(jointImg);
-plot(kpXcoords, kpYcoords, 'r', 4);
-hold off;
-
-end
-
 function [] = drawBorders(image_in, point)
+% Author: Sebastian Kirchner
+% input: image_in ... image (RGB double)
+%        point ... single Keypoint
+% 
+% This function is used by showKeypoints.m and showMatches.M
+% 
 
 imcopy = image_in;
+
 % image properties
 width = size(imcopy, 1);
-height = size(imcopy, 2);
 
 % border properties
-wid = .003 * width;
-half_len = 0.02 * height;
-color = [1, 1, 0];
+wid = .005 * width;
+half_len = size(imcopy, 2) * 0.02;
+color = [0, 1, 1];
 
 % point coordinates
 x = point(1);
@@ -76,7 +46,7 @@ line([x-half_len, x-half_len], [y-half_len, y+half_len], 'Color', color, 'LineWi
 end
 
 
-%%%%% TURNED OUT NOT NEEDED :D
+%%%%% TURNS OUT NOT NEEDED :D
 
 % clipping if interest points too close to image
 % % too close to left border of image
