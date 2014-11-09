@@ -17,7 +17,7 @@ removeLowContrast();
 removeEdges();
 
 %% find keypoint orientation
-findOrientation();
+findOrientations();
 
 %% create descriptors
 createDescriptors();
