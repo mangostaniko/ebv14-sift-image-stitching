@@ -1,9 +1,5 @@
 EBV GRUPPE B4 — IMAGE STITCHING
 
-TODO
-nächstes Mal: Matlab Grundaufbau
-Recherche Matching
-
 ARBEITSAUFTEILUNG ca. bis Zwischenabgabe
 Bildpyramiden: Ernad
 Min/Max in DoG + LowContrast removal: Patrick
