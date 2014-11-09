@@ -1,4 +1,4 @@
-function [] = showpoint( image, keypoints )
+function [] = showKeypoints( image, keypoints )
 % Author: Sebastian Kirchner
 % input: image ... image (RGB double)
 %        keypoints ... keypoints Vector
@@ -30,24 +30,28 @@ end
 function [image_out] = drawBorders(image_in, point)
 
 imcopy = image_in;
-width = 3;
-length = 24;
 
-imcopy(point(1)-12:point(1)-10, point(2)-12:point(2)+12, 1) = 0;
-imcopy(point(1)-12:point(1)-10, point(2)-12:point(2)+12, 2) = 0;
-imcopy(point(1)-12:point(1)-10, point(2)-12:point(2)+12, 3) = 1;
+% width of the borderline
+wid = 3;
+% length of the borderline
+half_len = 12;
 
-imcopy(point(1)+10:point(1)+12, point(2)-12:point(2)+12, 1) = 0;
-imcopy(point(1)+10:point(1)+12, point(2)-12:point(2)+12, 2) = 0;
-imcopy(point(1)+10:point(1)+12, point(2)-12:point(2)+12, 3) = 1;
 
-imcopy(point(1)-12:point(1)+12, point(2)-12:point(2)-10, 1) = 0;
-imcopy(point(1)-12:point(1)+12, point(2)-12:point(2)-10, 2) = 0;
-imcopy(point(1)-12:point(1)+12, point(2)-12:point(2)-10, 3) = 1;
+imcopy(point(1)-half_len:point(1)-(half_len-wid), point(2)-half_len:point(2)+half_len, 1) = 0;
+imcopy(point(1)-half_len:point(1)-(half_len-wid), point(2)-half_len:point(2)+half_len, 2) = 0;
+imcopy(point(1)-half_len:point(1)-(half_len-wid), point(2)-half_len:point(2)+half_len, 3) = 1;
 
-imcopy(point(1)-12:point(1)+12, point(2)+10:point(2)+12, 1) = 0;
-imcopy(point(1)-12:point(1)+12, point(2)+10:point(2)+12, 2) = 0;
-imcopy(point(1)-12:point(1)+12, point(2)+10:point(2)+12, 3) = 1;
+imcopy(point(1)+(half_len-wid):point(1)+half_len, point(2)-half_len:point(2)+half_len, 1) = 0;
+imcopy(point(1)+(half_len-wid):point(1)+half_len, point(2)-half_len:point(2)+half_len, 2) = 0;
+imcopy(point(1)+(half_len-wid):point(1)+half_len, point(2)-half_len:point(2)+half_len, 3) = 1;
+
+imcopy(point(1)-half_len:point(1)+half_len, point(2)-half_len:point(2)-(half_len-wid), 1) = 0;
+imcopy(point(1)-half_len:point(1)+half_len, point(2)-half_len:point(2)-(half_len-wid), 2) = 0;
+imcopy(point(1)-half_len:point(1)+half_len, point(2)-half_len:point(2)-(half_len-wid), 3) = 1;
+
+imcopy(point(1)-half_len:point(1)+half_len, point(2)+(half_len-wid):point(2)+half_len, 1) = 0;
+imcopy(point(1)-half_len:point(1)+half_len, point(2)+(half_len-wid):point(2)+half_len, 2) = 0;
+imcopy(point(1)-half_len:point(1)+half_len, point(2)+(half_len-wid):point(2)+half_len, 3) = 1;
 
 image_out = imcopy;
 
