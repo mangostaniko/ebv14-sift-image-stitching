@@ -1,21 +1,21 @@
-function [ hist ] = createOrientationHistogram( im, center, windowSize, binCount, baseOrientation, sigma)
+function [ histogram ] = createOrientationHistogram( im, center, windowSize, binCount, baseOrientation, sigma)
 %% CREATEORIENTATIONHISTOGRAM creates gradient orientation histogram of sample window around center point
 %   collects gradient magnitudes in sample window around center point and
 %   adds to bins of corresponding gradient orientation, applying gaussian
 %   distributed weights to the magnitudes
 % Author: Nikolaus Leopold
-% input:         im ... double intensity image (b/w) of keypoint scale
-%            center ... 1*2 center position vector
+% input:         im ... double grayscale image of keypoint frequency level
+%            center ... 2*1 center position vector
 %        windowSize ... size of sampling window sides
 %          binCount ... number of bins (orientation intervals) for classification
 %   baseOrientation ... orientations are measured relative to this (radians)
 %             sigma ... sigma for gaussian weighting of magnitudes
-% output:      hist ... binCount*1 vector of summed magnitudes per orientation bin
+% output: histogram ... binCount*1 vector of summed magnitudes per orientation bin
 %%
 
-hist = zeros(binCount); % magnitudes binned by orientation
+histogram = zeros(binCount, 1); % magnitudes binned by orientation
 binSize = 2*pi/binCount; % bin size in radian
-gaussKernel = fspecial('gaussian', windowSize, sigma); % TODO: implement own
+gaussKernel = fspecial('gaussian', windowSize, sigma);
 
 % collect magnitudes in sample window and bin by orientation
 startX = center(1) - floor(windowSize/2);
@@ -37,7 +37,7 @@ for i = 0:windowSize-1
         % magnitudes are gaussian weighted around center
         binIndex = floor(gradOrientation / binSize);
         weightedMagnitude = gradMagnitude * gaussKernel(j,i);
-        hist(binIndex) = hist(binIndex) + weightedMagnitude;
+        histogram(binIndex) = histogram(binIndex) + weightedMagnitude;
     end
 end
 
