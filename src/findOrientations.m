@@ -1,20 +1,18 @@
-function [ orientations ] = findOrientations( keypoints, im )
+function [ orientations ] = findOrientations( keypoints, images )
 %% FINDORIENTATIONS finds keypoint orientation (most prominent gradient among neighboring pixels)
 % Author: Nikolaus Leopold
-% input:     keypoints ... N*2-vector of keypoints
-%                   im ... blurred double precision intensity image (b/w)
-% output: orientations ... keypoint orientation in rad
+% input:     keypoints ... N*3-vector of keypoints (x, y, frequency level)
+%               images ... double precision intensity images (greyscale) 
+%                          of all frequency/gauss levels
+% output: orientations ... keypoint orientations in rad
 
-%% POINTS FOR DISCUSSION:
-% - use image frequency on which keypoint was found (Lowe et al) !!
-% - gaussian weight for orientation collection region (Lowe)? implemented: yes
-% - color image or b/w?
-% - use radian or bin number for output orientation? assumed: radian
-% - split keypoint in two if other bin has over 80 % of greatest bin magnitude (Lowe)?
+%% DISCUSS LATER:
 % - what is an appropriate windowSize and sigma?
-%
+% - select image by frequency or octave level of keypoint?
+% - split keypoint in two if other bin has over 80 % of greatest bin magnitude (Lowe)?
 %%
 
+im = images(:,:,keypoints(3)); % select image of keypoint frequency level
 windowSize = 5;
 binCount = 36;
 orientations = zeros(size(keypoints,1));

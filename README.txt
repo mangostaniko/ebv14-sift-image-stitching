@@ -10,6 +10,9 @@ Matching: Hanna
 
 HELPFUL LINKS
 
+note about RANSAC:
+such Transformationsmatrix die ein möglichst gutes Mapping aller Keypoints des ersten Bilds zu denen des anderen (beide schon gefunden) darstellt. Nimmt zufällig 4 Keypoints Paare, erstellt Matrix und schaut, ob die gemappten innerhalb eines Toleranzbereichs zu den 'wirklichen' Positionen im zweiten Bild liegen.
+
 overview:
 http://www.aishack.in/tutorials/sift-scale-invariant-feature-transform-introduction/ SIFT
 http://tobw.net/index.php?cat_id=2&project=Panorama+Stitching+Demo+in+Matlab
