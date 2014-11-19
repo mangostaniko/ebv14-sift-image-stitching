@@ -3,7 +3,7 @@ function [ oct1, oct2, oct3, oct4, dog1, dog2, dog3, dog4 ] = createDoG( inputIm
 % input: inputImage ... RGB image (double format)
 % output: oct1, oct2, oct3, oct4 ... arrays of 4 DoG images at different
 % blur levels (x*y*3*4 matrices: x, y are scaled down for the different octaves)
-H = fspecial('gaussian', [1 5], 1);
+H = fspecial('gaussian', [1 5], 1.5);
 %compute the reduction factor
 
 %Original image
@@ -37,7 +37,7 @@ help_2 = firstScale;
 
 oct2 = zeros(size(firstScale,1), size(firstScale,2), 5, class(firstScale));
 oct2(:,:,1) = firstScale;
-dog2 = zeros(size(firstScalee,1), size(firstScale,2), 4, class(firstScale));
+dog2 = zeros(size(firstScale,1), size(firstScale,2), 4, class(firstScale));
 
 
 for i=2:5
@@ -57,7 +57,7 @@ help_3 = secondScale;
 
 oct3 = zeros(size(secondScale,1), size(secondScale,2), 5, class(secondScale));
 oct3(:,:,1) = secondScale;
-dog3 = zeros(size(secondScalee,1), size(secondScale,2), 4, class(secondScale));
+dog3 = zeros(size(secondScale,1), size(secondScale,2), 4, class(secondScale));
 
 
 for i=2:5
@@ -76,7 +76,7 @@ help_4 = thirdScale;
 
 oct4 = zeros(size(thirdScale,1), size(thirdScale,2), 5, class(thirdScale));
 oct4(:,:,1) = thirdScale;
-dog4 = zeros(size(thirdScalee,1), size(thirdScale,2), 4, class(thirdScale));
+dog4 = zeros(size(thirdScale,1), size(thirdScale,2), 4, class(thirdScale));
 
 
 for i=2:5

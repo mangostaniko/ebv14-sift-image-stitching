@@ -49,20 +49,26 @@ function [extrema] = findExtremaPerOctave(oct)
 %    end
 
 %Trick für Performance: Filter anwenden, der Bild quasi in eine Richtung
-%verschiebt. Dann vergleichen und falls größer = true
-filter(1)=[1,0,0;0,0,0;0,0,0];
-filter(2)=[0,1,0;0,0,0;0,0,0];
-filter(3)=[0,0,1;0,0,0;0,0,0];
-filter(4)=[0,0,0;1,0,0;0,0,0];
-filter(5)=[0,0,0;0,0,1;0,0,0];
-filter(6)=[0,0,0;0,0,0;1,0,0];
-filter(7)=[0,0,0;0,0,0;0,1,0];
-filter(8)=[0,0,0;0,0,0;0,0,1];
+%verschiebt. Dann vergleichen und falls größer == true
+filter = zeros(3,3,8);
+filter(:,:,1)=[1,0,0;0,0,0;0,0,0];
+filter(:,:,2)=[0,1,0;0,0,0;0,0,0];
+filter(:,:,3)=[0,0,1;0,0,0;0,0,0];
+filter(:,:,4)=[0,0,0;1,0,0;0,0,0];
+filter(:,:,5)=[0,0,0;0,0,1;0,0,0];
+filter(:,:,6)=[0,0,0;0,0,0;1,0,0];
+filter(:,:,7)=[0,0,0;0,0,0;0,1,0];
+filter(:,:,8)=[0,0,0;0,0,0;0,0,1];
+
 
 for z = 2:3
-    extremaMatrix(z-1) = ones(size(oct,2)*size(oct,3)); %TODO check if Dimensions are right   
+    extremaMatrix(:,:,z-1) = (ones(size(oct(:,:,1))) == 1);
     for i = 1:8
-        extremaMatrix(z-1) = extremaMatrix(z-1) && (oct(z) > imfilter(oct(z),filter(i))) && (oct(z) > imfilter(oct(z-1),filter(i))) && (oct(z) > imfilter(oct(z+1),filter(i)));
+        sameLevelDog  = (oct(:,:,z) > imfilter(oct(:,:,z),filter(:,:,i)));
+        lowerLevelDog = (oct(:,:,z) > imfilter(oct(:,:,z-1),filter(:,:,i)));
+        upperLevelDog = (oct(:,:,z) > imfilter(oct(:,:,z+1),filter(:,:,i)));
+        %add logical ones and check if all are true (i.e. sum is 4)
+        extremaMatrix(:,:,z-1) = (extremaMatrix(:,:,z-1) + sameLevelDog + lowerLevelDog + upperLevelDog) == 4;
     end
 end
 
@@ -87,10 +93,9 @@ a1 = reshape(extremaMatrix(1,:,:),size(extremaMatrix(1,:,:),2),size(extremaMatri
 [e2a,e2b] = find(a1==1); %Extract extrema coordinates (find ones)
 extrema2 = cat(2,e2a,e2b);
 a2 = reshape(extremaMatrix(2,:,:),size(extremaMatrix(2,:,:),2),size(extremaMatrix(2,:,:),3));
-size(a2)
 [e3a,e3b] = find(a2==1); %Extract extrema coordinates (find ones)
 extrema3 = cat(2,e3a,e3b);
-%TODO index out of bound? --> initialize earlier? Dont know N...
+%TODO index out of bound? --> initialize earlier? Dont know N ...
 extrema2(:,3) = 2; %TODO: check indices
 extrema3(:,3) = 3;
 
