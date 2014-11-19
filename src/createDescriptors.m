@@ -28,7 +28,7 @@ for k = 1:size(keypoints,1)
             center(2) = kY + (j-3)*windowSize + windowSize/2;
             
             histogram = createOrientationHistogram(image, center, windowSize, binCount, orientations(k), windowSize/2);
-            descriptors(k, 1+(i-1)*8+(j-1)*32 : i*8+(j-1)*32) = histogram(:);
+            descriptors(k, 1+(i-1)*8+(j-1)*32 : i*8+(j-1)*32) = histogram;
             
         end
     end
