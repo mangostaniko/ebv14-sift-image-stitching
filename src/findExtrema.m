@@ -13,7 +13,7 @@ octaveExtrema3 = findExtremaPerOctave(oct3);
 octaveExtrema4 = findExtremaPerOctave(oct4);
 
 %% on which frequency level was the extremum found?
-octaveExtrema2(:,3) = octaveExtrema2(:,3)+1;
+octaveExtrema2(:,3) = octaveExtrema2(:,3)+1
 octaveExtrema3(:,3) = octaveExtrema3(:,3)+2;
 octaveExtrema4(:,3) = octaveExtrema4(:,3)+3;
 
@@ -71,7 +71,7 @@ for z = 2:3
         extremaMatrix(:,:,z-1) = (extremaMatrix(:,:,z-1) + sameLevelDog + lowerLevelDog + upperLevelDog) == 4;
     end
 end
-
+%imshow(extremaMatrix(:,:,1));
 %Comparing vertical to horizontal Extrema:
 %extremaMatrix(1) = horizontalExtrema(1) && verticalExtrema(1);
 %extremaMatrix(2) = horizontalExtrema(2) && verticalExtrema(2);
@@ -89,10 +89,11 @@ end
 %         end
 %    end
 % end
-a1 = reshape(extremaMatrix(1,:,:),size(extremaMatrix(1,:,:),2),size(extremaMatrix(1,:,:),3));
+
+a1 = reshape(extremaMatrix(:,:,1),size(extremaMatrix(:,:,1),1),size(extremaMatrix(:,:,1),2));
 [e2a,e2b] = find(a1==1); %Extract extrema coordinates (find ones)
 extrema2 = cat(2,e2a,e2b);
-a2 = reshape(extremaMatrix(2,:,:),size(extremaMatrix(2,:,:),2),size(extremaMatrix(2,:,:),3));
+a2 = reshape(extremaMatrix(:,:,2),size(extremaMatrix(:,:,2),1),size(extremaMatrix(:,:,2),2));
 [e3a,e3b] = find(a2==1); %Extract extrema coordinates (find ones)
 extrema3 = cat(2,e3a,e3b);
 %TODO index out of bound? --> initialize earlier? Dont know N ...
@@ -100,4 +101,6 @@ extrema2(:,3) = 2; %TODO: check indices
 extrema3(:,3) = 3;
 
 extrema = cat(1,extrema2,extrema3);
+
+
 end
