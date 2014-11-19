@@ -13,7 +13,7 @@ octaveExtrema3 = findExtremaPerOctave(oct3);
 octaveExtrema4 = findExtremaPerOctave(oct4);
 
 %% on which frequency level was the extremum found?
-octaveExtrema2(:,3) = octaveExtrema2(:,3)+1
+octaveExtrema2(:,3) = octaveExtrema2(:,3)+1;
 octaveExtrema3(:,3) = octaveExtrema3(:,3)+2;
 octaveExtrema4(:,3) = octaveExtrema4(:,3)+3;
 
