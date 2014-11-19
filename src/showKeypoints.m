@@ -24,10 +24,13 @@ for i = 1:size(keypoints, 1)
     % formula for x_end: x_start + r * cos(a)
     % formula for y_end: y_start - r * sin(a); - because we are not in a
     % true coordinate system, but using matrix indices
-    deg_X = [keypoints(i,1), keypoints(i,1)+margin*cos(gradients(i))];
-    deg_Y = [keypoints(i,2), keypoints(i,2)-margin*sin(gradients(i))];
+    if size(keypoints, 1) == size(gradients)
+        deg_X = [keypoints(i,1), keypoints(i,1)+margin*cos(gradients(i))];
+        deg_Y = [keypoints(i,2), keypoints(i,2)-margin*sin(gradients(i))];
+        
+        line(deg_X, deg_Y, 'Color', [1, 0, 0], 'LineWidth', lineWid);
+    end
     
-    line(deg_X, deg_Y, 'Color', [1, 0, 0], 'LineWidth', lineWid);
     rectangle('Curvature', [1 1], 'Position', [(m(1)-margin) (m(2)-margin) (2*margin) (2*margin)], 'EdgeColor', [0,0,1], 'LineWidth', lineWid);
 end
 hold off

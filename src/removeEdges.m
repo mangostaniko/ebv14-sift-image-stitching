@@ -17,9 +17,5 @@ end
 for i=1:count
     keypoints(i,:) = tempkeys(i,:);
 end
-
-
-
-
 end
 
