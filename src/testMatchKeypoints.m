@@ -1,5 +1,8 @@
-pos1 = rand(20,2);
-pos2 = rand(25,2);
+pos1 = randi([1 1000], 20,2);
+pos2 = zeros(20,2);
+% HTest = eye(3); % test with identity
+% pos2 = HTest*[pos1';ones(1,20)]
+% pos2 = (pos2(1:2,:)./repmat(pos2(3,:),2,1))';
 
 des1 = rand(20,128);
 des2 = zeros(25,128);
@@ -9,6 +12,7 @@ indperm = randperm(20);
 for i=1:20
     des1(i,:)=des1(i,:)/norm(des1(i,:));
     des2(indperm(i),:)=des1(i,:);
+    pos2(indperm(i),:)=pos1(i,:)-50;
 end
 
 matches = matchKeypoints(pos1,pos2,des1,des2)

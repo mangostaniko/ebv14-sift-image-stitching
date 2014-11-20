@@ -10,7 +10,7 @@ function [ HBest ] = findHomography( matches )
 
 % define number of iterations and number of randomly selected matches
 iterations = 10000; 
-sampleSize = 4;
+sampleSize = 5;
 tol = 10^(-2);
 
 maxInliers = 0;
@@ -42,11 +42,11 @@ function [H] = fitSample(sample)
     sampleSize = size(sample,1);
     A = zeros(sampleSize*2,9);
     for k = 1:sampleSize
-       A(k,:)   = [-sample(k,1:2),-1,0,0,0,[sample(k,1:2),1]*sample(k,3)];
-       A(k+1,:) = [0,0,0,-sample(k,1:2),-1,[sample(k,1:2),1]*sample(k,4)];
+       A(2*k-1,:)   = [-sample(k,1:2),-1,0,0,0,[sample(k,1:2),1]*sample(k,3)];
+       A(2*k,:) = [0,0,0,-sample(k,1:2),-1,[sample(k,1:2),1]*sample(k,4)];
     end
     
-    [U,S,V] = svd(A);
+     [U,S,V] = svd(A);
     h = V(:,end);
     H = reshape(h, [3 3]);
 
