@@ -10,8 +10,10 @@ function [] = showKeypoints( image, keypoints, gradients )
 imcopy = im2double(image);
 
 % border properties
-margin = size(imcopy, 2) * 0.04;
-lineWid = (size(imcopy, 1)*.003);
+margin = 35;
+%size(imcopy, 2) * 0.04;
+lineWid = 2;
+%(size(imcopy, 1)*.001);
 
 figure;
 hold on;
@@ -24,7 +26,7 @@ for i = 1:size(keypoints, 1)
     % formula for x_end: x_start + r * cos(a)
     % formula for y_end: y_start - r * sin(a); - because we are not in a
     % true coordinate system, but using matrix indices
-    if size(keypoints, 1) == size(gradients)
+    if size(keypoints, 1) == size(gradients, 1)
         deg_X = [keypoints(i,1), keypoints(i,1)+margin*cos(gradients(i))];
         deg_Y = [keypoints(i,2), keypoints(i,2)-margin*sin(gradients(i))];
         
