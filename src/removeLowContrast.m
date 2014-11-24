@@ -4,15 +4,19 @@ function [ leftovers ] = removeLowContrast( extrema, im )
 %             im ... double intensity image (b/w) of keypoint scale
 % output: leftovers ... extrema without low contrast
 
-treshhold = 10; %TODO: anpassen
+treshold = 0.02; %TODO: anpassen
 pointer = 1;
+leftovers = zeros(size(extrema));
 for i = 1:size(extrema,1)
     x = extrema(i,1);
     y = extrema(i,2);
     l = extrema(i,3); %level of keypoint scale or so
- gradMagnitude = sqrt((im(l,x+1,y) - im(l,x-1,y))^2 + (im(l,x,y+1) - im(l,x,y-1))^2); %TODO: an format von im anpassen
- if gradMagnitude > treshhold
-     leftovers(pointer) = [x,y,l]; %DANGER: SLOW
+    if x <= 1 || x >= size(im,1) || y <= 1 || y >= size(im,2)
+        continue;
+    end
+    gradMagnitude = sqrt((im(x+1,y,l) - im(x-1,y,l))^2 + (im(x,y+1,l) - im(x,y-1,l))^2); %TODO: an format von im anpassen
+ if gradMagnitude > treshold
+     leftovers(pointer,:) = [x,y,l]; %DANGER: SLOW
      pointer = pointer+1;
  end 
 end

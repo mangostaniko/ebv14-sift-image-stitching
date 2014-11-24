@@ -4,8 +4,6 @@ function [ extrema ] = findExtrema( oct1, oct2, oct3, oct4 )
 % output: extrema ...  N*3-vector of N extrema points (x,y,frequency level(1-7))
 
 
-
-
 %% getting the extrema per octave:
 octaveExtrema1 = findExtremaPerOctave(oct1);
 octaveExtrema2 = findExtremaPerOctave(oct2);
@@ -31,22 +29,7 @@ end
 
 
 
-function [extrema] = findExtremaPerOctave(oct)
-
-%Finding vertical (different frequency levels) extrema:
-% diff(1) = (oct(2) > oct(1)) && (oct(2)> oct(3));
-% diff(2) = (oct(3) > oct(2)) && (oct(3)> oct(4));
-% 
-% verticalExtrema(1) = oct(2).*diff(1);
-% verticalExtrema(2) = oct(3).*diff(2);
-
-%Finding horizontal extrema
-%Warning: Inefficient for-loops:
-%    for x = -1:+1
-%        for y = -1:+1
-%            horizontalExtrema(1) = oct(2) > oct(2,:+x,:+y);
-%        end
-%    end
+function [extrema] = findExtremaPerOctave(dog)
 
 %Trick für Performance: Filter anwenden, der Bild quasi in eine Richtung
 %verschiebt. Dann vergleichen und falls größer == true
@@ -62,42 +45,37 @@ filter(:,:,8)=[0,0,0;0,0,0;0,0,1];
 
 
 for z = 2:3
-    extremaMatrix(:,:,z-1) = (ones(size(oct(:,:,1))) == 1);
+   maximaMatrix(:,:,z-1) = (ones(size(dog(:,:,1))) == 1);
     for i = 1:8
-        sameLevelDog  = (oct(:,:,z) > imfilter(oct(:,:,z),filter(:,:,i)));
-        lowerLevelDog = (oct(:,:,z) > imfilter(oct(:,:,z-1),filter(:,:,i)));
-        upperLevelDog = (oct(:,:,z) > imfilter(oct(:,:,z+1),filter(:,:,i)));
+        sameLevelDog  = (dog(:,:,z) > imfilter(dog(:,:,z),filter(:,:,i)));
+        lowerLevelDog = (dog(:,:,z) > imfilter(dog(:,:,z-1),filter(:,:,i)));
+        upperLevelDog = (dog(:,:,z) > imfilter(dog(:,:,z+1),filter(:,:,i)));
         %add logical ones and check if all are true (i.e. sum is 4)
-        extremaMatrix(:,:,z-1) = (extremaMatrix(:,:,z-1) + sameLevelDog + lowerLevelDog + upperLevelDog) == 4;
+        maximaMatrix(:,:,z-1) = (maximaMatrix(:,:,z-1) + sameLevelDog + lowerLevelDog + upperLevelDog) == 4;
     end
 end
-%imshow(extremaMatrix(:,:,1));
-%Comparing vertical to horizontal Extrema:
-%extremaMatrix(1) = horizontalExtrema(1) && verticalExtrema(1);
-%extremaMatrix(2) = horizontalExtrema(2) && verticalExtrema(2);
 
+% find minima
+for z = 2:3 %only from center gauss levels
+    minimaMatrix(:,:,z-1) = (ones(size(dog(:,:,1))) == 1);
+    for i = 1:8
+        sameLevelDog  = (dog(:,:,z) < imfilter(dog(:,:,z),filter(:,:,i)));
+        lowerLevelDog = (dog(:,:,z) < imfilter(dog(:,:,z-1),filter(:,:,i)));
+        upperLevelDog = (dog(:,:,z) < imfilter(dog(:,:,z+1),filter(:,:,i)));
+        %add logical ones and check if all are true (i.e. sum is 4)
+        minimaMatrix(:,:,z-1) = (minimaMatrix(:,:,z-1) + sameLevelDog + lowerLevelDog + upperLevelDog) == 4;
+    end
+end
 
-%extremaMatrix(3) = extremaMatrix(1) || extremaMatrix(2);
-% 
-% pointer = 1;
-% for x = 2:size(extremaMatrix(3),1)-1 %borders not considered because they can't be extrema
-%    for y = 2:size(extremaMatrix(3),2)-1
-%         if(extremaMatrix(3,x,y))
-%            extrema(pointer,1) = x; %Consider allocating before the loop for speed? Size unknown.
-%            extrema(pointer,2) = y;
-%            pointer = pointer +1;
-%         end
-%    end
-% end
-
-a1 = reshape(extremaMatrix(:,:,1),size(extremaMatrix(:,:,1),1),size(extremaMatrix(:,:,1),2));
+extremaMatrix = (minimaMatrix + maximaMatrix) == 1; % minimaMatrix OR maximaMatrix
+a1 = reshape(extremaMatrix(:,:,1),size(extremaMatrix(:,:,1),1),size(extremaMatrix(:,:,1),2)); 
 [e2a,e2b] = find(a1==1); %Extract extrema coordinates (find ones)
 extrema2 = cat(2,e2a,e2b);
 a2 = reshape(extremaMatrix(:,:,2),size(extremaMatrix(:,:,2),1),size(extremaMatrix(:,:,2),2));
 [e3a,e3b] = find(a2==1); %Extract extrema coordinates (find ones)
 extrema3 = cat(2,e3a,e3b);
-%TODO index out of bound? --> initialize earlier? Dont know N ...
-extrema2(:,3) = 2; %TODO: check indices
+
+extrema2(:,3) = 2;
 extrema3(:,3) = 3;
 
 extrema = cat(1,extrema2,extrema3);
