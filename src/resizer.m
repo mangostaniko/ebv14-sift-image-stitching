@@ -7,7 +7,7 @@ OI = inputImage;
 SIZEOI = size(OI);
 
 %compute the reduction factor
-RF = pow2(scale); 
+RF = scale; 
 
 % compute the new size
 SIZERI = SIZEOI;

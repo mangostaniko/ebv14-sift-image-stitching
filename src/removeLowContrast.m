@@ -18,7 +18,10 @@ for i = 1:size(extrema,1)
  if gradMagnitude > treshold
      leftovers(pointer,:) = [x,y,l]; %DANGER: SLOW
      pointer = pointer+1;
- end 
+ end
 end
+
+leftovers(sum((leftovers==0),2) ~= 0,:) = [];
+
 end
 

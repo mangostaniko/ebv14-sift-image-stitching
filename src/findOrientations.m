@@ -12,15 +12,17 @@ function [ orientations ] = findOrientations( keypoints, images )
 % - split keypoint in two if other bin has over 80 % of greatest bin magnitude (Lowe)?
 %%
 
-im = images(:,:,keypoints(3)); % select image of keypoint frequency level
 windowSize = 5;
 binCount = 36;
+binSize = 2*pi/binCount; % bin size in radian
 orientations = zeros(size(keypoints,1));
 
 for k = 1:size(keypoints,1)
     
+    im = images(:,:,keypoints(k,3)); % select image of keypoint frequency level
+    
     % create histogram
-    orientationHistogram = createOrientationHistogram(im, keypoints(k), windowSize, binCount, 0, 1)
+    orientationHistogram = createOrientationHistogram(im, keypoints(k,1:2), windowSize, binCount, 0, 1);
     
     % the bin with greatest magnitude is our keypoint orientation (bin interval median)
     greatestBin = find(orientationHistogram == max(orientationHistogram), 1);

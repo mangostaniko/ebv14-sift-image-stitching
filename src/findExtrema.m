@@ -8,27 +8,27 @@ function [ extrema ] = findExtrema( oct1, oct2, oct3, oct4 )
 octaveExtrema1 = findExtremaPerOctave(oct1);
 octaveExtrema2 = findExtremaPerOctave(oct2);
 octaveExtrema3 = findExtremaPerOctave(oct3);
-octaveExtrema4 = findExtremaPerOctave(oct4);
+%octaveExtrema4 = findExtremaPerOctave(oct4);
 
 %% on which frequency level was the extremum found?
 octaveExtrema2(:,3) = octaveExtrema2(:,3)+1;
 octaveExtrema3(:,3) = octaveExtrema3(:,3)+2;
-octaveExtrema4(:,3) = octaveExtrema4(:,3)+3;
+%octaveExtrema4(:,3) = octaveExtrema4(:,3)+3;
 
 %% Interpolating Pixels of different octaves
 octaveExtrema2(:,1:2) = 2*octaveExtrema2(:,1:2);
 octaveExtrema3(:,1:2) = 4*octaveExtrema3(:,1:2);
-octaveExtrema4(:,1:2) = 8*octaveExtrema4(:,1:2);
+%octaveExtrema4(:,1:2) = 8*octaveExtrema4(:,1:2);
 
 %% Adding extremas together
 extrema = cat(1,octaveExtrema1,octaveExtrema2);
 extrema = cat(1,extrema, octaveExtrema2);
 extrema = cat(1,extrema, octaveExtrema3);
-extrema = cat(1,extrema, octaveExtrema4);
+%extrema = cat(1,extrema, octaveExtrema4);
 end
 
 
-
+%
 function [extrema] = findExtremaPerOctave(dog)
 
 %Trick für Performance: Filter anwenden, der Bild quasi in eine Richtung
@@ -47,9 +47,9 @@ filter(:,:,8)=[0,0,0;0,0,0;0,0,1];
 for z = 2:3
    maximaMatrix(:,:,z-1) = (ones(size(dog(:,:,1))) == 1);
     for i = 1:8
-        sameLevelDog  = (dog(:,:,z) > imfilter(dog(:,:,z),filter(:,:,i)));
-        lowerLevelDog = (dog(:,:,z) > imfilter(dog(:,:,z-1),filter(:,:,i)));
-        upperLevelDog = (dog(:,:,z) > imfilter(dog(:,:,z+1),filter(:,:,i)));
+        sameLevelDog  = (dog(:,:,z) > imfilter(dog(:,:,z),filter(:,:,i), 'replicate'));
+        lowerLevelDog = (dog(:,:,z) > imfilter(dog(:,:,z-1),filter(:,:,i), 'replicate'));
+        upperLevelDog = (dog(:,:,z) > imfilter(dog(:,:,z+1),filter(:,:,i), 'replicate'));
         %add logical ones and check if all are true (i.e. sum is 4)
         maximaMatrix(:,:,z-1) = (maximaMatrix(:,:,z-1) + sameLevelDog + lowerLevelDog + upperLevelDog) == 4;
     end
@@ -59,9 +59,9 @@ end
 for z = 2:3 %only from center gauss levels
     minimaMatrix(:,:,z-1) = (ones(size(dog(:,:,1))) == 1);
     for i = 1:8
-        sameLevelDog  = (dog(:,:,z) < imfilter(dog(:,:,z),filter(:,:,i)));
-        lowerLevelDog = (dog(:,:,z) < imfilter(dog(:,:,z-1),filter(:,:,i)));
-        upperLevelDog = (dog(:,:,z) < imfilter(dog(:,:,z+1),filter(:,:,i)));
+        sameLevelDog  = (dog(:,:,z) < imfilter(dog(:,:,z),filter(:,:,i), 'replicate'));
+        lowerLevelDog = (dog(:,:,z) < imfilter(dog(:,:,z-1),filter(:,:,i), 'replicate'));
+        upperLevelDog = (dog(:,:,z) < imfilter(dog(:,:,z+1),filter(:,:,i), 'replicate'));
         %add logical ones and check if all are true (i.e. sum is 4)
         minimaMatrix(:,:,z-1) = (minimaMatrix(:,:,z-1) + sameLevelDog + lowerLevelDog + upperLevelDog) == 4;
     end
@@ -79,6 +79,5 @@ extrema2(:,3) = 2;
 extrema3(:,3) = 3;
 
 extrema = cat(1,extrema2,extrema3);
-
 
 end
