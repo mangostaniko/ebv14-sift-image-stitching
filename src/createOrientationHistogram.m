@@ -23,9 +23,9 @@ startY = center(2) - floor(windowSize/2);
 for i = 1:windowSize
     for j = 1:windowSize
 
-        x = startX + i -1;
-        y = startY + j -1;
-        if (x <= 0 || y <= 0 || x >= size(im,2) || y >= size(im,1))
+        x = startX + i;
+        y = startY + j;
+        if (x <= 1 || y <= 1 || x >= size(im,2)-1 || y >= size(im,1)-1)
             continue;
         end
 
