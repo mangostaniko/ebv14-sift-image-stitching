@@ -19,7 +19,7 @@ matchDist = zeros(n,1);
 for i=1:n
     
     % compute distance to all keypoints of image2 and choose closest
-    phi = acos(descr1(i,:)*descr2T);
+    phi = acos(descr1(i,:)*descr2T); 
     phi_sort = sort(phi);
     dist = phi_sort(1);
     ind = find(phi==dist);

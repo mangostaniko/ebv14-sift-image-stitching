@@ -10,7 +10,7 @@ function [ HBest ] = findHomography( matches )
 
 % define number of iterations and number of randomly selected matches
 iterations = 10000; 
-sampleSize = 5;
+sampleSize = 4;
 tol = 10^(-2);
 
 maxInliers = 0;
@@ -20,7 +20,9 @@ for i = 1:iterations
     
     % fit random sample
     sample = datasample(matches,sampleSize, 1, 'Replace', false);
-    H = fitSample(sample);
+    [normalizedSample,T1,T2] = normalizeSample(sample);
+    HNormalized = fitSample(normalizedSample);
+    H = inv(T2)*HNormalized*T1;
     
     % apply to all keypoints and count inliers
     Hx1 = H*[matches(:,1:2)';ones(1,length(matches))];
@@ -49,6 +51,41 @@ function [H] = fitSample(sample)
      [U,S,V] = svd(A);
     h = V(:,end);
     H = reshape(h, [3 3]);
+
+end
+
+function [T] = normalizationMatrix(x)
+% Performs normalization for normalized DLT
+
+    % Translate x s.t. mean(x)=0
+    tx = -mean(x(1,:));
+    ty = -mean(x(2,:));
+    T_trans = [1,0,tx;0,1,ty;0,0,1];
+    
+    x_trans = T_trans*x;
+   
+    % Scale x s.t. mean(|x|)=sqrt(2)
+    l = sqrt(sum(x_trans(1:2,:).^2));
+    s = sqrt(2)/mean(l);
+    T_scale = [s,0,0;0,s,0;0,0,1];
+    T = T_scale*T_trans;
+
+end
+
+function[normalizedSample,T1,T2] = normalizeSample(sample)
+% Normalizes sample using normalizationMatrix()
+% Input: n-by-4 matrix with sample(i,:)=(x1,y1,x2,y2)
+% Output: sample with normalized coordinates and normalizing matrices
+
+    x1 = [sample(:,1:2)';ones(1,size(sample,1))];
+    x2 = [sample(:,3:4)';ones(1,size(sample,1))];
+    
+    T1 = normalizationMatrix(x1);
+    T2 = normalizationMatrix(x2);
+    T1x1 = (T1*x1)';
+    T2x2 = (T2*x2)';
+    normalizedSample = [T1x1(:,1:2),T2x2(:,1:2)];
+    
 
 end
 
