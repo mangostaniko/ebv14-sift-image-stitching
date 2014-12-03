@@ -7,6 +7,8 @@ Remove Edge Keypoints: Sebastian
 Orientierung+Descriptor: Nikolaus
 Matching: Hanna
 
+EVT. SPÄTER:
+multiresolution spline?
 
 HELPFUL LINKS
 
