@@ -8,7 +8,6 @@ function [ orientations ] = findOrientations( keypoints, images )
 
 %% DISCUSS LATER:
 % - what is an appropriate windowSize and sigma?
-% - select image by frequency or octave level of keypoint?
 % - split keypoint in two if other bin has over 80 % of greatest bin magnitude (Lowe)?
 %%
 
