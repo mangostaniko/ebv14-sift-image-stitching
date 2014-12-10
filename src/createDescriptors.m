@@ -2,7 +2,9 @@ function [ descriptors ] = createDescriptors( image, keypoints, orientations )
 %% CREATEDESCRIPTORS creates SIFT feature descriptors
 % Author: Nikolaus Leopold
 % input:        image ... double grayscale image
-%           keypoints ... N*3 vector of keypoints
+%                         NOTE: internal representation where x are rows
+%                         and y are columns! (x, y)
+%           keypoints ... N*3 vector of keypoints (x, y, frequency level)
 %        orientations ... N*1 vector of keypoint orientations in radians
 % output: descriptors ... N*128 vector of N keypoint descriptors
 %%
@@ -22,8 +24,8 @@ for k = 1:size(keypoints,1)
     
     % only use keypoint if whole sample area (16 windows) lies within image bounds
     min = floor(windowSize*4/2);
-    maxX = size(image,2) - floor(windowSize*4/2);
-    maxY = size(image,1) - floor(windowSize*4/2);
+    maxX = size(image,1) - floor(windowSize*4/2); % image has internal representation (x,y)
+    maxY = size(image,2) - floor(windowSize*4/2);
     if (kX <= min || kY <= min || kX >= maxX || kY >= maxY)
         continue;
     end
@@ -63,8 +65,10 @@ function [ histogram ] = createOrientationHistogram( im, center, windowSize, bin
 %   adds to bins of corresponding gradient orientation, applying gaussian
 %   distributed weights to the magnitudes
 % Author: Nikolaus Leopold
-% input:         im ... double grayscale image
-%            center ... 2*1 center position vector
+% input:         im ... double grayscale image of keypoint frequency level
+%                       NOTE: internal representation where x are rows
+%                       and y are columns! (x, y)
+%            center ... 2*1 center position vector (x, y)
 %        windowSize ... size of sampling window sides
 %          binCount ... number of bins (orientation intervals) for classification
 %   baseOrientation ... orientations are measured relative to this (radians)
@@ -86,7 +90,7 @@ for i = 1:windowSize
         y = startY + j;
 
         % find gradient magnitude and orientation of current neighbor
-        gradMagnitude = sqrt((im(x+1,y) - im(x-1,y))^2 + (im(x,y+1) - im(x,y-1))^2);
+        gradMagnitude = sqrt((im(x,y+1) - im(x,y-1))^2 + (im(x+1,y) - im(x-1,y))^2);
         gradOrientation = atan2((im(x,y+1) - im(x,y-1)), (im(x+1,y) - im(x-1,y))); % atan2 result is in [-pi, pi]
         gradOrientation(gradOrientation <= 0) = gradOrientation(gradOrientation <= 0) + 2*pi; % map interval to [0, 2pi]
         gradOrientation = gradOrientation - baseOrientation; % both are in [0, 2pi]

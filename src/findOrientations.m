@@ -4,6 +4,8 @@ function [ orientations ] = findOrientations( keypoints, images )
 % input:     keypoints ... N*3-vector of keypoints (x, y, frequency level)
 %               images ... double precision intensity images (greyscale) 
 %                          of all frequency/gauss levels
+%                          NOTE: internal representation where x are rows
+%                          and y are columns! (x, y, frequency)
 % output: orientations ... keypoint orientations in rad
 
 %% DISCUSS LATER:
@@ -18,19 +20,20 @@ orientations = zeros(size(keypoints,1));
 
 for k = 1:size(keypoints,1)
     
-    im = images(:,:,keypoints(k,3)); % select image of keypoint frequency level
+    % NOTE: internal image representation (octA) where x are rows and y are columns! (x, y, frequency)
+    image = images(:,:,keypoints(k,3)); % select image of keypoint frequency level
     
     kX = keypoints(k,1);
     kY = keypoints(k,2);
     
     % only use keypoint if whole window around keypoint lies within image bounds
     min = floor(windowSize/2);
-    maxX = size(im,2) - floor(windowSize/2);
-    maxY = size(im,1) - floor(windowSize/2);
+    maxX = size(image,1) - floor(windowSize/2);
+    maxY = size(image,2) - floor(windowSize/2);
     if (kX <= min || kY <= min || kX >= maxX || kY >= maxY)
         continue;
     end
-    orientationHistogram = createOrientationHistogram(im, keypoints(k,1:2), windowSize, binCount, 5);
+    orientationHistogram = createOrientationHistogram(image, keypoints(k,1:2), windowSize, binCount, 5);
     
     % the bin with greatest magnitude is our keypoint orientation (bin interval median)
     greatestBin = find(orientationHistogram == max(orientationHistogram), 1);
@@ -48,7 +51,9 @@ function [ histogram ] = createOrientationHistogram( im, center, windowSize, bin
 %   distributed weights to the magnitudes
 % Author: Nikolaus Leopold
 % input:         im ... double grayscale image of keypoint frequency level
-%            center ... 2*1 center position vector
+%                       NOTE: internal representation where x are rows
+%                       and y are columns! (x, y)
+%            center ... 2*1 center position vector (x, y)
 %        windowSize ... size of sampling window sides
 %          binCount ... number of bins (orientation intervals) for classification
 %             sigma ... sigma for gaussian weighting of magnitudes
@@ -67,9 +72,9 @@ for i = 1:windowSize
 
         x = startX + i;
         y = startY + j;
-
+ 
         % find gradient magnitude and orientation of current neighbor
-        gradMagnitude = sqrt((im(x+1,y) - im(x-1,y))^2 + (im(x,y+1) - im(x,y-1))^2);
+        gradMagnitude = sqrt((im(x,y+1) - im(x,y-1))^2 + (im(x+1,y) - im(x-1,y))^2);
         gradOrientation = atan2((im(x,y+1) - im(x,y-1)), (im(x+1,y) - im(x-1,y))); % atan2 result is in [-pi, pi]
         gradOrientation(gradOrientation <= 0) = gradOrientation(gradOrientation <= 0) + 2*pi; % map interval to [0, 2pi]
             

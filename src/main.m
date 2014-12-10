@@ -2,7 +2,8 @@ function [ stitchedImage ] = main( impath1, impath2 )
 % input: impath1, impath2 ... paths to images (JPG or PNG)
 % output: stitchedImage ... stitched image (JPG or PNG)
 
-%% read and convert images 
+%% read and convert images
+% note: in images x are columns, y are rows.
 imA = im2double(imread('../pictures/B1.jpg'));
 imB = im2double(imread('../pictures/B2.jpg'));
 %% create DoG pyramids
@@ -31,8 +32,8 @@ descriptorsB = createDescriptors( octB1, keypointsB, orientationsB);
 
 %% match keypoints
 matches = matchKeypoints(keypointsA(:,1:2), keypointsB(:,1:2), descriptorsA, descriptorsB);
-showKeypoints( imA, matches(:, 1:2), 0);
-showKeypoints( imB, matches(:, 3:4), 0);
+%showKeypoints( imA, matches(:, 1:2), 0);
+%showKeypoints( imB, matches(:, 3:4), 0);
 %showMatches( imA, imB, matches(:, 1:2), matches(:, 3:4), [0 0 0 0], [0 0 0 0]);
 
 %% find homography (ransac)
