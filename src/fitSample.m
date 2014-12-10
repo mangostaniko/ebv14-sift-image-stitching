@@ -10,8 +10,12 @@ function [H] = fitSample(sample)
        A(2*k,:) = [0,0,0,-sample(k,1:2),-1,[sample(k,1:2),1]*sample(k,4)];
     end
     
-     [U,S,V] = svd(A);
-    h = V(:,end);
-    H = reshape(h, [3 3]);
+%      [U,S,V] = svd(A);
+%     h = V(:,end);
+%     H = reshape(h, [3 3]);
+    [V,~] = eig(A'*A);
+    H = reshape(V(:,1),[3,3])';
+    H = H/H(end); % make H(3,3) = 1
+
 
 end

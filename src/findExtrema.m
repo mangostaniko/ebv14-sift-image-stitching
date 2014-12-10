@@ -30,7 +30,7 @@ end
 
 %
 function [extrema] = findExtremaPerOctave(dog)
-useTaylor = false;
+useTaylor = true;
 
 %Trick für Performance: Filter anwenden, der Bild quasi in eine Richtung
 %verschiebt. Dann vergleichen und falls größer == true
@@ -91,11 +91,11 @@ for i = 1:size(extrema,1) %for every extrema
     gx = (dog(x+1,y,level)-dog(x-1,y,level))/2;
     gy = (dog(x,y+1,level)-dog(x,y-1,level))/2;
     Hxx = dog(x+1,y,level)+dog(x-1,y,level)-2*dog(x,y,level);
-    Hxy = (dog(x+1,y+1,level)+dog(x-1,y-1,level)+dog(x+1,y-1,level)+dog(x-1,y+1,level))/4;  % = Hyx
+    Hxy = (dog(x+1,y+1,level)+dog(x-1,y-1,level)-dog(x+1,y-1,level)-dog(x-1,y+1,level))/4;  % = Hyx
     Hyy = dog(x,y+1,level)+dog(x,y-1,level)-2*dog(x,y,level);
     H = [Hxx,Hxy;Hxy,Hyy];
-    g = [gx,gy];
-    delta = -(H/g); %(inv(H) *g)
+    g = [gx;gy];
+    delta = -(H\g); %(inv(H) *g)
     newPosX = x+delta(1);
     newPosY = y+delta(2);
     extrema(i,1)=newPosX;
