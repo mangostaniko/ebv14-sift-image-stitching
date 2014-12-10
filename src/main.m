@@ -26,14 +26,17 @@ showKeypoints( imA, keypointsA, orientationsA);
 showKeypoints( imB, keypointsB, orientationsB);
 
 %% create descriptors
-descriptorsA = createDescriptors( octA1, keypointsA, orientationsA); % TODO
+descriptorsA = createDescriptors( octA1, keypointsA, orientationsA);
 descriptorsB = createDescriptors( octB1, keypointsB, orientationsB);
 
 %% match keypoints
-matchKeypoints();
+matches = matchKeypoints(keypointsA(:,1:2), keypointsB(:,1:2), descriptorsA, descriptorsB);
+showKeypoints( imA, matches(:, 1:2), 0);
+showKeypoints( imB, matches(:, 3:4), 0);
+%showMatches( imA, imB, matches(:, 1:2), matches(:, 3:4), [0 0 0 0], [0 0 0 0]);
 
 %% find homography (ransac)
-findHomography();
+H = findHomography(matches);
 
 %% stitch images
 

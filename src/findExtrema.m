@@ -8,23 +8,30 @@ function [ extrema ] = findExtrema( oct1, oct2, oct3, oct4 )
 octaveExtrema1 = findExtremaPerOctave(oct1);
 octaveExtrema2 = findExtremaPerOctave(oct2);
 octaveExtrema3 = findExtremaPerOctave(oct3);
-%octaveExtrema4 = findExtremaPerOctave(oct4);
+octaveExtrema4 = findExtremaPerOctave(oct4);
 
 %% on which frequency level was the extremum found?
 octaveExtrema2(:,3) = octaveExtrema2(:,3)+1;
 octaveExtrema3(:,3) = octaveExtrema3(:,3)+2;
-%octaveExtrema4(:,3) = octaveExtrema4(:,3)+3;
+octaveExtrema4(:,3) = octaveExtrema4(:,3)+3;
 
 %% Interpolating Pixels of different octaves
 octaveExtrema2(:,1:2) = 2*octaveExtrema2(:,1:2);
 octaveExtrema3(:,1:2) = 4*octaveExtrema3(:,1:2);
-%octaveExtrema4(:,1:2) = 8*octaveExtrema4(:,1:2);
+octaveExtrema4(:,1:2) = 8*octaveExtrema4(:,1:2);
+
+%% Rounding
+octaveExtrema1 = round(octaveExtrema1);
+octaveExtrema2 = round(octaveExtrema2);
+octaveExtrema3 = round(octaveExtrema3);
+octaveExtrema4 = round(octaveExtrema4);
+
 
 %% Adding extremas together
 extrema = cat(1,octaveExtrema1,octaveExtrema2);
 extrema = cat(1,extrema, octaveExtrema2);
 extrema = cat(1,extrema, octaveExtrema3);
-%extrema = cat(1,extrema, octaveExtrema4);
+extrema = cat(1,extrema, octaveExtrema4);
 end
 
 
