@@ -20,9 +20,10 @@ for k = 1:size(keypoints,1)
     
     im = images(:,:,keypoints(k,3)); % select image of keypoint frequency level
     
-    % create histogram
     kX = keypoints(k,1);
     kY = keypoints(k,2);
+    
+    % only use keypoint if whole window around keypoint lies within image bounds
     min = floor(windowSize/2);
     maxX = size(im,2) - floor(windowSize/2);
     maxY = size(im,1) - floor(windowSize/2);
@@ -50,7 +51,6 @@ function [ histogram ] = createOrientationHistogram( im, center, windowSize, bin
 %            center ... 2*1 center position vector
 %        windowSize ... size of sampling window sides
 %          binCount ... number of bins (orientation intervals) for classification
-%   baseOrientation ... orientations are measured relative to this (radians)
 %             sigma ... sigma for gaussian weighting of magnitudes
 % output: histogram ... binCount*1 vector of summed magnitudes per orientation bin
 %%
@@ -63,22 +63,14 @@ gaussKernel = fspecial('gaussian', windowSize, sigma);
 startX = center(1) - floor(windowSize/2);
 startY = center(2) - floor(windowSize/2);
 for i = 1:windowSize
-    
-    x = startX + i;
-    if (x <= 1 || x >= size(im,2))
-        break;
-    end
-    
     for j = 1:windowSize
 
+        x = startX + i;
         y = startY + j;
-        if (y <= 1 || y >= size(im,1))
-            break;
-        end
 
         % find gradient magnitude and orientation of current neighbor
         gradMagnitude = sqrt((im(x+1,y) - im(x-1,y))^2 + (im(x,y+1) - im(x,y-1))^2);
-        gradOrientation = atan2((im(x,y+1) - im(x,y-1)), (im(x+1,y) - im(x-1,y)));
+        gradOrientation = atan2((im(x,y+1) - im(x,y-1)), (im(x+1,y) - im(x-1,y))); % atan2 result is in [-pi, pi]
         gradOrientation(gradOrientation <= 0) = gradOrientation(gradOrientation <= 0) + 2*pi; % map interval to [0, 2pi]
             
         % add magnitude to histogram bin of corresponding orientation

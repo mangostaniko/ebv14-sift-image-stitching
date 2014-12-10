@@ -13,7 +13,7 @@ imB = im2double(imread('../pictures/B2.jpg'));
 extremaA = findExtrema( dogA1, dogA2, dogA3, dogA4 );
 extremaB = findExtrema( dogB1, dogB2, dogB3, dogB4 );
 
-%% remove low contrast points & edges 
+%% remove low contrast points & edges
 leftoversA = removeLowContrast(extremaA, octA1);
 leftoversB = removeLowContrast(extremaB, octB1);
 keypointsA = leftoversA; %removeEdges(leftoversA, octA1); % TODO FIX REMOVE EDGES
