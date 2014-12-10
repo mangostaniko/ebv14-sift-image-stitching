@@ -30,11 +30,11 @@ for k = 1:size(keypoints,1)
     if (kX <= min || kY <= min || kX >= maxX || kY >= maxY)
         continue;
     end
-    orientationHistogram = createOrientationHistogram(im, keypoints(k,1:2), windowSize, binCount, 1);
+    orientationHistogram = createOrientationHistogram(im, keypoints(k,1:2), windowSize, binCount, 5);
     
     % the bin with greatest magnitude is our keypoint orientation (bin interval median)
     greatestBin = find(orientationHistogram == max(orientationHistogram), 1);
-    orientations(k) = (greatestBin-1)*binSize;
+    orientations(k) = ((greatestBin-1)*binSize + (greatestBin)*binSize)/2;
     
     
 end
