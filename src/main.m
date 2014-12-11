@@ -4,6 +4,7 @@ function [ stitchedImage ] = main( impath1, impath2 )
 
 %% read and convert images
 % note: in images x are columns, y are rows.
+% however later we use an internal representation which is (x,y)
 imA = im2double(imread('../pictures/B1.jpg'));
 imB = im2double(imread('../pictures/B2.jpg'));
 %% create DoG pyramids
