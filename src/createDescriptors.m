@@ -23,9 +23,9 @@ for k = 1:size(keypoints,1)
     kY = keypoints(k,2);
     
     % only use keypoint if whole sample area (16 windows) lies within image bounds
-    min = floor(windowSize*4/2);
-    maxX = size(image,1) - floor(windowSize*4/2); % image has internal representation (x,y)
-    maxY = size(image,2) - floor(windowSize*4/2);
+    min = ceil(windowSize*4/2);
+    maxX = size(image,1) - ceil(windowSize*4/2-1); % image has internal representation (x,y)
+    maxY = size(image,2) - ceil(windowSize*4/2-1);
     if (kX <= min || kY <= min || kX >= maxX || kY >= maxY)
         continue;
     end

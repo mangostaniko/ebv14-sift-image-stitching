@@ -27,9 +27,9 @@ for k = 1:size(keypoints,1)
     kY = keypoints(k,2);
     
     % only use keypoint if whole window around keypoint lies within image bounds
-    min = floor(windowSize/2);
-    maxX = size(image,1) - floor(windowSize/2);
-    maxY = size(image,2) - floor(windowSize/2);
+    min = ceil(windowSize/2);
+    maxX = size(image,1) - ceil(windowSize/2);
+    maxY = size(image,2) - ceil(windowSize/2);
     if (kX <= min || kY <= min || kX >= maxX || kY >= maxY)
         continue;
     end
