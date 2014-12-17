@@ -20,6 +20,13 @@ octaveExtrema2(:,1:2) = 2*octaveExtrema2(:,1:2);
 octaveExtrema3(:,1:2) = 4*octaveExtrema3(:,1:2);
 octaveExtrema4(:,1:2) = 8*octaveExtrema4(:,1:2);
 
+%% Rounding
+octaveExtrema1 = round(octaveExtrema1);
+octaveExtrema2 = round(octaveExtrema2);
+octaveExtrema3 = round(octaveExtrema3);
+octaveExtrema4 = round(octaveExtrema4);
+
+
 %% Adding extremas together
 extrema = cat(1,octaveExtrema1,octaveExtrema2);
 extrema = cat(1,extrema, octaveExtrema2);
@@ -28,8 +35,9 @@ extrema = cat(1,extrema, octaveExtrema4);
 end
 
 
-
+%
 function [extrema] = findExtremaPerOctave(dog)
+useTaylor = true;
 
 %Trick für Performance: Filter anwenden, der Bild quasi in eine Richtung
 %verschiebt. Dann vergleichen und falls größer == true
@@ -47,9 +55,9 @@ filter(:,:,8)=[0,0,0;0,0,0;0,0,1];
 for z = 2:3
    maximaMatrix(:,:,z-1) = (ones(size(dog(:,:,1))) == 1);
     for i = 1:8
-        sameLevelDog  = (dog(:,:,z) > imfilter(dog(:,:,z),filter(:,:,i)));
-        lowerLevelDog = (dog(:,:,z) > imfilter(dog(:,:,z-1),filter(:,:,i)));
-        upperLevelDog = (dog(:,:,z) > imfilter(dog(:,:,z+1),filter(:,:,i)));
+        sameLevelDog  = (dog(:,:,z) > imfilter(dog(:,:,z),filter(:,:,i), 'replicate'));
+        lowerLevelDog = (dog(:,:,z) > imfilter(dog(:,:,z-1),filter(:,:,i), 'replicate'));
+        upperLevelDog = (dog(:,:,z) > imfilter(dog(:,:,z+1),filter(:,:,i), 'replicate'));
         %add logical ones and check if all are true (i.e. sum is 4)
         maximaMatrix(:,:,z-1) = (maximaMatrix(:,:,z-1) + sameLevelDog + lowerLevelDog + upperLevelDog) == 4;
     end
@@ -59,9 +67,9 @@ end
 for z = 2:3 %only from center gauss levels
     minimaMatrix(:,:,z-1) = (ones(size(dog(:,:,1))) == 1);
     for i = 1:8
-        sameLevelDog  = (dog(:,:,z) < imfilter(dog(:,:,z),filter(:,:,i)));
-        lowerLevelDog = (dog(:,:,z) < imfilter(dog(:,:,z-1),filter(:,:,i)));
-        upperLevelDog = (dog(:,:,z) < imfilter(dog(:,:,z+1),filter(:,:,i)));
+        sameLevelDog  = (dog(:,:,z) < imfilter(dog(:,:,z),filter(:,:,i), 'replicate'));
+        lowerLevelDog = (dog(:,:,z) < imfilter(dog(:,:,z-1),filter(:,:,i), 'replicate'));
+        upperLevelDog = (dog(:,:,z) < imfilter(dog(:,:,z+1),filter(:,:,i), 'replicate'));
         %add logical ones and check if all are true (i.e. sum is 4)
         minimaMatrix(:,:,z-1) = (minimaMatrix(:,:,z-1) + sameLevelDog + lowerLevelDog + upperLevelDog) == 4;
     end
@@ -80,5 +88,26 @@ extrema3(:,3) = 3;
 
 extrema = cat(1,extrema2,extrema3);
 
+%% Taylor approximation: (based on: https://dsp.stackexchange.com/questions/3382/approximating-pixel-location-in-scale-space/3386#3386)
+if useTaylor
+for i = 1:size(extrema,1) %for every extrema
+    thisExtrema = extrema(i,:);
+    x = thisExtrema(1);
+    y = thisExtrema(2);
+    level = thisExtrema(3);
+    gx = (dog(x+1,y,level)-dog(x-1,y,level))/2;
+    gy = (dog(x,y+1,level)-dog(x,y-1,level))/2;
+    Hxx = dog(x+1,y,level)+dog(x-1,y,level)-2*dog(x,y,level);
+    Hxy = (dog(x+1,y+1,level)+dog(x-1,y-1,level)-dog(x+1,y-1,level)-dog(x-1,y+1,level))/4;  % = Hyx
+    Hyy = dog(x,y+1,level)+dog(x,y-1,level)-2*dog(x,y,level);
+    H = [Hxx,Hxy;Hxy,Hyy];
+    g = [gx;gy];
+    delta = -(H\g); %(inv(H) *g)
+    newPosX = x+delta(1);
+    newPosY = y+delta(2);
+    extrema(i,1)=newPosX;
+    extrema(i,2)=newPosY;
+end
+end
 
 end

@@ -3,4 +3,3 @@ function [ RI ] = resizer( inputImage, scale )
 % pixel
 RI = inputImage(1:2:end, 1:2:end);
 end
-

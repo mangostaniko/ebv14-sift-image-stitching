@@ -3,6 +3,7 @@ function [ oct1, oct2, oct3, oct4, dog1, dog2, dog3, dog4 ] = createDoG( inputIm
 % input: inputImage ... RGB image (double format)
 % output: oct1, oct2, oct3, oct4 ... arrays of 4 DoG images at different
 % blur levels (x*y*3*4 matrices: x, y are scaled down for the different octaves)
+
 H = fspecial('gaussian', [5 5], 1.5);
 
 %compute the reduction factor
@@ -25,10 +26,13 @@ for i=2:7
      
 end
 
-dog1(:,:,1) = minus(oct1(:,:,1),oct1(:,:,2));
-dog1(:,:,2) = minus(oct1(:,:,2),oct1(:,:,3));
-dog1(:,:,3) = minus(oct1(:,:,3),oct1(:,:,4));
-dog1(:,:,4) = minus(oct1(:,:,4),oct1(:,:,5));
+dog1(:,:,1) = mapIntervall(minus(oct1(:,:,1),oct1(:,:,2)));
+
+dog1(:,:,2) = mapIntervall(minus(oct1(:,:,2),oct1(:,:,3)));
+
+dog1(:,:,3) = mapIntervall(minus(oct1(:,:,3),oct1(:,:,4)));
+
+dog1(:,:,4) = mapIntervall(minus(oct1(:,:,4),oct1(:,:,5)));
 
 
 %Creating octave 2 & DoG 2
@@ -85,10 +89,23 @@ for i=2:5
      oct4(:,:,i) = help_4;
 end
 
-dog4(:,:,1) = minus(oct4(:,:,1),oct4(:,:,2));
-dog4(:,:,2) = minus(oct4(:,:,2),oct4(:,:,3));
-dog4(:,:,3) = minus(oct4(:,:,3),oct4(:,:,4));
-dog4(:,:,4) = minus(oct4(:,:,4),oct4(:,:,5));
+dog4a(:,:,1) = minus(oct4(:,:,1),oct4(:,:,2));
+dog4a(:,:,2) = minus(oct4(:,:,2),oct4(:,:,3));
+dog4a(:,:,3) = minus(oct4(:,:,3),oct4(:,:,4));
+dog4a(:,:,4) = minus(oct4(:,:,4),oct4(:,:,5));
+
+dog4(:,:,1) = mapIntervall(dog4a(:,:,1));
+dog4(:,:,2) = mapIntervall(dog4a(:,:,2));
+dog4(:,:,3) = mapIntervall(dog4a(:,:,3));
+dog4(:,:,4) = mapIntervall(dog4a(:,:,4));
+
+
+end
+
+function [I_mapped] = mapIntervall(I)
+    qMin = min(min(I));
+    qMax = max(max(I));
+    I_mapped = (I-qMin)/(qMax-qMin);
 
 end
 

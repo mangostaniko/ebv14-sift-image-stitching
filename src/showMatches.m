@@ -16,7 +16,7 @@ imcopy1 = im2double(image1);
 imcopy2 = im2double(image2);
 
 % the length of the border (double the value 'half_len' in drawBorders()) 
-margin = size(imcopy1, 2) * 0.04;
+radius = size(imcopy1, 2) * 0.02;
 lineWid = (size(imcopy1, 1)*.003);
 
 % Combine the 2 images into one image
@@ -29,7 +29,7 @@ keypoints2 = [keypoints2(:,1)+size(imcopy1, 2) keypoints2(:,2)];
 % Extract x and y Coordinates from keypoints1 and keypoints2 respectively
 % and add them two corresponding vector (for plotting the line between 
 % the keypoints)
-kpXcoords = [keypoints1(:,1)+margin keypoints2(:,1)-margin];
+kpXcoords = [keypoints1(:,1)+radius keypoints2(:,1)-radius];
 kpYcoords = [keypoints1(:,2) keypoints2(:,2)];
 
 figure;
@@ -42,11 +42,11 @@ for i = 1:size(keypoints1, 1)
     key2 = keypoints2(i,:);
     
     % calculates X and Y for the line points to draw the angle of the gradients
-    deg_X1 = [key1(1), key1(1)+margin*cos(gradients1(i))];
-    deg_Y1 = [key1(2), key1(2)-margin*sin(gradients1(i))];
+    deg_X1 = [key1(1), key1(1)+radius*cos(gradients1(i))];
+    deg_Y1 = [key1(2), key1(2)-radius*sin(gradients1(i))];
 
-    deg_X2 = [key2(1), key2(1)+margin*cos(gradients1(i))];
-    deg_Y2 = [key2(2), key2(2)-margin*sin(gradients1(i))];
+    deg_X2 = [key2(1), key2(1)+radius*cos(gradients1(i))];
+    deg_Y2 = [key2(2), key2(2)-radius*sin(gradients1(i))];
     
     % plot the lines for the angle of the gradients
     line(deg_X1, deg_Y1, 'Color', [1, 0, 0], 'LineWidth', lineWid);
@@ -54,6 +54,7 @@ for i = 1:size(keypoints1, 1)
 
     
     % plot the borders around each keypoint
+
     rectangle('Curvature', [1 1], 'Position', [(key1(2)-margin) (key1(1)-margin) (2*margin) (2*margin)], 'EdgeColor', [0,0,1], 'LineWidth', lineWid);
     rectangle('Curvature', [1 1], 'Position', [(key2(2)-margin) (key2(1)-margin) (2*margin) (2*margin)], 'EdgeColor', [0,0,1], 'LineWidth', lineWid);
     
