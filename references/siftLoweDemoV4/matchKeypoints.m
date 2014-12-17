@@ -50,6 +50,7 @@ firstInd = matchInd~=0;
 %disp('matchInd'); disp(matchInd);
 matches(1:length(matchInd),1:2) = pos1(firstInd,:);
 matches(1:length(matchInd),3:4) = pos2(matchInd,:);
+matches = nonzeros(matches);
 
 
 
