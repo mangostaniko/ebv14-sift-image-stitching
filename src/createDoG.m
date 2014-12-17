@@ -18,6 +18,7 @@ help_1 = imfilter(help_1, h_vert);
 
 %Creating ocateve 1 & DoG 1
 oct1 = zeros(size(originalImage,1), size(originalImage,2), 7); %, class(originalImage));
+
 oct1(:,:,1) = bluredImage_1;
 dog1 = zeros(size(originalImage,1), size(originalImage,2), 4); %, class(originalImage));
 
@@ -29,13 +30,13 @@ for i=2:7
      oct1(:,:,i) = help_1;
 end
 
-dog1(:,:,1) = mapIntervall(minus(oct1(:,:,1),oct1(:,:,2)));
+dog1(:,:,1) = minus(oct1(:,:,1),oct1(:,:,2));
 
-dog1(:,:,2) = mapIntervall(minus(oct1(:,:,2),oct1(:,:,3)));
+dog1(:,:,2) = minus(oct1(:,:,2),oct1(:,:,3));
 
-dog1(:,:,3) = mapIntervall(minus(oct1(:,:,3),oct1(:,:,4)));
+dog1(:,:,3) = minus(oct1(:,:,3),oct1(:,:,4));
 
-dog1(:,:,4) = mapIntervall(minus(oct1(:,:,4),oct1(:,:,5)));
+dog1(:,:,4) = minus(oct1(:,:,4),oct1(:,:,5));
 
 
 %Creating octave 2 & DoG 2
@@ -97,16 +98,10 @@ for i=2:5
      oct4(:,:,i) = help_4;
 end
 
-dog4a(:,:,1) = minus(oct4(:,:,1),oct4(:,:,2));
-dog4a(:,:,2) = minus(oct4(:,:,2),oct4(:,:,3));
-dog4a(:,:,3) = minus(oct4(:,:,3),oct4(:,:,4));
-dog4a(:,:,4) = minus(oct4(:,:,4),oct4(:,:,5));
-
-dog4(:,:,1) = mapIntervall(dog4a(:,:,1));
-dog4(:,:,2) = mapIntervall(dog4a(:,:,2));
-dog4(:,:,3) = mapIntervall(dog4a(:,:,3));
-dog4(:,:,4) = mapIntervall(dog4a(:,:,4));
-
+dog4(:,:,1) = minus(oct4(:,:,1),oct4(:,:,2));
+dog4(:,:,2) = minus(oct4(:,:,2),oct4(:,:,3));
+dog4(:,:,3) = minus(oct4(:,:,3),oct4(:,:,4));
+dog4(:,:,4) = minus(oct4(:,:,4),oct4(:,:,5));
 
 end
 
