@@ -1,6 +1,6 @@
 function [H] = fitSample(sample)
 % Calculates homography matrix that fits sample
-% Input: sample .. n-by-4 matrix,  sample(i) = (p1',p2')
+% Input: sample .. n-by-4 matrix containing matches in normalized coordinates,  sample(i) = (p1',p2')
 % Output: H .. 3-by-3 matrix H satisfying p2_hom = H*p1_hom
     
     sampleSize = size(sample,1);
