@@ -54,8 +54,8 @@ for i = 1:size(keypoints1, 1)
 
     
     % plot the borders around each keypoint
-    rectangle('Curvature', [1 1], 'Position', [(key1(1)-margin) (key1(2)-margin) (2*margin) (2*margin)], 'EdgeColor', [0,0,1], 'LineWidth', lineWid);
-    rectangle('Curvature', [1 1], 'Position', [(key2(1)-margin) (key2(2)-margin) (2*margin) (2*margin)], 'EdgeColor', [0,0,1], 'LineWidth', lineWid);
+    rectangle('Curvature', [1 1], 'Position', [(key1(2)-margin) (key1(1)-margin) (2*margin) (2*margin)], 'EdgeColor', [0,0,1], 'LineWidth', lineWid);
+    rectangle('Curvature', [1 1], 'Position', [(key2(2)-margin) (key2(1)-margin) (2*margin) (2*margin)], 'EdgeColor', [0,0,1], 'LineWidth', lineWid);
     
     % plot the lines connecting the corresponding keypoints in Image1 and
     % Image2

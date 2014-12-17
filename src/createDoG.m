@@ -3,7 +3,8 @@ function [ oct1, oct2, oct3, oct4, dog1, dog2, dog3, dog4 ] = createDoG( inputIm
 % input: inputImage ... RGB image (double format)
 % output: oct1, oct2, oct3, oct4 ... arrays of 4 DoG images at different
 % blur levels (x*y*3*4 matrices: x, y are scaled down for the different octaves)
-H = fspecial('gaussian', [1 5], 1.5);
+H = fspecial('gaussian', [5 5], 1.5);
+
 %compute the reduction factor
 
 %Original image
