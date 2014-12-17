@@ -5,8 +5,8 @@ function [ stitchedImage ] = main( impath1, impath2 )
 %% read and convert images
 % note: in images x are columns, y are rows.
 % however later we use an internal representation which is (x,y)
-imA = im2double(imread('../pictures/test.jpg'));
-imB = im2double(imread('../pictures/test_small.jpg'));
+imA = im2double(imread('../pictures/B1.jpg'));
+imB = im2double(imread('../pictures/B2.jpg'));
 %% create DoG pyramids
 [ octA1, octA2, octA3, octA4, dogA1, dogA2, dogA3, dogA4 ] = createDoG(imA);
 [ octB1, octB2, octB3, octB4, dogB1, dogB2, dogB3, dogB4 ] = createDoG(imB);
