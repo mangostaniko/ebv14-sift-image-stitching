@@ -13,7 +13,7 @@ originalImage = rgb2gray(inputImage);
 bluredImage_1 = gauss(originalImage, H);
 help_1 = gauss(originalImage, H);
 
-%Creating ocateve 1 & DoG 1
+%Creating octave 1 & DoG 1
 oct1 = zeros(size(originalImage,1), size(originalImage,2), 7, class(originalImage));
 oct1(:,:,1) = bluredImage_1;
 dog1 = zeros(size(originalImage,1), size(originalImage,2), 4, class(originalImage));
