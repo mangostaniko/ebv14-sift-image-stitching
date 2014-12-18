@@ -1,4 +1,4 @@
-function [ matches ] = matchKeypoints( pos1, pos2, descr1, descr2 )
+function [ matches ] = matchKeypoints( pos1, pos2, descr1, descr2, imA, imB )
 %% MATCHKEYPOINTS  finds corresponding keypoint matches for two keypoint lists given their positions and SIFT descriptors
 % Author: Hanna Huber
 % input:     pos1 ... N1*2 vector of keypoint positions (image1)
@@ -11,7 +11,6 @@ function [ matches ] = matchKeypoints( pos1, pos2, descr1, descr2 )
 n = size(descr1,1);
 descr2T = descr2';
 threshold = 0.5;
-matches = zeros(n,4);
 matchInd = zeros(n,1);
 matchDist = zeros(n,1);
 
@@ -45,11 +44,30 @@ for i=1:n
         
 end
 
-matchInd=nonzeros(matchInd);
-firstInd = matchInd~=0;
+firstInd = find(matchInd~=0);
+matchInd = matchInd(firstInd);
+m = length(firstInd);
+matches = zeros(m,4);
 %disp('matchInd'); disp(matchInd);
-matches(1:length(matchInd),1:2) = pos1(firstInd,:);
-matches(1:length(matchInd),3:4) = pos2(matchInd,:);
+matches(1:m,1:2) = pos1(firstInd,:);
+matches(1:m,3:4) = pos2(matchInd,:);
+
+% % !!!!!!!!!!!!!!!!!!!!!! DELETE: CODE IMPORTED !!!!!!!!!!!!!!!!!!!!!!!!! 
+% % Create a new image showing the two images side by side.
+%     im3 = appendimages(imA,imB);
+% 
+%     % Show a figure with lines joining the accepted matches.
+%     figure('Position', [100 100 size(im3,2) size(im3,1)]);
+%     colormap('gray');
+%     imagesc(im3);
+%     hold on;
+%     cols1 = size(imA,2);
+%     for i = 1:length(firstInd)
+%        line([pos1(firstInd(i),2) pos2(matchInd(i),2)+cols1], ...
+%             [pos1(firstInd(i),1) pos2(matchInd(i),1)], 'Color', 'c');
+%     end
+% hold off;
+
 
 
 
