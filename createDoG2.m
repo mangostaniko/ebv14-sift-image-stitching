@@ -1,4 +1,4 @@
-function [ oct, dog ] = createDoG2( input_image, write, double )
+function [ oct1, oct2, oct3, oct4, dog1, dog2, dog3, dog4 ] = createDoG2( input_image, write, double )
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%% input_image ... the image of which to create a Difference of Gaussian
 %%%%                 Pyramid
@@ -29,6 +29,7 @@ function [ oct, dog ] = createDoG2( input_image, write, double )
 %%%%        to half the size and the sigma is doubled
 %%%%  6.) write all images to specified place for easier debugging and to
 %%%%        see results (IF WRITE == TRUE)
+%%%%  7.) fit output for rest of program :D
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 %% Set Path for output pictures, filenames are generated automatically
@@ -88,6 +89,55 @@ for i=1:4
         imwrite(dog(i).scale4, strcat(path_for_debug, 'dog', num2str(i), '_scale4.jpg'));
     end
 end
+
+%% >>> (7) <<<
+
+%%%%%% OCTAVES
+oct1(:,:,1) = oct(1).scale1;
+oct1(:,:,2) = oct(1).scale2;
+oct1(:,:,3) = oct(1).scale3;
+oct1(:,:,4) = oct(1).scale4;
+oct1(:,:,5) = oct(1).scale5;
+
+oct2(:,:,1) = oct(2).scale1;
+oct2(:,:,2) = oct(2).scale2;
+oct2(:,:,3) = oct(2).scale3;
+oct2(:,:,4) = oct(2).scale4;
+oct2(:,:,5) = oct(2).scale5;
+
+oct3(:,:,1) = oct(3).scale1;
+oct3(:,:,2) = oct(3).scale2;
+oct3(:,:,3) = oct(3).scale3;
+oct3(:,:,4) = oct(3).scale4;
+oct3(:,:,5) = oct(3).scale5;
+
+oct4(:,:,1) = oct(4).scale1;
+oct4(:,:,2) = oct(4).scale2;
+oct4(:,:,3) = oct(4).scale3;
+oct4(:,:,4) = oct(4).scale4;
+oct4(:,:,5) = oct(4).scale5;
+
+%%%%%% DOGS
+dog1(:,:,1) = dog(1).scale1;
+dog1(:,:,2) = dog(1).scale2;
+dog1(:,:,3) = dog(1).scale3;
+dog1(:,:,4) = dog(1).scale4;
+
+dog2(:,:,1) = dog(2).scale1;
+dog2(:,:,2) = dog(2).scale2;
+dog2(:,:,3) = dog(2).scale3;
+dog2(:,:,4) = dog(2).scale4;
+
+dog3(:,:,1) = dog(3).scale1;
+dog3(:,:,2) = dog(3).scale2;
+dog3(:,:,3) = dog(3).scale3;
+dog3(:,:,4) = dog(3).scale4;
+
+dog4(:,:,1) = dog(4).scale1;
+dog4(:,:,2) = dog(4).scale2;
+dog4(:,:,3) = dog(4).scale3;
+dog4(:,:,4) = dog(4).scale4;
+
 end
 
 function I_conv = blur( image, sigma )
