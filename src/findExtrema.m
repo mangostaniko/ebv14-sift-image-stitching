@@ -35,9 +35,18 @@ extrema = cat(1,extrema, octaveExtrema4);
 end
 
 
-%
 function [extrema] = findExtremaPerOctave(dog)
-useTaylor = true;
+withFilter = false; % else: with for loops
+if withFilter
+   extrema = findExtremaPerOctaveWithFilters(dog);
+else
+   extrema =  findExtremaPerOctaveWithForLoops(dog);
+end
+end
+
+
+function [extrema] = findExtremaPerOctaveWithFilters(dog)
+
 
 %Trick für Performance: Filter anwenden, der Bild quasi in eine Richtung
 %verschiebt. Dann vergleichen und falls größer == true
@@ -53,11 +62,11 @@ filter(:,:,8)=[0,0,0;0,0,0;0,0,1];
 
 
 for z = 2:3
-   maximaMatrix(:,:,z-1) = (ones(size(dog(:,:,1))) == 1);
+    maximaMatrix(:,:,z-1) = (ones(size(dog(:,:,1))) == 1);
     for i = 1:8
         sameLevelDog  = (dog(:,:,z) > imfilter(dog(:,:,z),filter(:,:,i), 'replicate'));
-        lowerLevelDog = (dog(:,:,z) > imfilter(dog(:,:,z-1),filter(:,:,i), 'replicate'));
-        upperLevelDog = (dog(:,:,z) > imfilter(dog(:,:,z+1),filter(:,:,i), 'replicate'));
+        lowerLevelDog = (dog(:,:,z) > imfilter(dog(:,:,z-1),filter(:,:,i), 'replicate'))+(dog(:,:,z)>dog(:,:,z-1))==2;
+        upperLevelDog = (dog(:,:,z) > imfilter(dog(:,:,z+1),filter(:,:,i), 'replicate'))+(dog(:,:,z)>dog(:,:,z+1))==2;
         %add logical ones and check if all are true (i.e. sum is 4)
         maximaMatrix(:,:,z-1) = (maximaMatrix(:,:,z-1) + sameLevelDog + lowerLevelDog + upperLevelDog) == 4;
     end
@@ -68,15 +77,15 @@ for z = 2:3 %only from center gauss levels
     minimaMatrix(:,:,z-1) = (ones(size(dog(:,:,1))) == 1);
     for i = 1:8
         sameLevelDog  = (dog(:,:,z) < imfilter(dog(:,:,z),filter(:,:,i), 'replicate'));
-        lowerLevelDog = (dog(:,:,z) < imfilter(dog(:,:,z-1),filter(:,:,i), 'replicate'));
-        upperLevelDog = (dog(:,:,z) < imfilter(dog(:,:,z+1),filter(:,:,i), 'replicate'));
+        lowerLevelDog = (dog(:,:,z) < imfilter(dog(:,:,z-1),filter(:,:,i), 'replicate'))+(dog(:,:,z)<dog(:,:,z-1))==2;
+        upperLevelDog = (dog(:,:,z) < imfilter(dog(:,:,z+1),filter(:,:,i), 'replicate'))+(dog(:,:,z)<dog(:,:,z+1))==2;
         %add logical ones and check if all are true (i.e. sum is 4)
         minimaMatrix(:,:,z-1) = (minimaMatrix(:,:,z-1) + sameLevelDog + lowerLevelDog + upperLevelDog) == 4;
     end
 end
 
 extremaMatrix = (minimaMatrix + maximaMatrix) == 1; % minimaMatrix OR maximaMatrix
-a1 = reshape(extremaMatrix(:,:,1),size(extremaMatrix(:,:,1),1),size(extremaMatrix(:,:,1),2)); 
+a1 = reshape(extremaMatrix(:,:,1),size(extremaMatrix(:,:,1),1),size(extremaMatrix(:,:,1),2));
 [e2a,e2b] = find(a1==1); %Extract extrema coordinates (find ones)
 extrema2 = cat(2,e2a,e2b);
 a2 = reshape(extremaMatrix(:,:,2),size(extremaMatrix(:,:,2),1),size(extremaMatrix(:,:,2),2));
@@ -88,8 +97,20 @@ extrema3(:,3) = 3;
 
 extrema = cat(1,extrema2,extrema3);
 
+
+
+extrema = taylor(dog,extrema);
+
+
+end
+
+function [extrema] = taylor(dog,extrema)
 %% Taylor approximation: (based on: https://dsp.stackexchange.com/questions/3382/approximating-pixel-location-in-scale-space/3386#3386)
-if useTaylor
+
+taylorEnabled = true;
+
+
+if taylorEnabled
 for i = 1:size(extrema,1) %for every extrema
     thisExtrema = extrema(i,:);
     x = thisExtrema(1);
@@ -109,5 +130,42 @@ for i = 1:size(extrema,1) %for every extrema
     extrema(i,2)=newPosY;
 end
 end
+end
 
+function [extrema] = findExtremaPerOctaveWithForLoops(dog)
+imSizeX = size(dog,1);
+imSizeY = size(dog,2);
+
+extremaCounter = 0;
+for z = 2:3 % the two middle level dog images are considered
+    for x = 2:imSizeX-1 % all Pixels (without the borders)
+        for y = 2:imSizeY-1
+            
+            maxCount = 0; % how many points are bigger than this one?
+            
+            for upperLowerSame = -1:+1 % compare with upper, lower and the same level
+                for dx = -1:+1 % compare points right, left and on the same x position
+                    for dy = -1:+1 % compare points above, below and on the same y position
+                        if (upperLowerSame ~= 0)||(dx~=0)||(dy~=0) %ensure that it is not compared with itself
+                            if dog(x+dx,y+dy,z+upperLowerSame)>=dog(x,y,z) % if the compared pixel is bigger than this one
+                                maxCount = maxCount + 1; % increment the counter
+                            end
+                        end
+                    end
+                end
+            end
+            
+            if (maxCount == 26 || maxCount == 0) % if all compared pixels are bigger than this one: minimum, if none of them: maximum
+                % extrema detected!
+                extremaCounter = extremaCounter +1;
+                extrema(extremaCounter,1) = x;
+                extrema(extremaCounter,2) = y;
+                extrema(extremaCounter,3) = z;
+            end
+            
+        end
+    end
+end
+
+    extrema = taylor(dog,extrema);
 end
