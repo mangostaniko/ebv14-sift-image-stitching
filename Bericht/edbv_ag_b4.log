@@ -1,7 +1,7 @@
-This is pdfTeX, Version 3.1415926-2.4-1.40.13 (MiKTeX 2.9) (preloaded format=pdflatex 2013.10.21)  2 JAN 2015 14:18
+This is pdfTeX, Version 3.1415926-2.4-1.40.13 (MiKTeX 2.9) (preloaded format=pdflatex 2013.10.21)  2 JAN 2015 14:21
 entering extended mode
-**edbv_ag_xx.tex
-(C:\Users\Hanna\OneDrive\Dokumente\EBV\ebvb4\Bericht\edbv_ag_xx.tex
+**edbv_ag_b4.tex
+(C:\Users\Hanna\OneDrive\Dokumente\EBV\ebvb4\Bericht\edbv_ag_b4.tex
 LaTeX2e <2011/06/27>
 Babel <v3.8m> and hyphenation patterns for english, afrikaans, ancientgreek, arabic, armenian, assamese, basque, bengali
 , bokmal, bulgarian, catalan, coptic, croatian, czech, danish, dutch, esperanto, estonian, farsi, finnish, french, galic
@@ -499,7 +499,7 @@ Package: ifxetex 2010/09/12 v0.6 Provides ifxetex conditional
 LaTeX Warning: Unused global option(s):
     [deutsch].
 
-(C:\Users\Hanna\OneDrive\Dokumente\EBV\ebvb4\Bericht\edbv_ag_xx.aux)
+(C:\Users\Hanna\OneDrive\Dokumente\EBV\ebvb4\Bericht\edbv_ag_b4.aux)
 LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 14.
 LaTeX Font Info:    ... okay on input line 14.
 LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 14.
@@ -600,8 +600,8 @@ Underfull \hbox (badness 10000) in paragraph at lines 111--118
 
  []
 
-[4] (C:\Users\Hanna\OneDrive\Dokumente\EBV\ebvb4\Bericht\edbv_ag_xx.bbl) [5]
-(C:\Users\Hanna\OneDrive\Dokumente\EBV\ebvb4\Bericht\edbv_ag_xx.aux) ) 
+[4] (C:\Users\Hanna\OneDrive\Dokumente\EBV\ebvb4\Bericht\edbv_ag_b4.bbl) [5]
+(C:\Users\Hanna\OneDrive\Dokumente\EBV\ebvb4\Bericht\edbv_ag_b4.aux) ) 
 Here is how much of TeX's memory you used:
  5667 strings out of 493921
  84391 string characters out of 3144875
@@ -616,7 +616,7 @@ lic/amsfonts/cm/cmmi10.pfb><C:/Program Files (x86)/MiKTeX 2.9/fonts/type1/public
 s/cm/cmr8.pfb><C:/Program Files (x86)/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmssbx10.pfb><C:/Program Files (x86)/MiK
 TeX 2.9/fonts/type1/public/amsfonts/cm/cmsy10.pfb><C:/Program Files (x86)/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmti
 10.pfb>
-Output written on edbv_ag_xx.pdf (5 pages, 102181 bytes).
+Output written on edbv_ag_b4.pdf (5 pages, 102181 bytes).
 PDF statistics:
  46 PDF objects out of 1000 (max. 8388607)
  0 named destinations out of 1000 (max. 500000)

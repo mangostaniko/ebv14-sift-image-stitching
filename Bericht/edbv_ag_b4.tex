@@ -1,0 +1,140 @@
+%%Berichtvorlage für EDBV WS 2014/2015
+
+\documentclass[deutsch]{scrartcl}
+\usepackage[ngerman]{babel}
+\usepackage[utf8]{inputenc}
+\usepackage{algorithmic}
+%%\usepackage{algorithm}
+\usepackage{graphicx}
+\usepackage{amsmath,amssymb}
+\usepackage{subcaption}
+\captionsetup{compatibility=false}
+\usepackage{multirow}
+\usepackage{color}\usepackage[width=122mm,left=12mm,paperwidth=146mm,height=193mm,top=12mm,paperheight=217mm]{geometry}
+\begin{document}
+
+
+%%------------------------------------------------------
+%% Ab hier tragt ihr eure Daten und Ergebnisse ein:
+%%------------------------------------------------------
+
+\title{Image Stitching} %%Projekttitel hier eintragen
+
+\subtitle{EDBV WS 2014/2015: AG\_B4} %%statt XX Arbeitsgruppenbezeichnung hier eintragen (zB.: A1)
+
+
+%%Namen und Matrikelnummern der Gruppenmitglieder hier eintragen
+\author{J. Sebastian Kirchner (0926076)\\
+				Hanna Huber (0925230)\\
+				Patrick Wahrmann (1327120)\\
+				Ernad Sehic (1227865)\\
+				Nikolaus Leopold (1327344)}
+
+
+
+%%------------------------------------------------------
+
+\maketitle
+
+
+%%------------------------------------------------------
+\section{Gewählte Problemstellung}
+(1-1,5 Seiten)\\
+entspricht dem (aktualisierten) Konzept
+\subsection{Ziel}
+\subsection{Eingabe}
+\subsection{Ausgabe}
+\subsection{Voraussetzungen und Bedingungen}
+\subsection{Methodik}
+\subsection{Evaluierungsfragen}
+%%------------------------------------------------------
+
+%%------------------------------------------------------
+\section{Arbeitsteilung}
+(0,5 Seiten)\\
+Wer hat welche Aufgaben übernommen (MATLAB-Funktionen, Abschnitt im Bericht, Evaluierung, Datenerfassung, etc.)?
+
+\begin{center}
+  \begin{tabular}{ |l | c | }
+    \hline
+  Name & Tätigkeiten\\
+    \hline
+		Vorname1 Nachname1 & Matlab-Funktion A, Bericht Abschnitt B...\\
+		\hline
+		Vorname2 Nachname2 & Matlab-Funktion C, Bericht Abschnitt D...\\
+		\hline
+  \end{tabular}
+\end{center}
+
+%%------------------------------------------------------
+
+%%------------------------------------------------------
+\section{Methodik}
+Ein wesentlicher Teil des Image Stitching ist die Korrespondenzanalyse. Dabei werden für den überlappenden Bereich der Bilder jene Bildpunkte in beiden Bildern gesucht, die dasselbe Objekt darstellen. Dieses Problem wird mithilfe von merkmalbasiertem Matching gelöst, das gegenüber regionenbasiertem Matching den Vorteil hat, dass homogene und daher irrelevante Bildbereiche nicht in die Berechnung mit einfließen. Der Aufwand wird dadurch erheblich reduziert. \cite{evc14} \\
+Die Merkmale - Interest Points oder Keypoints - werden mittels Scale Invariant Feature Transform (kurz: SIFT) \cite{lowe04} gefunden. Dieser Algorithmus hat den Vorteil, dass das Ergebnis unabhängig von der Skalierung oder Orientierung der Interest Points im jeweiligen Bild ist \cite{evc14}.
+
+\subsection{SIFT}
+Der SIFT-Algorithmus ist in mehrere Schritte unterteilt, in denen Skalierung, Position und Orientierung der Interest Points ermittelt wird. Abschließend muss jeder Punkt eindeutig beschrieben werden, um die Korrespondenzanalyse zu ermöglichen.
+
+\subsubsection{Bildpyramiden}
+Um die Skalierungsinvarianz zu garantieren, ist eine Multiskalenanalyse der Bilder notwendig. 
+
+\subsubsection{Position der Interest Points}
+Interest Points stellen besonders markante, in einer lokalen Umgebung möglichst einzigartige Bildpunkte mit einer klaren Position dar. Punkte, an denen sich im DoG-Bild ein lokales Minimum oder Maximum befindet, sind somit gute Kandidaten für Interest Points. Die Extrema werden in jeder Oktave der DoG-Bildpyramide gesucht. Für jedes Pixel werden dafür die umliegenden Nachbarn derselben, sowie der darüber und darunter liegenden Ebene betrachtet.\\
+Um die Position des Extremums noch exakter - also im Subpixelbereich - zu bestimmen, wird danach noch eine Taylorapproximation durchgeführt.\\
+Schließlich werden Punkte mit zuringem Kontrast und jene, die an einer Kante liegen, verworfen.
+\subsubsection{Orientierung der Interest Points}
+Nun wird für jeden Keypoint die Orientierung im Bild bestimmt. Damit ist die Richtung des maximalen Gradienten gemeint. Die folgende Beschreibung des Punktes geschieht relativ zu dieser Orientierung. Dadurch ist der SIFT-Algorithmus rotationsinvariant.
+\subsubsection{Deskriptoren}
+Jeder Keypoint muss eindeutig beschrieben werden, damit Punkte verschiedener Bilder, die denselben Interest Point beschreiben einander zugeordnet werden können. 
+\subsection{Matching} 
+Nun müssen Keypoints, die denselben Interest Point beschreiben, einander zugewiesen werden. Wie bei Lowe\cite{lowe04} wird dazu der Nearest-Neighbor-Ansatz gewählt.\\
+Allerdings wird statt der euklidischen Distanz der Winkel zwischen den Deskriptor-Vektoren der entsprechenden Keypoints zwischen den Vektoren minimiert. Dieser lässt sich leicht aus dem Skalarprodukt der beiden Vektoren ermitteln. Für jeden Deskriptor des ersten Bildes können  die entsprechenden Skalarprodukte für alle Deskriptoren des zweiten Bildes mittels einer einzigen Vektor-Matrix-Multiplikation berechnet werden.\\
+Um die Eindeutigkeit der Zuweisung zu garantieren, wird der kleinste Winkel mit dem zweitkleinsten verglichen \cite{lowe04}. Nur wenn deren Verhältnis unter einem Schwellwert liegt, wird die Zuweisung akzeptiert. \\
+Zusätzlich wird überprüft, ob der Deskriptor mit minimalem Winkelabstand bereits einem zuvor betrachteten Deskriptor zugewiesen wurde. In diesem Fall wird dieser durch den aktuellen Deskriptor ersetzt.\\
+
+\subsection{Transformation}
+Um die beiden Bilder zu einem Bild zusammenzuführen, muss eine Homographie-Matrix $H$ ermittelt werden, die die Koordinaten der Bildpunkte eines Bildes in entsprechende Koordinaten im Koordinatensystem des anderen Bildes umwandelt. Dies gilt insbesondere für Keypoint-Paare, also $X_2=H\cdot X_1$ für ein Keypoint-Paar $(X_1,X_2)$. $H$ wird mithilfe des Random-Sample-Consensus-Algorithmus\cite{dubrovsky09} berechnet .  \\
+Die Information über die Koordinaten der Keypoint-Paare wird verwendet, um ein lineares Gleichungssystem aufzustellen, dessen Lösung die Koeffizienten der Matrix $H$ liefert . Dafür werden vier Keypoint-Paare benötigt. \cite{kriegman07} \\
+Der RANSAC-Algorithmus wählt diese in jedem Iterationsschritt  - deren Anzahl wird zuvor festgelegt – zufällig aus und berechnet die zugehörige Matrix $H$.  Daraufhin wird die Homographie auf alle zu einem Keypoint-Paar $(X_1,X_2)$ gehörigen Punkte $X_1$ angewendet. Liegt der transformierte Punkt innerhalb eines Toleranzbereichs um den Punkt $X_2$, wird er als \textit{Inlier} bezeichnet. In jedem Iterationsschritt, also für jedes $H$, wird die Anzahl der Inlier berechnet. Am Ende wird die Matrix mit den meisten Inliers als Homographie-Matrix gewählt.\\
+Da eine korrekte Lösung des oben beschriebenen Gleichungssystems stark von Ursprung und Skalierung des Koordinatensystems der Bilder abhängt, werden die Koordinaten der Keypoint-Paare zuvor normalisiert . Um die endgültige Homographie-Matrix zu erhalten, wird die Matrix $H$ am Ende  noch mit den entsprechenden Transformationsmatrizen multipliziert.\cite{dubrovsky09}
+
+\subsection{Stitching}
+Abschließend werden die beiden Bilder zu einem Bildmosaik zusammengefügt.
+
+
+
+%%------------------------------------------------------
+
+%%------------------------------------------------------
+\section{Implementierung}
+(1-X Seiten)\\
+Hier gebt ihr einen Überblick über eure Implementierung:\\
+Wie habt ihr die im vorhergehnden Abschnitt vorgestellte Methodik praktisch umgesetzt? Wie werden die einzelnen Methoden kombiniert (zB. Implementierungspipeline)?\\
+Hier ist Platz für Implementierungsdetails wie zB. gewählte Parameter. \\
+Wie startet der User das Programm? Welche Parameter hat der User zu setzen?\\
+Auch in diesem Abschnitt können Referenzen und Zitate notwendig sein.\\
+%%------------------------------------------------------
+
+%%------------------------------------------------------
+\section{Evaluierung}
+(2-X Seiten)\\
+Hier stellt ihr euren Datensatz vor und beantwortet Evaluierungsfragen:\\
+z.B. Fakten zum Datensatz: Anzahl der Bilder, Größe der Bilder, Quelle des Datensatzes (falls selbst aufgenommen: Aufnahmegerät, Einstellungen,... / falls nicht selbst erstellt: Datenbank vostellen...)\\
+Diskussion der Evaluierungsfragen: Beantwortung der Fragen, Diskussion anhand von Beispielen, Diskussion von Grenzfällen: für welche Bilder funktioniert die Implementierung, für welche nicht? Worin unterscheiden sich diese Bilder? etc.
+%%------------------------------------------------------
+
+%%------------------------------------------------------
+\section{Schlusswort}
+(max. 1 Seite)\\
+Hier fasst ihr Ergebnisse eures Projekt zusammen:\\
+Welche Schlussfolgerung lässt sich ziehen? Gibt es offene Probleme? Wie lässt sich eure Lösung noch verbessern? etc.
+%%------------------------------------------------------
+
+%%------------------------------------------------------
+\bibliographystyle{plain}
+\bibliography{edbv_lit}
+%%Bei verwendung von Latex schreibt ihr eure Referenzen in ein eigenes bib-File (siehe hier edbv_lit.bib). Jene Referenzen, die ihr im Bericht mittels \cite zitiert, werden automatisch in die Referenzliste übernommen. Weitere Information zum Einbinden von BibTex gibt es hier: http://www.bibtex.org/Using/de/
+%%------------------------------------------------------
+
+\end{document}

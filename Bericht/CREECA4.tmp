@@ -3,7 +3,7 @@
 \documentclass[deutsch]{scrartcl}
 \usepackage[ngerman]{babel}
 \usepackage[utf8]{inputenc}
-\usepackage{algorithmic}
+%%\usepackage{algorithmic}
 \usepackage{algorithm}
 \usepackage{graphicx}
 \usepackage{amsmath,amssymb}
