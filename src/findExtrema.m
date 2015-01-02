@@ -111,7 +111,13 @@ taylorEnabled = true;
 
 
 if taylorEnabled
+    
 for i = 1:size(extrema,1) %for every extrema
+    if extrema(1,1) == 0
+        continue;
+    end
+    
+    
     thisExtrema = extrema(i,:);
     x = thisExtrema(1);
     y = thisExtrema(2);
@@ -142,20 +148,24 @@ for z = 2:3 % the two middle level dog images are considered
         for y = 2:imSizeY-1
             
             maxCount = 0; % how many points are bigger than this one?
+            minCount = 0; % how many points are smaller than this one?
             
             for upperLowerSame = -1:+1 % compare with upper, lower and the same level
                 for dx = -1:+1 % compare points right, left and on the same x position
                     for dy = -1:+1 % compare points above, below and on the same y position
                         if (upperLowerSame ~= 0)||(dx~=0)||(dy~=0) %ensure that it is not compared with itself
-                            if dog(x+dx,y+dy,z+upperLowerSame)>=dog(x,y,z) % if the compared pixel is bigger than this one
+                            if dog(x+dx,y+dy,z+upperLowerSame)>dog(x,y,z) % if the compared pixel is bigger than this one
                                 maxCount = maxCount + 1; % increment the counter
+                            end
+                            if dog(x+dx,y+dy,z+upperLowerSame)<dog(x,y,z) % if the compared pixel is smaller than this one
+                                minCount = minCount + 1; % increment the counter
                             end
                         end
                     end
                 end
             end
             
-            if (maxCount == 26 || maxCount == 0) % if all compared pixels are bigger than this one: minimum, if none of them: maximum
+            if (maxCount == 26 || minCount == 26) % if all compared pixels are bigger than this one: minimum, if all of them are smaller: maximum
                 % extrema detected!
                 extremaCounter = extremaCounter +1;
                 extrema(extremaCounter,1) = x;
@@ -166,6 +176,8 @@ for z = 2:3 % the two middle level dog images are considered
         end
     end
 end
-
+if extremaCounter == 0
+    extrema = zeros(0,3);
+end
     extrema = taylor(dog,extrema);
 end
