@@ -1,8 +1,8 @@
 %% Test matchKeypoints.m and findHomography.m with keypoints found by Lowe
 
 % Get SIFT keypoint locations and descriptors
-[imA,desA,locA] = sift('B1.pgm');
-[imB,desB,locB] = sift('B2.pgm');
+[imA,desA,locA] = sift('bild1.pgm');
+[imB,desB,locB] = sift('bild2.pgm');
 [m1,n1] = size(imA);
 [m2,n2] = size(imB);
 
@@ -20,9 +20,13 @@ coordsB = [xB(:) yB(:)]';
 coordsBtoA = H * [coordsB; ones(1, m2*n2)];
 coordsBtoA = coordsBtoA(1:2,:)';
 xBtoA = reshape(round(coordsBtoA(:,1)),n2,m2)';
-xBtoA(xBtoA>m1) = m1;
 yBtoA = reshape(round(coordsBtoA(:,2)),n2,m2)';
+
+% Avoid out of bound indices ?????? TODO: ALTERNATIVE METHOD??????????
+xBtoA(xBtoA>m1) = m1;
+xBtoA(xBtoA<1) = 1;
 yBtoA(yBtoA>n1+n2) = n1+n2;
+yBtoA(yBtoA<1) = 1;
 
 % Create image of size max(m1,m2)x n1+n2
 stitchedImg = zeros(max(m1,m2),n1+n2);
@@ -37,11 +41,11 @@ stitchedImg(1:m1,1:n1) = im2double(imA);
 % end
 
 % Insert imB - option 2
-%indB = sub2ind([m2, n2],xB',yB');
+indB = sub2ind([m2, n2],xB',yB');
 %imshow(im2double(imB(indB)));
 indBtoA = sub2ind([max(m1,m2),n1+n2],xBtoA,yBtoA);
 stitchedImg(indBtoA) = im2double(imB(indB));
-%imshow(stitchedImg);
+imshow(stitchedImg);
 
 %% Transform A to B
 
@@ -64,7 +68,9 @@ yAtoB = reshape(round(coordsAtoB(:,2)),n2,m2)';
 
 % Catch out of bound indices
 xAtoB(xAtoB>m2) = m2;
+xAtoB(xAtoB<1) = 1;
 yAtoB(yAtoB>n2) = n2;
+yAtoB(yAtoB<1) = 1;
 
 % Write imA into stitched image
 stitchedImgInv(1:m1,1:n1) = im2double(imA);
