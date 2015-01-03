@@ -22,7 +22,7 @@ function [ oct1, oct2, oct3, oct4, dog1, dog2, dog3, dog4 ] = createDoG2( input_
 %%%%  4.) starting sigma is sqrt(2), each scale is blurred using the
 %%%%        previously scaled image and the same sigma
 %%%%  5.) for the beginning of octaves 2, 3 and 4 the image is scaled down
-%%%%        to half the size and the sigma is doubled
+%%%%        to half the size
 %%%%  6.) (IF WRITE == TRUE) write all images to specified place for easier
 %%%%        debugging and to see results 
 %%%%  7.) fit output for rest of program :D
@@ -43,7 +43,6 @@ end
 %% >>> (4) <<<
 img_temp = image;
 initial_sigma = 2^(1/2);
-sigma = 2^(1/2);
 
 for i=1:4
     
@@ -140,6 +139,7 @@ dog4(:,:,4) = dog(4).scale4;
 
 end
 
+%% KERNEL SIZE DEPENDS ON SIGMA
 function I_conv = blur( image, sigma )
 
 % change kernel size depending on sigma
@@ -155,6 +155,8 @@ I_conv = imfilter(image, h_hori, 'replicate');
 I_conv = imfilter(I_conv, h_vert, 'replicate');
 
 end
+
+%% REDUCE SIZE OF PICTURE IN HALF BY TAKING EVERY SECOND PIXEL
 
 function I_half = half_image( image )
 I_half=image(1:2:end,1:2:end) ;
