@@ -34,7 +34,7 @@ for i=1:size(extrema,1)
     end
 end
 
-% keypoints = zeros(size(tempkeys));
+keypoints = zeros(size(tempkeys));
 
 % read out the remaining keypoints into keypoints
 for i=1:count
