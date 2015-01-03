@@ -10,7 +10,7 @@ count = 0;
 % get corners for every scaling level of the image
 for j=1:max(extrema(:,3))
     temp   = corner(im(:,:,j), 'Harris');
-    temp_8 = add8Neighbour(temp); 
+    temp_8 = add8Neighbours(temp); 
     
     % corner returns X Y coordinates, but we need Y X coordinates,
     % ==> switch them

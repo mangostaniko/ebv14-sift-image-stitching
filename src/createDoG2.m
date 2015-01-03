@@ -42,28 +42,32 @@ end
 
 %% >>> (4) <<<
 img_temp = image;
+initial_sigma = 2^(1/2);
 sigma = 2^(1/2);
 
 for i=1:4
     
-    image_blurred = blur(img_temp, sigma);
+    image_blurred = blur(img_temp, initial_sigma);
     oct(i).scale1 = image_blurred;
     
+    sigma = initial_sigma * 2^(1/5);
     image_blurred = blur(image_blurred, sigma);
     oct(i).scale2 = image_blurred;
     
+    sigma = initial_sigma * 2^(2/5);
     image_blurred = blur(image_blurred, sigma);
     oct(i).scale3 = image_blurred;
     
+    sigma = initial_sigma * 2^(3/5);
     image_blurred = blur(image_blurred, sigma);
     oct(i).scale4 = image_blurred;
     
+    sigma = initial_sigma * 2^(4/5);
     image_blurred = blur(image_blurred, sigma);
     oct(i).scale5 = image_blurred;
     
     %% >>> (5) <<<
-    sigma = sigma*1.5;
-    img_temp = imresize(oct(i).scale1, 1/2, 'bilinear');
+    img_temp = half_image(oct(i).scale1);
     
     %% Create Difference of Gauss Pictures
     dog(i).scale1 = oct(i).scale1 - oct(i).scale2;
@@ -138,11 +142,22 @@ end
 
 function I_conv = blur( image, sigma )
 
-h_hori = fspecial('gaussian', [1 5], sigma);
-h_vert = fspecial('gaussian', [5 1], sigma);
+% change kernel size depending on sigma
+kernelSize = round(sigma*3 - 1);
+if(kernelSize<1)
+    kernelSize = 1;
+end
+
+h_hori = fspecial('gaussian', [1 kernelSize], sigma);
+h_vert = fspecial('gaussian', [kernelSize 1], sigma);
 
 I_conv = imfilter(image, h_hori, 'replicate');
 I_conv = imfilter(I_conv, h_vert, 'replicate');
+
+end
+
+function I_half = half_image( image )
+I_half=image(1:2:end,1:2:end) ;
 
 end
 
