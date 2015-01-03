@@ -2,7 +2,8 @@ function [ oct1, oct2, oct3, oct4, dog1, dog2, dog3, dog4 ] = createDoG2( input_
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%% input_image ... the image of which to create a Difference of Gaussian
 %%%%                 Pyramid
-%%%% write  ...  boolean, true = write all pictures to files
+%%%% write  ...  boolean, true = write all pictures to files, set path in
+%%%%             class
 %%%% double ...  boolean, true = double the orig. image in size before
 %%%%             createing DoG pyramid
 %%%%%%%%
@@ -11,24 +12,19 @@ function [ oct1, oct2, oct3, oct4, dog1, dog2, dog3, dog4 ] = createDoG2( input_
 %%%% dog ... 4 Difference of Gauss pictures, created using the ScaleSpace
 %%%%%%%%
 %%%% HOW TO USE OUTPUT:
-%%%% Octaves: 
-%%%% oct(i).scaleX ... where i is the number of the Octave (1-4)
-%%%%                   and X is the ScaleLevel (1-5)
-%%%%                   (oct(1).scale1 gives once blurred image of octave1)
-%%%% dog(i).scaleX ... where i is the number of the Octave the DoG was
-%%%%                   created from (1-4)
-%%%%                   and X is the ScaleLevel (1-4)
+%%%% [oct1, oct2, oct3, oct4, dog1, dog2, dog3, dog4] will give you the
+%%%% corresponding octs and dogs
 %%%%%%%%
 %%%%  CREATE THE SCALE SPACE, 4 Octaves with 5 frequencies
 %%%%  1.) Change input_image to grayscale double image
 %%%%  2.) Blur the input_image with sigma 0.5
-%%%%  3.) Double the size of the image via interpolation (IF DOUBLE == TRUE)
+%%%%  3.) (IF DOUBLE == TRUE) Double the size of the image via interpolation 
 %%%%  4.) starting sigma is sqrt(2), each scale is blurred using the
 %%%%        previously scaled image and the same sigma
 %%%%  5.) for the beginning of octaves 2, 3 and 4 the image is scaled down
 %%%%        to half the size and the sigma is doubled
-%%%%  6.) write all images to specified place for easier debugging and to
-%%%%        see results (IF WRITE == TRUE)
+%%%%  6.) (IF WRITE == TRUE) write all images to specified place for easier
+%%%%        debugging and to see results 
 %%%%  7.) fit output for rest of program :D
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
