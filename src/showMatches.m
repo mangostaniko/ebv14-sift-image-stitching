@@ -22,6 +22,7 @@ lineWid = (size(imcopy1, 1)*.003);
 keypointcolor = [0, 0.8, 1];
 linecolor = [1, 1, 1];
 
+
 % Combine the 2 images into one image
 jointImg = [imcopy1, imcopy2];
 
