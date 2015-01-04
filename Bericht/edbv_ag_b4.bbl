@@ -1,5 +1,10 @@
 \begin{thebibliography}{1}
 
+\bibitem{spline83}
+Peter~J. Burt and Edward~H. Adelson.
+\newblock A {M}ultiresolution {S}pline with {A}pplication to {I}mage {M}osaics.
+\newblock {\em ACM Trans. Graph.}, 2(4):217--236, October 1983.
+
 \bibitem{dubrovsky09}
 Elan Dubrovsky.
 \newblock Homography {E}stimation.
