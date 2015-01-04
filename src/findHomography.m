@@ -32,8 +32,7 @@ for i = 1:iterations
     
     if (inliers>maxInliers)
         HBest = H;
-        maxInliers = inliers
-        sample
+        maxInliers = inliers;
     end
     
 end

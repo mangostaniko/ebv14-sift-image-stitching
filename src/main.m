@@ -5,8 +5,8 @@ function [ stitchedImage ] = main( impath1, impath2 )
 %% read and convert images
 % note: in images x are columns, y are rows.
 % however later we use an internal representation which is (x,y)
-imA = im2double(imread('../pictures/sanmiguelitoA.jpg'));
-imB = im2double(imread('../pictures/sanmiguelitoB.jpg'));
+imA = im2double(imread('../pictures/bild1.jpg'));
+imB = im2double(imread('../pictures/bild2.jpg'));
 %% create DoG pyramids
 [ octA1, octA2, octA3, octA4, dogA1, dogA2, dogA3, dogA4, sigmas ] = createDoG2(imA, false, false);
 [ octB1, octB2, octB3, octB4, dogB1, dogB2, dogB3, dogB4 ] = createDoG2(imB, false, false);
@@ -29,8 +29,8 @@ orientationsA = findOrientations( keypointsA, octA1 );
 orientationsB = findOrientations( keypointsB, octB1 );
 % orientationsA = findOrientations2( keypointsA, {octA1, octA2, octA3, octA4}, sigmas );
 % orientationsB = findOrientations2( keypointsB, {octB1, octB2, octB3, octB4}, sigmas );
-showKeypoints( imA, keypointsA, orientationsA);
-showKeypoints( imB, keypointsB, orientationsB);
+%showKeypoints( imA, keypointsA, orientationsA);
+%showKeypoints( imB, keypointsB, orientationsB);
 
 %% create descriptors
 descriptorsA = createDescriptors( octA1, keypointsA, orientationsA);
@@ -40,13 +40,15 @@ descriptorsB = createDescriptors( octB1, keypointsB, orientationsB);
 matches = matchKeypoints(keypointsA(:,1:2), keypointsB(:,1:2), descriptorsA, descriptorsB);
 %showKeypoints( imA, matches(:, 1:2), 0);
 %showKeypoints( imB, matches(:, 3:4), 0);
-showMatches( imA, imB, matches(:, 1:2), matches(:, 3:4));
+%showMatches( imA, imB, matches(:, 1:2), matches(:, 3:4));
 
 %% find homography (ransac)
-H = findHomography(matches);
+HBtoA = findHomography([matches(:,3:4),matches(:,1:2)]);
+HAtoB = findHomography(matches);
 
 %% stitch images
-stitchImages2( imA, imB, H );
+%stitchImages2( imA, imB, HBtoA );
+stitchImages3( imA, imB, HBtoA,HAtoB,false );
 
 
 end

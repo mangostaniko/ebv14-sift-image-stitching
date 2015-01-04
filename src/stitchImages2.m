@@ -5,8 +5,8 @@ function [] = stitchImages2( imA, imB, H )
 %   Notation: x .. row index
 %             y .. column index
 
-[m1,n1] = size(imA);
-[m2,n2] = size(imB);
+[m1,n1,~] = size(imA);
+[m2,n2,~] = size(imB);
 
 % Transform corners of right image
 corners = [1 m2 1 m2; 1 1 n2 n2; ones(1,4)];
@@ -28,8 +28,8 @@ if yxMin(1)<1
 end
 
 % Extend imA to mosaic size
-imAext = zeros(sizeMosaic);
-imAext((1+shift):(m1+shift),1:n1) = im2double(imA);
+imAext = zeros([sizeMosaic,3]);
+imAext((1+shift):(m1+shift),1:n1,:) = im2double(imA);
 
 % Transform imB to imA coordinate system
 [xB, yB] = meshgrid(1:m2, 1:n2);
@@ -40,10 +40,10 @@ xBtoA = reshape(round(coordsBtoA(:,1)),n2,m2)'+shift;
 yBtoA = reshape(round(coordsBtoA(:,2)),n2,m2)';
 
 % Extend transformed imB to mosiac size
-imBext = zeros(sizeMosaic);
+imBext = zeros([sizeMosaic,3]);
 indB = sub2ind([m2, n2],xB',yB');
 indBtoA = sub2ind(sizeMosaic,xBtoA,yBtoA);
-imBext(indBtoA) = im2double(imB(indB));
+imBext(indBtoA,:) = im2double(imB(indB,:));
 
 % Create mask
 mask = imBext>0;
@@ -54,6 +54,7 @@ figure('name','imBext');
 imshow(imBext);
 figure('name','mask');
 imshow(mask);
+
 % Create laplace pyramides for imAext, imBext, mask
 
 % % Klim version
