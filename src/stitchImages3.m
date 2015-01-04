@@ -78,11 +78,14 @@ imshow(mask);
 
 % perform multiresolution spline
 if spline
+    mosaic = multiResSpline(imAext,imBext,mask);
+    figure('name','mosaic: multiresolutioe spline');
+    imshow(mosaic);
     
 % without multiresolution spline
 else
     mosaic = (1-mask3).*imAext + mask3.*imBext;
-    figure('name','mosaic');
+    figure('name','mosaic: naive spline');
     imshow(mosaic);
     
 end
