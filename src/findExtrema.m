@@ -36,7 +36,7 @@ end
 
 
 function [extrema] = findExtremaPerOctave(dog)
-withFilter = false; % else: with for loops
+withFilter = true; % else: with for loops
 if withFilter
    extrema = findExtremaPerOctaveWithFilters(dog);
 else
