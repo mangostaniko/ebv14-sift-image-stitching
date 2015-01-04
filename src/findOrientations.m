@@ -37,7 +37,7 @@ for k = 1:size(keypoints,1)
     
     % the bin with greatest magnitude is our keypoint orientation (bin interval median)
     greatestBin = find(orientationHistogram == max(orientationHistogram), 1);
-    orientations(k) = ((greatestBin-1)*binSize + (greatestBin)*binSize)/2;
+    orientations(k) = ((greatestBin-1)*binSize + (greatestBin)*binSize)/2 + pi/2;
     
     
 end

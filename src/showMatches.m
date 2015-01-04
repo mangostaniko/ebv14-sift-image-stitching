@@ -18,6 +18,8 @@ imcopy2 = im2double(image2);
 % the length of the border (double the value 'half_len' in drawBorders()) 
 radius = size(imcopy1, 2) * 0.02;
 lineWid = (size(imcopy1, 1)*.003);
+keypointcolor = [0, 0.8, 1];
+linecolor = [1, 1, 1];
 
 % Combine the 2 images into one image
 jointImg = [imcopy1, imcopy2];
@@ -55,17 +57,17 @@ for i = 1:size(keypoints1, 1)
     
     % plot the borders around each keypoint
     if (~(sum(key1) == 0 || sum(key2) == 0))
-        rectangle('Curvature', [1 1], 'Position', [(key1(1)-radius) (key1(2)-radius) (2*radius) (2*radius)], 'EdgeColor', [0,0,1], 'LineWidth', lineWid);
-        rectangle('Curvature', [1 1], 'Position', [(key2(1)-radius) (key2(2)-radius) (2*radius) (2*radius)], 'EdgeColor', [0,0,1], 'LineWidth', lineWid);
+        rectangle('Curvature', [1 1], 'Position', [(key1(1)-radius) (key1(2)-radius) (2*radius) (2*radius)], 'EdgeColor', keypointcolor, 'LineWidth', lineWid);
+        rectangle('Curvature', [1 1], 'Position', [(key2(1)-radius) (key2(2)-radius) (2*radius) (2*radius)], 'EdgeColor', keypointcolor, 'LineWidth', lineWid);
 
         % plot the lines connecting the corresponding keypoints in Image1 and
         % Image2
-        plot(kpXcoords(i,:), kpYcoords(i,:), 'Color', [1, 0, 0], 'LineWidth', 1.5);
+        plot(kpXcoords(i,:), kpYcoords(i,:), 'Color', linecolor = [1, 1, 1], 'LineWidth', 1.5);
     end
 end
 
 % splits image1 and image2
-plot([size(jointImg, 1) size(jointImg, 1)], [0, size(jointImg, 2)], 'Color', [0, 0, 0], 'LineWidth', 3);
+plot([size(jointImg, 1) size(jointImg, 1)], [0, size(jointImg, 2)], 'Color', [0, 0, 0], 'LineWidth', 2);
 hold off;
 
 end

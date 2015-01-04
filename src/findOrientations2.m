@@ -1,5 +1,5 @@
-function [ orientations ] = findOrientations2( keypoints, octaves, sigmas )
-%% FINDORIENTATIONS finds keypoint orientation (most prominent gradient among neighboring pixels)
+function [ keypointOrientations ] = findOrientations2( keypoints, octaves, sigmas )
+%% FINDORIENTATIONS 2 finds keypoint orientation (most prominent gradient among neighboring pixels)
 % Author: Nikolaus Leopold
 % input:     keypoints ... N*3-vector of keypoints (x, y, frequency level)
 %              octaves ... cell array of all 4 octaves/resolutions of double grayscale image
@@ -7,7 +7,10 @@ function [ orientations ] = findOrientations2( keypoints, octaves, sigmas )
 %                          NOTE: internal representation where x are rows
 %                          and y are columns! access using {octave}(x, y, blurLvl)
 %               sigmas ... sigmas ... sigma values used for each of the 5 blur levels
-% output: orientations ... keypoint orientations in rad
+% output: keypointOrientations ... keypoint orientations in radian [0, 2pi]
+%
+% NOTE: the original findOrientations actually works better so use it
+% instead !!
 %%
 
 BIN_COUNT = 36;
@@ -38,7 +41,7 @@ for octave = 1:size(octaves,2)
         gradOrientationMat = atan2(deltaYMat, deltaXMat);
         gradOrientationMat(gradOrientationMat <= 0) = 2*pi + gradOrientationMat(gradOrientationMat <= 0); % map to [0, 2pi]
 
-        gradMagnitudeMat = sqrt(deltaXMat.*deltaXMat + diffYMat.*diffYMat);
+        gradMagnitudeMat = sqrt(deltaXMat.*deltaXMat + deltaYMat.*deltaYMat);
 
         %store magnitude and orientation matrices
         gradients{octave}{blurLvl}{1} = gradOrientationMat; 
@@ -54,18 +57,17 @@ end
 % with gaussian weighting around keypoint applied to magnitudes
 for k = 1:size(keypoints,1)
     
-    % size of sample window around keypoint
-    windowSize = round(accumSigma*5-1);
+    keypointBlurLvl = keypoints(k,3);
+    octave = 1;
     
     % according to Lowe, sigma of 1.5 * sigma of keypoint blurLvl should be
     % used for gaussian weight distribution of magnitudes around keypoint
-    keypointBlurLvl = keypoints(k,3);
-    weightSigma = sigmas(keypointBlurLvl)*1.5;
-    weightKernel = fspecial('gaussian',[windowSize windowSize], weightSigma);
+    sigma = sigmas(keypointBlurLvl)*1.5;
+    windowSize = round(sigma*6-1); % size of sample window depends on sigma too
+    weightKernel = fspecial('gaussian',[windowSize windowSize], sigma);
 
-    % !!! check if this is correct!
-    octaveHeight = size(gradients{1}{keypointBlurLvl}{1},1); 
-    octaveWidth  = size(gradients{1}{keypointBlurLvl}{1},2);
+    octaveHeight = size(octaves{octave},1);
+    octaveWidth  = size(octaves{octave},2);
 
     % find start and end positions of sample window
     startX = round(keypoints(k,1) - windowSize/2); 
@@ -89,60 +91,48 @@ for k = 1:size(keypoints,1)
             kernelTruncateYMin = windowSize-(endY-startY)-1; 
         end 
 
-        if (endX > octaveWidth)
-            endX = octaveWidth; 
-            kernelTruncateXMax = windowSize-kernelTruncateXMin-(endX-startX+1); 
+        if (endX > octaveHeight)
+            endX = octaveHeight; 
+            kernelTruncateXMax = windowSize - kernelTruncateXMin-(endX-startX+1); 
         end 
 
-        if (endY > octaveHeight)
-            endY=octaveHeight; 
+        if (endY > octaveWidth)
+            endY = octaveWidth; 
             kernelTruncateYMax = windowSize - kernelTruncateYMin-(endY-startY+1); 
         end 
 
         % adjust kernel size to octave bounds by truncating as necessary
-        weightKernel = weightKernel((1+kernelTruncateYMin):(size(weightKernel,1)-kernelTruncateYMax),  ...
-            (1+kernelTruncateXMin):(size(weightKernel,2)-kernelTruncateXMax));
+        weightKernel = weightKernel((1+kernelTruncateXMin):(size(weightKernel,1)-kernelTruncateXMax),  ...
+            (1+kernelTruncateYMin):(size(weightKernel,2)-kernelTruncateYMax));
     
         % normalize kernel to [0, 1] again
         kernelMax = max(max(weightKernel));
         weightKernel = weightKernel.*(1/kernelMax);
+      
 
     % get magnitudes from gradient magnitude matrix that lie within sample window
-    magnitudes = gradients{1}{keypointBlurLvl}{1}(startY:endY,startX:endX);
+    magnitudes = gradients{octave}{keypointBlurLvl}{1}(startX:endX,startY:endY);
 
     % apply weight kernel to magnitudes
     magnitudes = magnitudes.*weightKernel;                     
 
     % get orientations from gradient orientation matrix that lie within sample window
-    orientations = gradients{1}{kptLayer}{2}(startY:endY,startX:endX);
+    orientations = gradients{octave}{keypointBlurLvl}{2}(startX:endX,startY:endY);
     
         
-    histogram = zeros(binCount, 1); % magnitudes binned by orientation
+    histogram = zeros(BIN_COUNT, 1); % magnitudes binned by orientation
 
     % add magnitudes to histogram bin of corresponding orientation
-    binIndices(:,:) = ceil(orientations(:,:)./BIN_SIZE); % in range [1, 36]
-    histogram(binIndices(:,:)) = histogram(binIndices(:,:)) + magnitudes(:,:);
+    for (x = 1:size(orientations,1))
+        for (y = 1:size(orientations,2))
+            binIndices(x,y) = ceil(orientations(x,y)./BIN_SIZE + 0.001); % in range [1, 36]
+            histogram(binIndices(x,y)) = histogram(binIndices(x,y)) + magnitudes(x,y);
+        end
+    end
 
-
-
-    %finds the position of highest peak of the histogram 
-    posMaxHist = find(hist==max(hist)); 
-
-    %finds those that are within 80% of the highest peak 
-    posOtherHist = find(hist>(max(hist)-max(hist)*0.2)&hist~=hist(posMaxHist(1)));
-
-    posAllHist = zeros(1,1); 
-    if(size(posOtherHist,1)>0)
-        posAllHist = cat(2,posMaxHist,posOtherHist.'); 
-    else
-        posAllHist = posMaxHist; 
-    end 
-    
-    
-      
-    % the bin with greatest magnitude is our keypoint orientation (bin interval median)
-    greatestBin = find(orientationHistogram == max(orientationHistogram), 1);
-    gradients(k) = ((greatestBin-1)*BIN_SIZE + (greatestBin)*BIN_SIZE)/2;
+    % the bin with greatest magnitude is our keypoint orientation (use median bin orientation)
+    greatestBin = find(histogram == max(histogram));
+    keypointOrientations(k) = ( (greatestBin-1)*BIN_SIZE + (greatestBin)*BIN_SIZE ) / 2;
     
     
 end
