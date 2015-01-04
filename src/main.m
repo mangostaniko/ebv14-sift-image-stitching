@@ -5,8 +5,8 @@ function [ stitchedImage ] = main( impath1, impath2 )
 %% read and convert images
 % note: in images x are columns, y are rows.
 % however later we use an internal representation which is (x,y)
-imA = im2double(imread('../pictures/wulingyuanA.jpg'));
-imB = im2double(imread('../pictures/wulingyuanB.jpg'));
+imA = im2double(imread('../pictures/bild1.jpg'));
+imB = im2double(imread('../pictures/bild2.jpg'));
 %% create DoG pyramids
 [ octA1, octA2, octA3, octA4, dogA1, dogA2, dogA3, dogA4, sigmas ] = createDoG2(imA, false, false);
 [ octB1, octB2, octB3, octB4, dogB1, dogB2, dogB3, dogB4 ] = createDoG2(imB, false, false);
@@ -48,7 +48,7 @@ HAtoB = findHomography(matches);
 
 %% stitch images
 %stitchImages2( imA, imB, HBtoA );
-stitchImages3( imA, imB, HBtoA,HAtoB );
+stitchImages3( imA, imB, HBtoA,HAtoB,false );
 
 
 end

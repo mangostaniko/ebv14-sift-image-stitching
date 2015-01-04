@@ -1,8 +1,9 @@
-function [] = stitchImages3( imA, imB, HBtoA, HAtoB )
+function [mosaic] = stitchImages3( imA, imB, HBtoA, HAtoB, spline )
 %STITCHIMAGES3 Creates image mosaic 
 %   Input: imA, imB ... m1xn1, m2xn2 images
-%          H        ... 3x3 homography matrix s.t Hx2 = x1 (with hom. coords)
-%          H        ... 3x3 homography matrix s.t Hx1 = x2 (with hom. coords)
+%          HBtoA    ... 3x3 homography matrix s.t Hx2 = x1 (with hom. coords)
+%          HAtoB    ... 3x3 homography matrix s.t Hx1 = x2 (with hom. coords)
+%          spline   ... boolean, 'true' creates mosiac using multiresolution spline
 %   Notation: x .. row index
 %             y .. column index
 
@@ -43,19 +44,30 @@ extendCornersTY = cornersT(:,2)'+ [-1 1 1 -1];
 
 % Create mask for transformed right picture in mosaic
 mask = poly2mask(extendCornersTY,extendCornersTX,sizeMosaic(1),sizeMosaic(2));
+mask3 = cat(3,mask,mask,mask);
 
 % Calculate corresponding coordinates in imB
 [coordsAX,coordsAY] =  ind2sub(size(mask),find(mask>0));
 coordsAtoB = HAtoB * [coordsAX'; coordsAY';ones(1, size(coordsAX,1))];
 coordsAtoB = round(coordsAtoB(1:2,:)');
+%rows = length(unique(coordsAtoB(:,1)));
+%cols = size(coordsAtoB,1)/rows; %length(unique(coordsAtoB(:,2)));
+xAtoB = coordsAtoB(:,1); %reshape((),cols,rows)';
+yAtoB = coordsAtoB(:,2); %reshape((),cols,rows)';
 
-xAtoB = reshape((coordsAtoB(:,1)),n2,m2)';
-yAtoB = reshape((coordsAtoB(:,2)),n2,m2)';
+% Catch out of bound indices
+xAtoB(xAtoB>m2) = m2;
+xAtoB(xAtoB<1) = 1;
+yAtoB(yAtoB>n2) = n2;
+yAtoB(yAtoB<1) = 1;
 
 % Write imB into mosaic
-indAtoB = sub2ind([m2, n2],xAtoB,yAtoB);
+x = cat(3,xAtoB,xAtoB,xAtoB);
+y = cat(3,yAtoB,yAtoB,yAtoB);
+z = cat(3,ones(size(xAtoB)),2*ones(size(xAtoB)),3*ones(size(xAtoB)));
+indAtoB = sub2ind([m2, n2, 3],x,y,z);
 imBext = zeros([sizeMosaic,3]);
-imBext(mask,:)= im2double(imB(indAtoB,:));
+imBext(mask3)= im2double(imB(indAtoB));
 
 figure('name','imAext');
 imshow(imAext);
@@ -63,5 +75,16 @@ figure('name','imBext');
 imshow(imBext);
 figure('name','mask');
 imshow(mask);
+
+% perform multiresolution spline
+if spline
+    
+% without multiresolution spline
+else
+    mosaic = (1-mask3).*imAext + mask3.*imBext;
+    figure('name','mosaic');
+    imshow(mosaic);
+    
+end
 
 end
