@@ -26,8 +26,10 @@ for i=1:size(imArgb,3)
     end
     
     % reconstruct image
-    mosaic(:,:,i) = expand(expand(expand(LA(4).scale)+LA(3).scale)+LA(2).scale)+LA(1).scale;
-    
+    log4to3 = imresize(LA(4).scale,size(LA(3).scale),'bilinear')+LA(3).scale;
+    log3to2 = imresize(log4to3,size(LA(2).scale),'bilinear')+LA(2).scale;
+    mosaic(:,:,i) = imresize(log3to2,size(LA(1).scale),'bilinear')+LA(1).scale;
+      
 
 end
 
