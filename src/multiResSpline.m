@@ -13,23 +13,26 @@ for i=1:size(imArgb,3)
     imA = imArgb(:,:,i);
     imB = imBrgb(:,:,i);
     
-    % create laplacian pyramids
+    % create laplacian pyramids of the images to be splined
     LA = createLoG(imA);
     LB = createLoG(imB);
-    LM = createLoG(mask);
+    
+    % create gaussian pyramid of the mask
+    GM = createGaussPyr(mask);
     
     LS = struct(LA);
     
     % spline each pyramid level separatly
     for j=1:4
-        LS(j).scale = (1-LM(j).scale).*LA(j).scale + LM(j).scale.*LB(j).scale;
+        LS(j).scale = (1-GM(j).scale).*LA(j).scale + GM(j).scale.*LB(j).scale;
+        imshow (GM(j).scale);
     end
     
     % reconstruct image
-    log4to3 = imresize(LA(4).scale,size(LA(3).scale),'bilinear')+LA(3).scale;
-    log3to2 = imresize(log4to3,size(LA(2).scale),'bilinear')+LA(2).scale;
-    mosaic(:,:,i) = imresize(log3to2,size(LA(1).scale),'bilinear')+LA(1).scale;
-      
+    log4to3 = imresize(LS(4).scale,size(LS(3).scale),'bilinear')+LS(3).scale;
+    log3to2 = imresize(log4to3,size(LS(2).scale),'bilinear')+LS(2).scale;
+    mosaic(:,:,i) = imresize(log3to2,size(LS(1).scale),'bilinear')+LS(1).scale;
+    imshow (mosaic);  
 
 end
 
