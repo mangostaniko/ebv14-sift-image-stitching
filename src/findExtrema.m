@@ -1,4 +1,4 @@
-function [ extrema ] = findExtrema( oct1, oct2, oct3, oct4 )
+function [ extrema ] = findExtrema( oct1, oct2, oct3, oct4 ) %, doubleSize
 % Author: Patrick Wahrmann
 % input: oct1 (4 Images), oct2 (4 Images), oct3 (4 Images), oct4 (4 Images) ... complete DoG pyramid
 % output: extrema ...  N*3-vector of N extrema points (x,y,frequency level(1-7))
@@ -16,9 +16,16 @@ octaveExtrema3(:,3) = octaveExtrema3(:,3)+2;
 octaveExtrema4(:,3) = octaveExtrema4(:,3)+3;
 
 %% Interpolating Pixels of different octaves
-octaveExtrema2(:,1:2) = 2*octaveExtrema2(:,1:2);
-octaveExtrema3(:,1:2) = 4*octaveExtrema3(:,1:2);
-octaveExtrema4(:,1:2) = 8*octaveExtrema4(:,1:2);
+% if doubleSize
+%     octaveExtrema1(:,1:2) = 0.5*octaveExtrema1(:,1:2);
+%     octaveExtrema3(:,1:2) = 2*octaveExtrema3(:,1:2);
+%     octaveExtrema4(:,1:2) = 4*octaveExtrema4(:,1:2);
+% else
+    octaveExtrema2(:,1:2) = 2*octaveExtrema2(:,1:2);
+    octaveExtrema3(:,1:2) = 4*octaveExtrema3(:,1:2);
+    octaveExtrema4(:,1:2) = 8*octaveExtrema4(:,1:2);
+% end
+
 
 %% Rounding
 octaveExtrema1 = round(octaveExtrema1);
@@ -38,9 +45,9 @@ end
 function [extrema] = findExtremaPerOctave(dog)
 withFilter = true; % else: with for loops
 if withFilter
-   extrema = findExtremaPerOctaveWithFilters(dog);
+    extrema = findExtremaPerOctaveWithFilters(dog);
 else
-   extrema =  findExtremaPerOctaveWithForLoops(dog);
+    extrema =  findExtremaPerOctaveWithForLoops(dog);
 end
 end
 
@@ -112,29 +119,29 @@ taylorEnabled = true;
 
 if taylorEnabled
     
-for i = 1:size(extrema,1) %for every extrema
-    if extrema(1,1) == 0
-        continue;
+    for i = 1:size(extrema,1) %for every extrema
+        if extrema(1,1) == 0
+            continue;
+        end
+        
+        
+        thisExtrema = extrema(i,:);
+        x = thisExtrema(1);
+        y = thisExtrema(2);
+        level = thisExtrema(3);
+        gx = (dog(x+1,y,level)-dog(x-1,y,level))/2;
+        gy = (dog(x,y+1,level)-dog(x,y-1,level))/2;
+        Hxx = dog(x+1,y,level)+dog(x-1,y,level)-2*dog(x,y,level);
+        Hxy = (dog(x+1,y+1,level)+dog(x-1,y-1,level)-dog(x+1,y-1,level)-dog(x-1,y+1,level))/4;  % = Hyx
+        Hyy = dog(x,y+1,level)+dog(x,y-1,level)-2*dog(x,y,level);
+        H = [Hxx,Hxy;Hxy,Hyy];
+        g = [gx;gy];
+        delta = -(H\g); %(inv(H) *g)
+        newPosX = x+delta(1);
+        newPosY = y+delta(2);
+        extrema(i,1)=newPosX;
+        extrema(i,2)=newPosY;
     end
-    
-    
-    thisExtrema = extrema(i,:);
-    x = thisExtrema(1);
-    y = thisExtrema(2);
-    level = thisExtrema(3);
-    gx = (dog(x+1,y,level)-dog(x-1,y,level))/2;
-    gy = (dog(x,y+1,level)-dog(x,y-1,level))/2;
-    Hxx = dog(x+1,y,level)+dog(x-1,y,level)-2*dog(x,y,level);
-    Hxy = (dog(x+1,y+1,level)+dog(x-1,y-1,level)-dog(x+1,y-1,level)-dog(x-1,y+1,level))/4;  % = Hyx
-    Hyy = dog(x,y+1,level)+dog(x,y-1,level)-2*dog(x,y,level);
-    H = [Hxx,Hxy;Hxy,Hyy];
-    g = [gx;gy];
-    delta = -(H\g); %(inv(H) *g)
-    newPosX = x+delta(1);
-    newPosY = y+delta(2);
-    extrema(i,1)=newPosX;
-    extrema(i,2)=newPosY;
-end
 end
 end
 
@@ -179,5 +186,5 @@ end
 if extremaCounter == 0
     extrema = zeros(0,3);
 end
-    extrema = taylor(dog,extrema);
+extrema = taylor(dog,extrema);
 end

@@ -22,9 +22,23 @@ lineWid = (size(imcopy1, 1)*.003);
 keypointcolor = [0, 0.8, 1];
 linecolor = [1, 1, 1];
 
+im1_rows = size(imcopy1, 1);
+im1_cols = size(imcopy1, 2);
+im2_rows = size(imcopy2, 1);
+im2_cols = size(imcopy2, 2);
+if im1_rows > im2_rows
+    rows = im1_rows;
+else
+    rows = im2_rows
+end
 
 % Combine the 2 images into one image
-jointImg = [imcopy1, imcopy2];
+jointImg = zeros(rows, im1_cols+im2_cols);
+
+for i=1:3
+    jointImg(1:im1_rows, 1:im1_cols, i) = imcopy1(:,:,i);
+    jointImg(1:im2_rows, im1_cols+1:end, i) = imcopy2(:,:,i);
+end
 
 % Add the width of the 1st image to the x-coordinates of keypoints of 
 % 2nd image
