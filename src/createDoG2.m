@@ -1,4 +1,4 @@
-function [ oct1, oct2, oct3, oct4, dog1, dog2, dog3, dog4 ] = createDoG2( input_image, write, double )
+function [ oct1, oct2, oct3, oct4, dog1, dog2, dog3, dog4, sigmas ] = createDoG2( input_image, write, double )
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%% input_image ... the image of which to create a Difference of Gaussian
 %%%%                 Pyramid
@@ -10,10 +10,12 @@ function [ oct1, oct2, oct3, oct4, dog1, dog2, dog3, dog4 ] = createDoG2( input_
 %%%% oct ... 4 Octaves containing scale space (5 subsequently blurred 
 %%%%         pictures per octave = 4 * 5 = 20 pictues in total)
 %%%% dog ... 4 Difference of Gauss pictures, created using the ScaleSpace
+%%%% sigmas ... sigma values used for each of the 5 blur levels
 %%%%%%%%
 %%%% HOW TO USE OUTPUT:
 %%%% [oct1, oct2, oct3, oct4, dog1, dog2, dog3, dog4] will give you the
 %%%% corresponding octs and dogs
+%%%% sigmas are the sigma values used for each of the 5 blur levels
 %%%%%%%%
 %%%%  CREATE THE SCALE SPACE, 4 Octaves with 5 frequencies
 %%%%  1.) Change input_image to grayscale double image
@@ -43,26 +45,26 @@ end
 %% >>> (4) <<<
 img_temp = image;
 initial_sigma = 2^(1/2);
+sigmas(1) = initial_sigma;
+for (i=1:4)
+    sigmas(i+1) = initial_sigma * 2^(i/5);
+end
 
 for i=1:4
     
-    image_blurred = blur(img_temp, initial_sigma);
+    image_blurred = blur(img_temp, sigmas(1));
     oct(i).scale1 = image_blurred;
     
-    sigma = initial_sigma * 2^(1/5);
-    image_blurred = blur(image_blurred, sigma);
+    image_blurred = blur(image_blurred, sigmas(2));
     oct(i).scale2 = image_blurred;
     
-    sigma = initial_sigma * 2^(2/5);
-    image_blurred = blur(image_blurred, sigma);
+    image_blurred = blur(image_blurred, sigmas(3));
     oct(i).scale3 = image_blurred;
     
-    sigma = initial_sigma * 2^(3/5);
-    image_blurred = blur(image_blurred, sigma);
+    image_blurred = blur(image_blurred, sigmas(4));
     oct(i).scale4 = image_blurred;
     
-    sigma = initial_sigma * 2^(4/5);
-    image_blurred = blur(image_blurred, sigma);
+    image_blurred = blur(image_blurred, sigmas(5));
     oct(i).scale5 = image_blurred;
     
     %% >>> (5) <<<
