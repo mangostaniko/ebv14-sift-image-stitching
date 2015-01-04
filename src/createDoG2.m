@@ -7,7 +7,7 @@ function [ oct1, oct2, oct3, oct4, dog1, dog2, dog3, dog4, sigmas ] = createDoG2
 %%%% double ...  boolean, true = double the orig. image in size before
 %%%%             createing DoG pyramid
 %%%%%%%%
-%%%% oct ... 4 Octaves containing scale space (5 subsequently blurred 
+%%%% oct ... 4 Octaves containing scale space (5 subsequently blurred
 %%%%         pictures per octave = 4 * 5 = 20 pictues in total)
 %%%% dog ... 4 Difference of Gauss pictures, created using the ScaleSpace
 %%%% sigmas ... sigma values used for each of the 5 blur levels
@@ -20,13 +20,13 @@ function [ oct1, oct2, oct3, oct4, dog1, dog2, dog3, dog4, sigmas ] = createDoG2
 %%%%  CREATE THE SCALE SPACE, 4 Octaves with 5 frequencies
 %%%%  1.) Change input_image to grayscale double image
 %%%%  2.) Blur the input_image with sigma 0.5
-%%%%  3.) (IF DOUBLE == TRUE) Double the size of the image via interpolation 
+%%%%  3.) (IF DOUBLE == TRUE) Double the size of the image via interpolation
 %%%%  4.) starting sigma is sqrt(2), each scale is blurred using the
 %%%%        previously scaled image and the same sigma
 %%%%  5.) for the beginning of octaves 2, 3 and 4 the image is scaled down
 %%%%        to half the size
 %%%%  6.) (IF WRITE == TRUE) write all images to specified place for easier
-%%%%        debugging and to see results 
+%%%%        debugging and to see results
 %%%%  7.) fit output for rest of program :D
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
@@ -34,7 +34,11 @@ function [ oct1, oct2, oct3, oct4, dog1, dog2, dog3, dog4, sigmas ] = createDoG2
 path_for_debug = 'C:/Users/Sebastian/Pictures/SebiTestDogs/';
 
 %% >>> (1) & (2) & (3) <<<
-image = im2double(rgb2gray(input_image));
+image = im2double(input_image);
+if (size(image, 3) == 3)
+    image = rgb2gray(input_image);
+end
+
 pre_sigma = 0.5;
 image = blur(image, pre_sigma);
 
