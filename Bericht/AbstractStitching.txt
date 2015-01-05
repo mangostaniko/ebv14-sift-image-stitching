@@ -1,0 +1,26 @@
+\subsection{Image Stitching}
+
+Das Bildmosaik wird erstellt, indem das rechte Bild, $imB$, mithilfe der Homographie ins Koordinatensystem des linken Bildes, $imA$, transformiert wird. Um durch gerundete Daten entstehende Löcher zu vermeiden, wird dafür zunächst die Lage des transformierten Bildes im neuen Koordinatensystem ermittelt, indem die Ecken von $imB$ transformiert werden. Damit kann die Größe des Bildmosaiks berechnet werden.\\
+Nun wird $imA$ entsprechend erweitert und eine Maske von derselben Größe erstellt, die die Region für das transformierte $imB$ enthält. Für diese Region werden anschließend mithilfe der inversen Homographie die entsprechenden Bildwerte berechnet. \\
+Für das naive Splining wird schließlich das Bildmosaik mittels $I_{Mosaik}=(1-I_{Maske})\cdot I_{A,erweitert} + I_{Maske}\cdot I_{B,tranformiert+erweitert}$ erstellt. \\
+Für das Multiresolution Splining\cite{spline83} werden von beiden (erweiterten bzw transformierten) Bildern Laplacepyramiden und der Maske eine Gaußpyramide erstellt.Dadurch wird der Frequenzbereich in einzelne Bandbreiten von jeweils einer Oktave aufgeteilt. Nun wird auf jeder Ebene wie beim naiven Splining ein Bildmosaik zusammengesetzt. Die gefilterte Maske sorgt dabei für weichere Übergänge. Am Ende werden die Bilder der Mosaikpyramie schließlich zu einem Mosaik zusammengefügt.
+
+
+@article{spline83,
+	title={A {M}ultiresolution {S}pline With {A}pplication to {I}mage {M}osaics},
+	author = {Burt, Peter J. and Adelson, Edward H.},
+	journal = {ACM Trans. Graph.},
+ 	issue_date = {October 1983},
+ 	volume = {2},
+ 	number = {4},
+ 	month = oct,
+ 	year = {1983},
+ 	issn = {0730-0301},
+ 	pages = {217--236},
+ 	numpages = {20},
+ 	url = {http://doi.acm.org/10.1145/245.247},
+ 	doi = {10.1145/245.247},
+ 	acmid = {247},
+ 	publisher = {ACM},
+ 	address = {New York, NY, USA},
+}

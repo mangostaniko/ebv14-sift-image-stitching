@@ -1,0 +1,26 @@
+\begin{thebibliography}{1}
+
+\bibitem{spline83}
+Peter~J. Burt and Edward~H. Adelson.
+\newblock A {M}ultiresolution {S}pline with {A}pplication to {I}mage {M}osaics.
+\newblock {\em ACM Trans. Graph.}, 2(4):217--236, October 1983.
+
+\bibitem{dubrovsky09}
+Elan Dubrovsky.
+\newblock Homography {E}stimation.
+\newblock Master's thesis, The University of British Columbia, 2009.
+
+\bibitem{kriegman07}
+David Kriegman.
+\newblock Homography {E}stimation, 2007.
+
+\bibitem{lowe04}
+David~G Lowe.
+\newblock Distinctive image features from scale-invariant keypoints.
+\newblock {\em International journal of computer vision}, 60(2):91--110, 2004.
+
+\bibitem{evc14}
+Robert Sablatnig and Werner Purgathofer.
+\newblock Einführung in {V}isual {C}omputing: {S}kriptum zur {V}{U}, 2014.
+
+\end{thebibliography}

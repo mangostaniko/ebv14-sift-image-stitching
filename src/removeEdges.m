@@ -10,37 +10,46 @@ count = 0;
 % get corners for every scaling level of the image
 for j=1:max(extrema(:,3))
     temp   = corner(im(:,:,j), 'Harris');
-    temp_8 = add8Neighbour(temp); 
+    temp_8 = add8Neighbours(temp); 
     
     % corner returns X Y coordinates, but we need Y X coordinates,
     % ==> switch them
-    corners_8(:,:,j) = zeros(size(temp_8));
-    corners8(:,2,j) = temp(:,1);
-    corners8(:,1,j) = temp(:,2);
+    corners(j).X = temp(:,1);
+    corners(j).Y = temp(:,2);
     
-    corners(:,:,j) = zeros(size(temp));
-    corners(:,2,j) = temp(:,1);
-    corners(:,1,j) = temp(:,2);
+    corners(j).X8 = temp_8(:,1);
+    corners(j).Y8 = temp_8(:,2);
+
 end
 
 % loop through all keypoints
 for i=1:size(extrema,1)
     
-    % if the keypoint is in the keypoints of the found corners, add to
+    % if the keypoint is in the keypoints of the found corners, a dd to
     % temporary keypoints
-    if ismember(extrema(i,1:2), corners(:,:,extrema(i,3)) || ismember(extrema(i,1:2), corners8(:,:,extrema(i,3))));
+    corn = [corners(extrema(i,3)).Y corners(extrema(i,3)).X];
+    corn_8 = [corners(extrema(i,3)).Y8 corners(extrema(i,3)).X8];
+    
+    if (ismember(extrema(i,1:2), corn))
+        count = count + 1;
+        tempkeys(count,:) = extrema(i,:);
+        
+    elseif ismember(extrema(i,1:2), corn_8)
         count = count + 1;
         tempkeys(count,:) = extrema(i,:);
     end
 end
 
-% keypoints = zeros(size(tempkeys));
+%keypoints = zeros(size(tempkeys));
 
 % read out the remaining keypoints into keypoints
 for i=1:count
     keypoints(i,:) = tempkeys(i,:);
 end
 end
+
+
+
 
 function [ corners8 ] = add8Neighbours( corners )
 
@@ -54,7 +63,7 @@ for i=1:size(corners,1)
         corners8(j+3,:) =  [corners(i,1)  , corners(i,2)-1];
         corners8(j+4,:) =  [corners(i,1)  , corners(i,2)+1];
         corners8(j+5,:) =  [corners(i,1)+1, corners(i,2)-1];
-        corners8(j+6,:) =  [corners(i,1)+1, corners(i,2) 1];
+        corners8(j+6,:) =  [corners(i,1)+1, corners(i,2)  ];
         corners8(j+7,:) =  [corners(i,1)+1, corners(i,2)+1];
     end
     

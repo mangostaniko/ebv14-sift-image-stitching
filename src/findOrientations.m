@@ -37,7 +37,7 @@ for k = 1:size(keypoints,1)
     
     % the bin with greatest magnitude is our keypoint orientation (bin interval median)
     greatestBin = find(orientationHistogram == max(orientationHistogram), 1);
-    orientations(k) = ((greatestBin-1)*binSize + (greatestBin)*binSize)/2;
+    orientations(k) = ((greatestBin-1)*binSize + (greatestBin)*binSize)/2 + pi/2;
     
     
 end
@@ -76,7 +76,7 @@ for i = 1:windowSize
         % find gradient magnitude and orientation of current neighbor
         gradMagnitude = sqrt((im(x,y+1) - im(x,y-1))^2 + (im(x+1,y) - im(x-1,y))^2);
         gradOrientation = atan2((im(x,y+1) - im(x,y-1)), (im(x+1,y) - im(x-1,y))); % atan2 result is in [-pi, pi]
-        gradOrientation(gradOrientation <= 0) = gradOrientation(gradOrientation <= 0) + 2*pi; % map interval to [0, 2pi]
+        gradOrientation(gradOrientation <= 0) = 2*pi + gradOrientation(gradOrientation <= 0); % map interval to [0, 2pi]
             
         % add magnitude to histogram bin of corresponding orientation
         % magnitudes are gaussian weighted around center

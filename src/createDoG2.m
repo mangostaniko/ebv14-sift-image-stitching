@@ -1,34 +1,32 @@
-function [ oct1, oct2, oct3, oct4, dog1, dog2, dog3, dog4 ] = createDoG2( input_image, write, double )
+function [ oct1, oct2, oct3, oct4, dog1, dog2, dog3, dog4, sigmas ] = createDoG2( input_image, write, double )
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%% input_image ... the image of which to create a Difference of Gaussian
 %%%%                 Pyramid
-%%%% write  ...  boolean, true = write all pictures to files
+%%%% write  ...  boolean, true = write all pictures to files, set path in
+%%%%             class
 %%%% double ...  boolean, true = double the orig. image in size before
 %%%%             createing DoG pyramid
 %%%%%%%%
-%%%% oct ... 4 Octaves containing scale space (5 subsequently blurred 
+%%%% oct ... 4 Octaves containing scale space (5 subsequently blurred
 %%%%         pictures per octave = 4 * 5 = 20 pictues in total)
 %%%% dog ... 4 Difference of Gauss pictures, created using the ScaleSpace
+%%%% sigmas ... sigma values used for each of the 5 blur levels
 %%%%%%%%
 %%%% HOW TO USE OUTPUT:
-%%%% Octaves: 
-%%%% oct(i).scaleX ... where i is the number of the Octave (1-4)
-%%%%                   and X is the ScaleLevel (1-5)
-%%%%                   (oct(1).scale1 gives once blurred image of octave1)
-%%%% dog(i).scaleX ... where i is the number of the Octave the DoG was
-%%%%                   created from (1-4)
-%%%%                   and X is the ScaleLevel (1-4)
+%%%% [oct1, oct2, oct3, oct4, dog1, dog2, dog3, dog4] will give you the
+%%%% corresponding octs and dogs
+%%%% sigmas are the sigma values used for each of the 5 blur levels
 %%%%%%%%
 %%%%  CREATE THE SCALE SPACE, 4 Octaves with 5 frequencies
 %%%%  1.) Change input_image to grayscale double image
 %%%%  2.) Blur the input_image with sigma 0.5
-%%%%  3.) Double the size of the image via interpolation (IF DOUBLE == TRUE)
+%%%%  3.) (IF DOUBLE == TRUE) Double the size of the image via interpolation
 %%%%  4.) starting sigma is sqrt(2), each scale is blurred using the
 %%%%        previously scaled image and the same sigma
 %%%%  5.) for the beginning of octaves 2, 3 and 4 the image is scaled down
-%%%%        to half the size and the sigma is doubled
-%%%%  6.) write all images to specified place for easier debugging and to
-%%%%        see results (IF WRITE == TRUE)
+%%%%        to half the size
+%%%%  6.) (IF WRITE == TRUE) write all images to specified place for easier
+%%%%        debugging and to see results
 %%%%  7.) fit output for rest of program :D
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
@@ -36,7 +34,11 @@ function [ oct1, oct2, oct3, oct4, dog1, dog2, dog3, dog4 ] = createDoG2( input_
 path_for_debug = 'C:/Users/Sebastian/Pictures/SebiTestDogs/';
 
 %% >>> (1) & (2) & (3) <<<
-image = im2double(rgb2gray(input_image));
+image = im2double(input_image);
+if (size(image, 3) == 3)
+    image = rgb2gray(input_image);
+end
+
 pre_sigma = 0.5;
 image = blur(image, pre_sigma);
 
@@ -46,28 +48,31 @@ end
 
 %% >>> (4) <<<
 img_temp = image;
-sigma = 2^(1/2);
+initial_sigma = 2^(1/2);
+sigmas(1) = initial_sigma;
+for (i=1:4)
+    sigmas(i+1) = initial_sigma * 2^(i/5);
+end
 
 for i=1:4
     
-    image_blurred = blur(img_temp, sigma);
+    image_blurred = blur(img_temp, sigmas(1));
     oct(i).scale1 = image_blurred;
     
-    image_blurred = blur(image_blurred, sigma);
+    image_blurred = blur(image_blurred, sigmas(2));
     oct(i).scale2 = image_blurred;
     
-    image_blurred = blur(image_blurred, sigma);
+    image_blurred = blur(image_blurred, sigmas(3));
     oct(i).scale3 = image_blurred;
     
-    image_blurred = blur(image_blurred, sigma);
+    image_blurred = blur(image_blurred, sigmas(4));
     oct(i).scale4 = image_blurred;
     
-    image_blurred = blur(image_blurred, sigma);
+    image_blurred = blur(image_blurred, sigmas(5));
     oct(i).scale5 = image_blurred;
     
     %% >>> (5) <<<
-    sigma = sigma*1.5;
-    img_temp = imresize(oct(i).scale1, 1/2, 'bilinear');
+    img_temp = half_image(oct(i).scale1);
     
     %% Create Difference of Gauss Pictures
     dog(i).scale1 = oct(i).scale1 - oct(i).scale2;
@@ -140,13 +145,27 @@ dog4(:,:,4) = dog(4).scale4;
 
 end
 
+%% KERNEL SIZE DEPENDS ON SIGMA
 function I_conv = blur( image, sigma )
 
-h_hori = fspecial('gaussian', [1 5], sigma);
-h_vert = fspecial('gaussian', [5 1], sigma);
+% change kernel size depending on sigma
+kernelSize = round(sigma*3 - 1);
+if(kernelSize<1)
+    kernelSize = 1;
+end
+
+h_hori = fspecial('gaussian', [1 kernelSize], sigma);
+h_vert = fspecial('gaussian', [kernelSize 1], sigma);
 
 I_conv = imfilter(image, h_hori, 'replicate');
 I_conv = imfilter(I_conv, h_vert, 'replicate');
+
+end
+
+%% REDUCE SIZE OF PICTURE IN HALF BY TAKING EVERY SECOND PIXEL
+
+function I_half = half_image( image )
+I_half=image(1:2:end,1:2:end) ;
 
 end
 
