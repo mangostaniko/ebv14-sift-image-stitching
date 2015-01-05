@@ -17,27 +17,27 @@ function [mosaic] = stitchImages3( imA, imB, HBtoA, HAtoB, spline )
 % D .. left/below
 corners = [1 1 m2 m2; 1 n2 n2 1; ones(1,4)];
 cornersT = HBtoA*corners;
-cornersT = cornersT(1:2,:)';
-cornersTMin = round(min(cornersT));
-cornersTMax = round(max(cornersT));
+cornersT = round(cornersT(1:2,:)');
+cornersTMin = min(cornersT);
+cornersTMax = max(cornersT);
 
 % Calculate image mosaic size
-yxMin = min([cornersTMin;1 1]);
-yxMax = max([cornersTMax;m1 n1]);
-sizeMosaic = yxMax - yxMin + 1;
+xyMin = min([cornersTMin;1 1]);
+xyMax = max([cornersTMax;m1 n1]);
+sizeMosaic = xyMax - xyMin + 1;
 
 % Shift to positive range (only necessary for x coords, as imB is right
 % image)
 shift = 0;
-if yxMin(1)<1
-    shift = -yxMin(1)+1;
+if xyMin(1)<1
+    shift = -xyMin(1)+1;
 end
 
 % Extend imA to mosaic size
 imAext = zeros([sizeMosaic,3]);
 imAext((1+shift):(m1+shift),1:n1,:) = im2double(imA);
 
-% Extend corners s.t. mask covers totla area
+% Extend corners s.t. mask covers total area
 extendCornersTX = cornersT(:,1)'+ [-1 -1 1 1];
 extendCornersTY = cornersT(:,2)'+ [-1 1 1 -1];
 
@@ -68,6 +68,16 @@ z = cat(3,ones(size(xAtoB)),2*ones(size(xAtoB)),3*ones(size(xAtoB)));
 indAtoB = sub2ind([m2, n2, 3],x,y,z);
 imBext = zeros([sizeMosaic,3]);
 imBext(mask3)= im2double(imB(indAtoB));
+
+
+% replicate values along the seem
+edgeNodesX = [extendCornersTX(1),extendCornersTX(1),extendCornersTX(4),extendCornersTX(4)];
+edgeNodesY = [extendCornersTY(1),extendCornersTY(1)+1,extendCornersTY(4)+1,extendCornersTY(4)];
+edgeMask = poly2mask(edgeNodesY, edgeNodesX, sizeMosaic(1), sizeMosaic(2));
+
+
+
+
 
 % figure('name','imAext');
 % imshow(imAext);
