@@ -54,13 +54,14 @@ Der Einfachheit halber werden folgende Eigenschaften der Eingabebilder vorausges
 \end{itemize}
 
 \subsection{Methodik}
-Der folgende Verfahrensablauf wird implementiert:
+Der folgende Verfahrensablauf wurde implementiert:
 \begin{itemize}
 	\item Die Bilder werden eingelesen.
 	\item Dann wird eine Bildpyramide (Difference of Gaussian, kurz DoG) für SIFT aufgebaut, mittels wiederholt ausgeführtem Gauss-Filter und Downsampling.
 	\item Mithilfe der Bildpyramide werden Extrempunkte gefunden (Minima und Maxima der DoG Bilder).
 	\item Unpassende Extrempunkte (geringer Kontrast, Kanten) werden entfernt, die verbleibenden Extrema sind die gesuchten Keypoints.
-	\item In der Folge werden mittels SIFT die Keypoint-Descriptions erstellt.
+	\item Für Rotationsinvarianz werden die Keypoint-Umgebungsorientierungen bestimmt.
+	\item In der Folge werden mittels SIFT die Keypoint-Deskriptoren erstellt.
 	\item Korrespondierende Keypoints werden gefunden und zu Merkmalspaaren zusammengefasst.
 	\item Mittels RANSAC (Random Sample Consensus) wird die homographische Transformationsmatrix ermittelt, mit der die Bilder so überandergelegt werden, dass die korrespondierenden Keypoints übereinstimmen.
 \end{itemize}
@@ -81,19 +82,21 @@ Weiters wurde ein GUI implementiert.
 %%------------------------------------------------------
 
 %%------------------------------------------------------
+\newpage
 \section{Arbeitsteilung}
 (0,5 Seiten)\\
-Wer hat welche Aufgaben übernommen (MATLAB-Funktionen, Abschnitt im Bericht, Evaluierung, Datenerfassung, etc.)?
-
+Wer hat welche Aufgaben übernommen (MATLAB-Funktionen, Abschnitt im Bericht, Evaluierung, Datenerfassung, etc.)?\\\\
+Evaluierung, Datenerfassung, sowie Teile der Funktionalität und des Berichts wurden gemeinsam erarbeitet. Die folgende Tabelle zeigt die Haupt-Aufgabenbereiche, d.h. zu den genannten Themen wurden die entsprechenden Matlab-Funktionen und Abschnitte im Bericht erstellt.
 \begin{center}
-  \begin{tabular}{ |l | c | }
+  \begin{tabular}{ |l|l| }
     \hline
-  Name & Tätigkeiten\\
+  Name (alphabetisch) & Tätigkeiten\\
     \hline
-		Vorname1 Nachname1 & Matlab-Funktion A, Bericht Abschnitt B...\\
-		\hline
-		Vorname2 Nachname2 & Matlab-Funktion C, Bericht Abschnitt D...\\
-		\hline
+    \multirow{3}{*}{Hanna Huber} & Keypoint-Matching (RANSAC)\\ & Stitching der Bilder\\ & Multi-Resolution-Spline für weiche Bildverläufe\\ \hline
+    \multirow{3}{*}{Sebastian Kirchner} & Entfernung von Keypoints die Kanten darstellen\\  & Anzeige von Keypoints und Matching\\ & Scale-Space-Erzeugung (DoGs)\\\hline
+    \multirow{2}{*}{Nikolaus Leopold} & Bestimmung der Keypoint-Umgebungsorientierungen\\ & Erstellung der SIFT-Deskriptoren\\ \hline
+    \multirow{1}{*}{Ernad Sehic} & Scale-Space-Erzeugung (DoGs)\\ \hline
+    \multirow{3}{*}{Patrick Wahrmann} & Bestimmung der Scale-Space-Extrempunkte\\ & Entfernung von Keypoints mit geringem Kontrast\\ & GUI\\ \hline
   \end{tabular}
 \end{center}
 
@@ -155,7 +158,11 @@ Hier gebt ihr einen Überblick über eure Implementierung:\\
 Wie habt ihr die im vorhergehnden Abschnitt vorgestellte Methodik praktisch umgesetzt? Wie werden die einzelnen Methoden kombiniert (zB. Implementierungspipeline)?\\
 Hier ist Platz für Implementierungsdetails wie zB. gewählte Parameter. \\
 Wie startet der User das Programm? Welche Parameter hat der User zu setzen?\\
-Auch in diesem Abschnitt können Referenzen und Zitate notwendig sein.\\
+Auch in diesem Abschnitt können Referenzen und Zitate notwendig sein.\\\\
+Die in Abschnitt 3 (Methodik) beschriebene Funktionalität ist in Matlab-Funktionen gegliedert und in main.m zur kompletten Image-Stitching-Pipeline zusammengefügt. Der Prozess wird durch main('Pfad zum linken Bild', 'Pfad zum rechten Bild') gestartet. Optional kann eine grafische Oberfläche mittels Aufruf von GUI.m verwendet werden. Alle notwendigen Schritte sind in dieser erklärt.\\
+Um vor dem Endresult, also dem gestitchten Bild, die gefundenen Keypoints oder das Matching der Keypoints beider Bilder ausgeben zu lassen, können die Funktionen showKeypoints.m und showMatches.m. In main.m können dazu einfach die Zeilen mit 'showKeypoints' und 'showMatches' dekommentiert werden.\\\\
+Für ein reibungsloses Zusammenspielen der einzelnen Komponenten sind in den Funktions-Headern die Schnittstellen definiert, also das Format der Parameter und Rückgabewerte beschrieben. Für genauere Information zu den einzelnen Funktionen sind daher diese heranzuziehen.\\\\
+TODO\\
 %%------------------------------------------------------
 
 %%------------------------------------------------------
