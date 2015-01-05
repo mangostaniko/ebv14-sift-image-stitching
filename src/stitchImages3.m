@@ -31,6 +31,7 @@ sizeMosaic = xyMax - xyMin + 1;
 shift = 0;
 if xyMin(1)<1
     shift = -xyMin(1)+1;
+    cornersT(:,1) = cornersT(:,1) +shift;
 end
 
 % Extend imA to mosaic size
@@ -43,23 +44,26 @@ extendCornersTY = cornersT(:,2)'+ [-1 1 1 -1];
 
 
 % Create mask for transformed right picture in mosaic
+% Mask defines mosaic region containg imB 
 mask = poly2mask(extendCornersTY,extendCornersTX,sizeMosaic(1),sizeMosaic(2));
 mask3 = cat(3,mask,mask,mask);
 
-% Calculate corresponding coordinates in imB
-[coordsAX,coordsAY] =  ind2sub(size(mask),find(mask>0));
-coordsAtoB = HAtoB * [coordsAX'; coordsAY';ones(1, size(coordsAX,1))];
+% Calculate corresponding coordinates in imB 
+%       apply H to unshifted coordinates Tx
+%       with translation matrix T
+T = [1,0,-shift;0,1,0;0,0,1];
+[coordsAX,coordsAY] = ind2sub(size(mask),find(mask>0));
+coordsAtoB = HAtoB * T *[coordsAX'; coordsAY';ones(1, size(coordsAX,1))];
 coordsAtoB = round(coordsAtoB(1:2,:)');
-%rows = length(unique(coordsAtoB(:,1)));
-%cols = size(coordsAtoB,1)/rows; %length(unique(coordsAtoB(:,2)));
-xAtoB = coordsAtoB(:,1); %reshape((),cols,rows)';
-yAtoB = coordsAtoB(:,2); %reshape((),cols,rows)';
+xAtoB = coordsAtoB(:,1); 
+yAtoB = coordsAtoB(:,2); 
 
 % Catch out of bound indices
 xAtoB(xAtoB>m2) = m2;
 xAtoB(xAtoB<1) = 1;
 yAtoB(yAtoB>n2) = n2;
 yAtoB(yAtoB<1) = 1;
+
 
 % Write imB into mosaic
 x = cat(3,xAtoB,xAtoB,xAtoB);
@@ -70,29 +74,38 @@ imBext = zeros([sizeMosaic,3]);
 imBext(mask3)= im2double(imB(indAtoB));
 
 
-% replicate values along the seem
+% Replicate values along the left seem
 edgeNodesX = [extendCornersTX(1),extendCornersTX(1),extendCornersTX(4),extendCornersTX(4)];
 edgeNodesY = [extendCornersTY(1),extendCornersTY(1)+1,extendCornersTY(4)+1,extendCornersTY(4)];
-edgeMask = poly2mask(edgeNodesY, edgeNodesX, sizeMosaic(1), sizeMosaic(2));
+imBext = replicateEdge(imBext, edgeNodesX, edgeNodesY, 20, 'left');
+
+% Replicate values along the top seem
+edgeNodesX = [extendCornersTX(1),extendCornersTX(2),extendCornersTX(2)+1,extendCornersTX(1)+1];
+edgeNodesY = [extendCornersTY(1),extendCornersTY(2),extendCornersTY(2),extendCornersTY(1)];
+imBext = replicateEdge(imBext, edgeNodesX, edgeNodesY, 20, 'up');
+
+% Replicate values along the bottom seem
+edgeNodesX = [extendCornersTX(4),extendCornersTX(3),extendCornersTX(3)-1,extendCornersTX(4)-1];
+edgeNodesY = [extendCornersTY(4),extendCornersTY(3),extendCornersTY(3),extendCornersTY(4)];
+imBext = replicateEdge(imBext, edgeNodesX, edgeNodesY, 20, 'down');
+
+% edgeMask = poly2mask(edgeNodesY, edgeNodesX, sizeMosaic(1), sizeMosaic(2));
+% [rows,cols] = ind2sub(sizeMosaic,find(edgeMask));
+% subCols =repmat(-20:1:-1,size(cols,1),1);
+% padCols = subCols+repmat(cols,1,20);
+% z = cat(3,ones(size(cols,1),20),2*ones(size(cols,1),20),3*ones(size(cols,1),20));
+% padInd = sub2ind(size(imBext),repmat(rows,1,20,3),cat(3,padCols,padCols,padCols),z);
+% replicatedEdgeInd = sub2ind(size(imBext),repmat(rows,1,20,3),repmat(cols,1,20,3),z);
+% imBext(padInd) = imBext(replicatedEdgeInd);
 
 
-
-
-
-% figure('name','imAext');
-% imshow(imAext);
-% figure('name','imBext');
-% imshow(imBext);
-% figure('name','mask');
-% imshow(mask);
-
-% perform multiresolution spline
+% Perform multiresolution spline
 if spline
     mosaic = multiResSpline(imAext,imBext,mask);
-    figure('name','mosaic: multiresolutioe spline');
+    figure('name','mosaic: multiresolutin spline');
     imshow(mosaic);
     
-% without multiresolution spline
+% Without multiresolution spline
 else
     mosaic = (1-mask3).*imAext + mask3.*imBext;
     figure('name','mosaic: naive spline');

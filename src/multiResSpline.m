@@ -25,7 +25,6 @@ for i=1:size(imArgb,3)
     % spline each pyramid level separatly
     for j=1:4
         LS(j).scale = (1-GM(j).scale).*LA(j).scale + GM(j).scale.*LB(j).scale;
-        %imshow(LB(j).scale);
     end
     
     % reconstruct image
