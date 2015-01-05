@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.1415926-2.5-1.40.14 (TeX Live 2013/Debian) (format=pdflatex 2015.1.4)  6 JAN 2015 00:01
+This is pdfTeX, Version 3.1415926-2.5-1.40.14 (TeX Live 2013/Debian) (format=pdflatex 2015.1.4)  6 JAN 2015 00:19
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -681,13 +681,7 @@ Overfull \hbox (0.56982pt too wide) in paragraph at lines 140--144
 der Bil-der abh[]angt,
  []
 
-[7]
-Overfull \hbox (15.7781pt too wide) in paragraph at lines 146--150
-\OT1/cmr/m/n/10.95 trans-for-mier-ten) Bil-dern so-wie der Mas-ke La-pla-ce-py-
-ra-mi-den er-stellt.Dadurch
- []
-
-[8]
+[7] [8]
 Underfull \hbox (badness 10000) in paragraph at lines 156--167
 
  []
@@ -707,7 +701,12 @@ Underfull \hbox (badness 10000) in paragraph at lines 156--167
 
  []
 
-[9] [10] [11] (./edbv_ag_b4.bbl) [12] (./edbv_ag_b4.aux) ) 
+[9] [10]
+Underfull \hbox (badness 10000) in paragraph at lines 180--185
+
+ []
+
+[11] (./edbv_ag_b4.bbl) [12] (./edbv_ag_b4.aux) ) 
 Here is how much of TeX's memory you used:
  6113 strings out of 494976
  91312 string characters out of 6179138
@@ -716,16 +715,15 @@ Here is how much of TeX's memory you used:
  12714 words of font info for 49 fonts, out of 8000000 for 9000
  14 hyphenation exceptions out of 8191
  48i,8n,52p,922b,231s stack positions out of 5000i,500n,10000p,200000b,80000s
-</usr/share/texlive/t
-exmf-dist/fonts/type1/public/amsfonts/cm/cmmi10.pfb></usr/share/texlive/texmf-d
-ist/fonts/type1/public/amsfonts/cm/cmmi8.pfb></usr/share/texlive/texmf-dist/fon
-ts/type1/public/amsfonts/cm/cmr10.pfb></usr/share/texlive/texmf-dist/fonts/type
-1/public/amsfonts/cm/cmr12.pfb></usr/share/texlive/texmf-dist/fonts/type1/publi
-c/amsfonts/cm/cmr8.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfon
-ts/cm/cmssbx10.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/c
-m/cmsy10.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmti
-10.pfb>
-Output written on edbv_ag_b4.pdf (12 pages, 122031 bytes).
+</usr/share/texlive/texmf-dist
+/fonts/type1/public/amsfonts/cm/cmmi10.pfb></usr/share/texlive/texmf-dist/fonts
+/type1/public/amsfonts/cm/cmmi8.pfb></usr/share/texlive/texmf-dist/fonts/type1/
+public/amsfonts/cm/cmr10.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/
+amsfonts/cm/cmr12.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfont
+s/cm/cmr8.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cms
+sbx10.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy10.
+pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmti10.pfb>
+Output written on edbv_ag_b4.pdf (12 pages, 122171 bytes).
 PDF statistics:
  75 PDF objects out of 1000 (max. 8388607)
  52 compressed objects within 1 object stream
