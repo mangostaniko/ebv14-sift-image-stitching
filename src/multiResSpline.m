@@ -25,14 +25,13 @@ for i=1:size(imArgb,3)
     % spline each pyramid level separatly
     for j=1:4
         LS(j).scale = (1-GM(j).scale).*LA(j).scale + GM(j).scale.*LB(j).scale;
-        imshow (GM(j).scale);
+        imshow(GM(j).scale);
     end
     
     % reconstruct image
     log4to3 = imresize(LS(4).scale,size(LS(3).scale),'bilinear')+LS(3).scale;
     log3to2 = imresize(log4to3,size(LS(2).scale),'bilinear')+LS(2).scale;
-    mosaic(:,:,i) = imresize(log3to2,size(LS(1).scale),'bilinear')+LS(1).scale;
-    imshow (mosaic);  
+    mosaic(:,:,i) = imresize(log3to2,size(LS(1).scale),'bilinear')+LS(1).scale;  
 
 end
 
