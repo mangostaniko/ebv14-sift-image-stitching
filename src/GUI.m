@@ -153,7 +153,7 @@ rightpictureAbsolutePath = strcat(leftpicturePathName,leftpictureFileName);
 set(handles.text17, 'String','Calculating result...');
 set(handles.text18, 'String','This may take a while.');
 set(handles.calculate, 'Enable','off');
-
+drawnow;
 main(leftpictureAbsolutePath,rightpictureAbsolutePath);
 
 % --- Executes on button press in reset.
@@ -211,7 +211,12 @@ function pushbutton9_Callback(hObject, eventdata, handles)
 % hObject    handle to pushbutton9 (see GCBO)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    structure with handles and user data (see GUIDATA)
-[lfn,lpn] = uigetfile({'*.jpg;*.JPG;*.PNG;*.png;*.JPEG;*.jpeg','Image files (.jpg, .png)'}, 'Select the left Image');
+global rightpicturePathName;
+if(rightpicturePathName ~= 0)
+    [lfn,lpn] = uigetfile({'*.jpg;*.JPG;*.PNG;*.png;*.JPEG;*.jpeg','Image files (.jpg, .png)'}, 'Select the right Image',rightpicturePathName);
+else
+[lfn,lpn] = uigetfile({'*.jpg;*.JPG;*.PNG;*.png;*.JPEG;*.jpeg','Image files (.jpg, .png)'}, 'Select the left Image','../pictures/');
+end
 'File selected:'
 global leftpictureFileName;
 leftpictureFileName = lfn
@@ -248,7 +253,12 @@ function pushbutton10_Callback(hObject, eventdata, handles)
 % hObject    handle to pushbutton10 (see GCBO)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    structure with handles and user data (see GUIDATA)
-[rfn,rpn] = uigetfile({'*.jpg;*.JPG;*.PNG;*.png;*.JPEG;*.jpeg','Image files (.jpg, .png)'}, 'Select the right Image');
+global leftpicturePathName;
+if(leftpicturePathName ~= 0)
+    [rfn,rpn] = uigetfile({'*.jpg;*.JPG;*.PNG;*.png;*.JPEG;*.jpeg','Image files (.jpg, .png)'}, 'Select the right Image',leftpicturePathName);
+else
+[rfn,rpn] = uigetfile({'*.jpg;*.JPG;*.PNG;*.png;*.JPEG;*.jpeg','Image files (.jpg, .png)'}, 'Select the right Image','../pictures/');
+end
 'File selected:'
 global rightpictureFileName;
 rightpictureFileName = rfn
