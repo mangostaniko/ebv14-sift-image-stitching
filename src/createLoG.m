@@ -9,18 +9,19 @@ gauss_filt = fspecial('gaussian', [5 5], 0.5);
 
 
 %% CREATE GAUSSIAN PYRAMID ==> BLUR then SCALE DOWN
-gaussian_pyramid = createGaussPyr(image);
+[gaussian_pyramid, levels] = createGaussPyr(image);
 
 %% CREATE LoGs
-size_image = size(gaussian_pyramid(1).scale);
-logImages(1).scale = gaussian_pyramid(1).scale - imresize(gaussian_pyramid(2).scale, size_image, 'bilinear');
+for i=1:levels-1
+size_image = size(gaussian_pyramid(i).scale);
+logImages(i).scale = gaussian_pyramid(i).scale - imresize(gaussian_pyramid(i+1).scale, size_image, 'bilinear');
+end
+% size_image = size(gaussian_pyramid(2).scale);
+% logImages(2).scale = gaussian_pyramid(2).scale - imresize(gaussian_pyramid(3).scale, size_image, 'bilinear');
+% 
+% size_image = size(gaussian_pyramid(3).scale);
+% logImages(3).scale = gaussian_pyramid(3).scale - imresize(gaussian_pyramid(4).scale, size_image, 'bilinear');
 
-size_image = size(gaussian_pyramid(2).scale);
-logImages(2).scale = gaussian_pyramid(2).scale - imresize(gaussian_pyramid(3).scale, size_image, 'bilinear');
-
-size_image = size(gaussian_pyramid(3).scale);
-logImages(3).scale = gaussian_pyramid(3).scale - imresize(gaussian_pyramid(4).scale, size_image, 'bilinear');
-
-logImages(4).scale = gaussian_pyramid(4).scale;
+logImages(levels).scale = gaussian_pyramid(levels).scale;
 
 end
