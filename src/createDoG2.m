@@ -18,8 +18,9 @@ function [ oct1, oct2, oct3, oct4, dog1, dog2, dog3, dog4, sigmas ] = createDoG2
 %%%% sigmas are the sigma values used for each of the 5 blur levels
 %%%%%%%%
 %%%%  CREATE THE SCALE SPACE, 4 Octaves with 5 frequencies
-%%%%  1.) Change input_image to grayscale double image
-%%%%  2.) Blur the input_image with sigma 0.5
+%%%%  1.) Change input_image to grayscale double image if it is a
+%%%%        RGB-Image.
+%%%%  2.) Pre-blur the input_image with sigma 0.5
 %%%%  3.) (IF DOUBLE == TRUE) Double the size of the image via interpolation
 %%%%  4.) starting sigma is sqrt(2), each scale is blurred using the
 %%%%        previously scaled image and the same sigma
@@ -39,40 +40,44 @@ if (size(image, 3) == 3)
     image = rgb2gray(input_image);
 end
 
-pre_sigma = 0.5;
-image = blur(image, pre_sigma);
-
 if double
+    pre_sigma = 0.5;
+    image = blur(image, pre_sigma);
     image = imresize(image, 2, 'bilinear');
 end
 
 %% >>> (4) <<<
 img_temp = image;
-initial_sigma = 2^(1/2);
+initial_sigma = 2^(1/2)/2;
+k = sqrt(2);
+
 sigmas(1) = initial_sigma;
-for (i=1:4)
-    sigmas(i+1) = initial_sigma * 2^(i/5);
+
+for i=1:4
+    sigmas(i+1) = initial_sigma * 2^(1/2);
 end
 
 for i=1:4
     
-    image_blurred = blur(img_temp, sigmas(1));
+    image_blurred = blur(img_temp, initial_sigma);
     oct(i).scale1 = image_blurred;
     
-    image_blurred = blur(image_blurred, sigmas(2));
+    image_blurred = blur(img_temp, k*initial_sigma);
     oct(i).scale2 = image_blurred;
     
-    image_blurred = blur(image_blurred, sigmas(3));
+    image_blurred = blur(img_temp, k*k*initial_sigma);
     oct(i).scale3 = image_blurred;
     
-    image_blurred = blur(image_blurred, sigmas(4));
+    image_blurred = blur(img_temp, k*k*k*initial_sigma);
     oct(i).scale4 = image_blurred;
     
-    image_blurred = blur(image_blurred, sigmas(5));
+    image_blurred = blur(img_temp, k*k*k*k*initial_sigma);
     oct(i).scale5 = image_blurred;
     
     %% >>> (5) <<<
-    img_temp = half_image(oct(i).scale1);
+    img_temp = half_image(oct(i).scale3);
+    disp('SIGMAS OCTAVE');
+    initial_sigma = 2*initial_sigma;
     
     %% Create Difference of Gauss Pictures
     dog(i).scale1 = oct(i).scale1 - oct(i).scale2;
