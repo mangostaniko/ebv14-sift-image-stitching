@@ -4,19 +4,17 @@ function [] = showKeypoints( image, keypoints, orientations )
 %           keypoints ... keypoints Vector with k (x y) pairs
 %        orientations ... keypoint gradient orientations in radian [0, 2pi]
 %
-% Draws a circle around keypoints to highlight them.
-%
+% Draws a circle around keypoints to highlight them and shows the keypoint orientation.
 
-
+% convert image to double
 imcopy = im2double(image);
 
-% border properties
+%% HIGHLIGHTING BORDERS PROPERTY
 radius = 8;
-%size(imcopy, 2) * 0.04;
 lineWid = 1;
-%(size(imcopy, 1)*.001);
 color = [0, 0.8, 1];
 
+%% DRAW IN FIGURE ON THE IMAGE
 figure;
 hold on;
 imshow(imcopy);
@@ -35,7 +33,7 @@ for i = 1:size(keypoints, 1)
         line(X, Y, 'Color', color, 'LineWidth', lineWid);
     end
     
-    % draw circle
+    % draw circle to highlight keypoints
     rectangle('Curvature', [1 1], 'Position', [(k(2)-radius) (k(1)-radius) (2*radius) (2*radius)], 'EdgeColor', color, 'LineWidth', lineWid);
 end
 

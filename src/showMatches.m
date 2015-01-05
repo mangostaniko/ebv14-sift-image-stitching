@@ -13,34 +13,39 @@ function [] = showMatches( image1, image2, keypoints1, keypoints2 )
 % that, the width of the first picture is added to the x-coordinates of the
 % keypoints in the second image. 
 
+% convert both images to double
 imcopy1 = im2double(image1);
 imcopy2 = im2double(image2);
 
-% the length of the border (double the value 'half_len' in drawBorders()) 
+%% HIGHLIGHT BORDER PROPERTIES
 radius = size(imcopy1, 2) * 0.01;
 lineWid = (size(imcopy1, 1)*.003);
 keypointcolor = [0, 0.8, 1];
 linecolor = [1, 1, 1];
 
+%% MAKE SURE to enable drawing the pictures even if height differs
 im1_rows = size(imcopy1, 1);
 im1_cols = size(imcopy1, 2);
 im2_rows = size(imcopy2, 1);
 im2_cols = size(imcopy2, 2);
+
+% set the larger value to height
 if im1_rows > im2_rows
     rows = im1_rows;
 else
-    rows = im2_rows
+    rows = im2_rows;
 end
 
-% Combine the 2 images into one image
+%% COMBINE the 2 images into one image using the height of the larger one
 jointImg = zeros(rows, im1_cols+im2_cols);
 
+% read in the images
 for i=1:3
     jointImg(1:im1_rows, 1:im1_cols, i) = imcopy1(:,:,i);
     jointImg(1:im2_rows, im1_cols+1:end, i) = imcopy2(:,:,i);
 end
 
-% Add the width of the 1st image to the x-coordinates of keypoints of 
+%% Add the width of the 1st image to the x-coordinates of keypoints of 
 % 2nd image
 keypoints2 = [keypoints2(:,1) keypoints2(:,2)+size(imcopy1, 2)];
 
@@ -50,8 +55,8 @@ keypoints2 = [keypoints2(:,1) keypoints2(:,2)+size(imcopy1, 2)];
 kpXcoords = [keypoints1(:,2)+radius keypoints2(:,2)-radius];
 kpYcoords = [keypoints1(:,1) keypoints2(:,1)];
 
+%% START plotting 
 figure;
-% plot the joint Image
 imshow(jointImg);
 hold on;
 
@@ -62,20 +67,9 @@ for i = 1:size(keypoints1, 1)
     % m, n represent the corrected keypoints (keypoints2 x-coordinates + width of image1)
     key1 = keypoints1(i,:);
     key2 = keypoints2(i,:);
-    
-%     % calculates X and Y for the line points to draw the angle of the gradients
-%     deg_X1 = [key1(1), key1(1)+radius*cos(gradients1(i))];
-%     deg_Y1 = [key1(2), key1(2)-radius*sin(gradients1(i))];
-% 
-%     deg_X2 = [key2(1), key2(1)+radius*cos(gradients1(i))];
-%     deg_Y2 = [key2(2), key2(2)-radius*sin(gradients1(i))];
-%     
-%     % plot the lines for the angle of the gradients
-%     line(deg_X1, deg_Y1, 'Color', [1, 0, 0], 'LineWidth', lineWid);
-%     line(deg_X2, deg_Y2, 'Color', [1, 0, 0], 'LineWidth', lineWid);
 
-    
-    % plot the borders around each keypoint
+    % plot the borders around each keypoint and make sure there are
+    % keypoints to avoid errors
     if (~(sum(key1) == 0 || sum(key2) == 0))
         rectangle('Curvature', [1 1], 'Position', [(key1(2)-radius) (key1(1)-radius) (2*radius) (2*radius)], 'EdgeColor', keypointcolor, 'LineWidth', lineWid);
         rectangle('Curvature', [1 1], 'Position', [(key2(2)-radius) (key2(1)-radius) (2*radius) (2*radius)], 'EdgeColor', keypointcolor, 'LineWidth', lineWid);
