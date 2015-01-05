@@ -6,8 +6,8 @@ function [ stitchedImage ] = main( impath1, impath2 )
 % note: in images x are columns, y are rows.
 % however later we use an internal representation which is (x,y)
 disp('READ IMAGES')
-imA = im2double(imread('../pictures/bild1.jpg'));
-imB = im2double(imread('../pictures/bild2.jpg'));
+imA = im2double(imread(impath1));
+imB = im2double(imread(impath2));
 %% create DoG pyramids
 disp('DEFINE SCALE SPACE (DIFFERENCE OF GAUSSIANS)')
 [ octA1, octA2, octA3, octA4, dogA1, dogA2, dogA3, dogA4, sigmas ] = createDoG2(imA, false, false);
@@ -24,10 +24,10 @@ extremaB = findExtrema( dogB1, dogB2, dogB3, dogB4 );
 disp('REMOVE LOW CONTRAST KEYPOINTS AND EDGES')
 leftoversA = removeLowContrast(extremaA, octA1);
 leftoversB = removeLowContrast(extremaB, octB1);
-keypointsA = removeEdges(leftoversA, octA1);
-keypointsB = removeEdges(leftoversB, octB1);
- showKeypoints(imA, leftoversA, [0,0,0,0]);
- showKeypoints(imB, leftoversB, [0,0,0,0]);
+keypointsA = leftoversA; %removeEdges(leftoversA, octA1);
+keypointsB = leftoversB; %removeEdges(leftoversB, octB1);
+% showKeypoints(imA, keypointsA, [0,0,0,0]);
+% showKeypoints(imB, keypointsB, [0,0,0,0]);
 
 %% find keypoint orientation
 disp('FIND KEYPOINT ORIENTATIONS')

@@ -10,10 +10,8 @@ GUI VERSION
 
 COMMAND LINE VERSION
 - set Matlab path to src directory
-- open main.m and modify image source paths as necessary:
-imA = im2double(imread('../pictures/image1.jpg'));
-imB = im2double(imread('../pictures/image2.jpg'));
-- run main.m
+- run main.m with image source paths as arguments
+e.g. main('../pictures/LEFT_IMAGE.jpg', '../pictures/RIGHT_IMAGE.jpg')
 
 for additional output prior to stitching use showKeypoints.m and showMatches.m
 in main.m just uncomment lines containing showKeypoints and showMatches
