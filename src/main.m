@@ -23,8 +23,8 @@ extremaB = findExtrema( dogB1, dogB2, dogB3, dogB4 );
 disp('REMOVE LOW CONTRAST KEYPOINTS AND EDGES')
 leftoversA = removeLowContrast(extremaA, octA1);
 leftoversB = removeLowContrast(extremaB, octB1);
-keypointsA = leftoversA; %removeEdges(leftoversA, octA1); % TODO FIX REMOVE EDGES
-keypointsB = leftoversB; %removeEdges(leftoversB, octB1);
+keypointsA = removeEdges(leftoversA, octA1); % TODO FIX REMOVE EDGES
+keypointsB = removeEdges(leftoversB, octB1);
 
 %% find keypoint orientation
 disp('FIND KEYPOINT ORIENTATIONS')

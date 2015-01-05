@@ -31,6 +31,7 @@ for i=2:loops
     gaussian_pyramid(i).scale = filtered(1:2:end,1:2:end);
 end
 
+
 levels = loops;
 % filtered = imfilter(gaussian_pyramid(2).scale, gauss_filt_1, 'replicate');
 % filtered = imfilter(filtered, gauss_filt_2, 'replicate');

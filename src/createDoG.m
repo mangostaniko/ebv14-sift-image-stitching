@@ -1,148 +1,176 @@
-function [ oct1, oct2, oct3, oct4, dog1, dog2, dog3, dog4 ] = createDoG( inputImage )
-% Author: Ernad Sehic
-% input: inputImage ... RGB image (double format)
-% output: oct1, oct2, oct3, oct4 ... arrays of 4 DoG images at different
-% blur levels (x*y*3*4 matrices: x, y are scaled down for the different octaves)
+function [ oct1, oct2, oct3, oct4, dog1, dog2, dog3, dog4 ] = createDoG( input_image, write, double )
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%% input_image ... the image of which to create a Difference of Gaussian
+%%%%                 Pyramid
+%%%% write  ...  boolean, true = write all pictures to files, set path in
+%%%%             class
+%%%% double ...  boolean, true = double the orig. image in size before
+%%%%             createing DoG pyramid
+%%%%%%%%
+%%%% oct ... 4 Octaves containing scale space (5 subsequently blurred
+%%%%         pictures per octave = 4 * 5 = 20 pictues in total)
+%%%% dog ... 4 Difference of Gauss pictures, created using the ScaleSpace
+%%%% sigmas ... sigma values used for each of the 5 blur levels
+%%%%%%%%
+%%%% HOW TO USE OUTPUT:
+%%%% [oct1, oct2, oct3, oct4, dog1, dog2, dog3, dog4] will give you the
+%%%% corresponding octs and dogs
+%%%% sigmas are the sigma values used for each of the 5 blur levels
+%%%%%%%%
+%%%%  CREATE THE SCALE SPACE, 4 Octaves with 5 frequencies
+%%%%  1.) Change input_image to grayscale double image if it is a
+%%%%        RGB-Image.
+%%%%  2.) Pre-blur the input_image with sigma 0.5
+%%%%  3.) (IF DOUBLE == TRUE) Double the size of the image via interpolation
+%%%%  4.) starting sigma is sqrt(2), each scale is blurred using the
+%%%%        previously scaled image and the same sigma
+%%%%  5.) for the beginning of octaves 2, 3 and 4 the image is scaled down
+%%%%        to half the size
+%%%%  6.) (IF WRITE == TRUE) write all images to specified place for easier
+%%%%        debugging and to see results
+%%%%  7.) fit output for rest of program :D
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-h_hori = fspecial('gaussian', [1 5], 1.5);
-h_vert = fspecial('gaussian', [5 1], 1.5);
+%% Set Path for output pictures, filenames are generated automatically
+path_for_debug = 'C:/Users/Sebastian/Pictures/SebiTestDogs/';
 
-%compute the reduction factor
-
-%Original image
-originalImage = rgb2gray(inputImage);
-blurredImage_1 = imfilter(originalImage, h_hori, 'replicate');
-blurredImage_1 = imfilter(blurredImage_1, h_vert, 'replicate');
-help_1 = blurredImage_1;
-
-%Creating ocateve 1 & DoG 1
-oct1 = zeros(size(originalImage,1), size(originalImage,2), 7, class(originalImage));
-
-oct1(:,:,1) = blurredImage_1;
-% imwrite(oct1(:,:,1), strcat('C:/Users/Sebastian/Pictures/ErnadTestDogs/oct1_scale1.jpg'));
-dog1 = zeros(size(originalImage,1), size(originalImage,2), 4, class(originalImage));
-
-for i=2:7
-    help_1 = imfilter(help_1, h_hori);
-    help_1 = imfilter(help_1, h_vert);
-    oct1(:,:,i) = help_1;
-    % imwrite(oct1(:,:,i), strcat('C:/Users/Sebastian/Pictures/ErnadTestDogs/oct1_scale',num2str(i),'.jpg'));
+%% >>> (1) & (2) & (3) <<<
+image = im2double(input_image);
+if (size(image, 3) == 3)
+    image = rgb2gray(input_image);
 end
 
-dog1(:,:,1) = minus(oct1(:,:,1),oct1(:,:,2));
-dog1(:,:,2) = minus(oct1(:,:,2),oct1(:,:,3));
-dog1(:,:,3) = minus(oct1(:,:,3),oct1(:,:,4));
-dog1(:,:,4) = minus(oct1(:,:,4),oct1(:,:,5));
+if double
+%     pre_sigma = 0.5;
+%     image = blur(image, pre_sigma);
+%     image = imresize(image, 2, 'bilinear');
+end
 
-% imwrite(dog1(:,:,1), strcat('C:/Users/Sebastian/Pictures/ErnadTestDogs/dog1_scale1.jpg'));
-% imwrite(dog1(:,:,2), strcat('C:/Users/Sebastian/Pictures/ErnadTestDogs/dog1_scale2.jpg'));
-% imwrite(dog1(:,:,3), strcat('C:/Users/Sebastian/Pictures/ErnadTestDogs/dog1_scale3.jpg'));
-% imwrite(dog1(:,:,4), strcat('C:/Users/Sebastian/Pictures/ErnadTestDogs/dog1_scale4.jpg'));
+%% >>> (4) <<<
+img_temp = image;
+initial_sigma = 2^(1/2)/2;
+k = sqrt(2);
 
+% sigmas(1) = initial_sigma;
+% 
+% for i=1:4
+%     sigmas(i+1) = initial_sigma * 2^(1/2);
+% end
 
-%% Creating octave 2 & DoG 2
-firstScale = resize(blurredImage_1);
-blurredImage_2 = imfilter(firstScale, h_hori, 'replicate');
-blurredImage_2 = imfilter(blurredImage_2, h_vert, 'replicate');
-help_2 = blurredImage_2;
-
-oct2 = zeros(size(firstScale,1), size(firstScale,2), 5, class(firstScale));
-oct2(:,:,1) = blurredImage_2;
-% imwrite(oct2(:,:,1), strcat('C:/Users/Sebastian/Pictures/ErnadTestDogs/oct2_scale1.jpg'));
-dog2 = zeros(size(firstScale,1), size(firstScale,2), 4, class(firstScale));
-
-
-for i=2:5
-    help_2 = imfilter(help_2, h_hori);
-    help_2 = imfilter(help_2, h_vert);
-    oct2(:,:,i) = help_2;
-    % imwrite(oct2(:,:,i), strcat('C:/Users/Sebastian/Pictures/ErnadTestDogs/oct2_scale',num2str(i),'.jpg'));
+for i=1:4
     
-end
-
-dog2(:,:,1) = minus(oct2(:,:,1),oct2(:,:,2));
-dog2(:,:,2) = minus(oct2(:,:,2),oct2(:,:,3));
-dog2(:,:,3) = minus(oct2(:,:,3),oct2(:,:,4));
-dog2(:,:,4) = minus(oct2(:,:,4),oct2(:,:,5));
-
-% imwrite(dog2(:,:,1), strcat('C:/Users/Sebastian/Pictures/ErnadTestDogs/dog2_scale1.jpg'));
-% imwrite(dog2(:,:,2), strcat('C:/Users/Sebastian/Pictures/ErnadTestDogs/dog2_scale2.jpg'));
-% imwrite(dog2(:,:,3), strcat('C:/Users/Sebastian/Pictures/ErnadTestDogs/dog2_scale3.jpg'));
-% imwrite(dog2(:,:,4), strcat('C:/Users/Sebastian/Pictures/ErnadTestDogs/dog2_scale4.jpg'));
-
-
-%% Creating octave 3 & DoG 3
-secondScale = resize(blurredImage_2);
-blurredImage_3 = imfilter(secondScale, h_hori, 'replicate');
-blurredImage_3 = imfilter(blurredImage_3, h_vert, 'replicate');
-help_3 = blurredImage_3;
-
-oct3 = zeros(size(secondScale,1), size(secondScale,2), 5, class(secondScale));
-oct3(:,:,1) = blurredImage_3;
-% imwrite(oct3(:,:,1), strcat('C:/Users/Sebastian/Pictures/ErnadTestDogs/oct3_scale1.jpg'));
-dog3 = zeros(size(secondScale,1), size(secondScale,2), 4, class(secondScale));
-
-
-for i=2:5
-    help_3 = imfilter(help_3, h_hori);
-    help_3 = imfilter(help_3, h_vert);
-    oct3(:,:,i) = help_3;
-    % imwrite(oct3(:,:,i), strcat('C:/Users/Sebastian/Pictures/ErnadTestDogs/oct3_scale',num2str(i),'.jpg'));
+    image_blurred = blur(img_temp, initial_sigma);
+    oct(i).scale1 = image_blurred;
     
-end
-
-dog3(:,:,1) = minus(oct3(:,:,1),oct3(:,:,2));
-dog3(:,:,2) = minus(oct3(:,:,2),oct3(:,:,3));
-dog3(:,:,3) = minus(oct3(:,:,3),oct3(:,:,4));
-dog3(:,:,4) = minus(oct3(:,:,4),oct3(:,:,5));
-
-% imwrite(dog3(:,:,1), strcat('C:/Users/Sebastian/Pictures/ErnadTestDogs/dog3_scale1.jpg'));
-% imwrite(dog3(:,:,2), strcat('C:/Users/Sebastian/Pictures/ErnadTestDogs/dog3_scale2.jpg'));
-% imwrite(dog3(:,:,3), strcat('C:/Users/Sebastian/Pictures/ErnadTestDogs/dog3_scale3.jpg'));
-% imwrite(dog3(:,:,4), strcat('C:/Users/Sebastian/Pictures/ErnadTestDogs/dog3_scale4.jpg'));
-
-%% Creating octave 4 & DoG 4
-thirdScale = resize(blurredImage_3);
-blurredImage_4 = imfilter(thirdScale, h_hori, 'replicate');
-blurredImage_4 = imfilter(blurredImage_4, h_vert, 'replicate');
-help_4 = blurredImage_4;
-
-oct4 = zeros(size(thirdScale,1), size(thirdScale,2), 5, class(thirdScale));
-oct4(:,:,1) = blurredImage_4;
-% imwrite(oct4(:,:,1), strcat('C:/Users/Sebastian/Pictures/ErnadTestDogs/oct2_scale1.jpg'));
-dog4 = zeros(size(thirdScale,1), size(thirdScale,2), 4, class(thirdScale));
-
-
-for i=2:5
-    help_4 = imfilter(help_4, h_hori);
-    help_4 = imfilter(help_4, h_vert);
-    oct4(:,:,i) = help_4;
-    % imwrite(oct4(:,:,i), strcat('C:/Users/Sebastian/Pictures/ErnadTestDogs/oct4_scale',num2str(i),'.jpg'));
+    image_blurred = blur(img_temp, k*initial_sigma);
+    oct(i).scale2 = image_blurred;
     
+    image_blurred = blur(img_temp, k*k*initial_sigma);
+    oct(i).scale3 = image_blurred;
+    
+    image_blurred = blur(img_temp, k*k*k*initial_sigma);
+    oct(i).scale4 = image_blurred;
+    
+    image_blurred = blur(img_temp, k*k*k*k*initial_sigma);
+    oct(i).scale5 = image_blurred;
+    
+    %% >>> (5) <<<
+    img_temp = half_image(oct(i).scale3);
+    disp('SIGMAS OCTAVE');
+    initial_sigma = 2*initial_sigma;
+    
+    %% Create Difference of Gauss Pictures
+    dog(i).scale1 = oct(i).scale1 - oct(i).scale2;
+    dog(i).scale2 = oct(i).scale2 - oct(i).scale3;
+    dog(i).scale3 = oct(i).scale3 - oct(i).scale4;
+    dog(i).scale4 = oct(i).scale4 - oct(i).scale5;
+    
+    %% >>> (6) <<<
+    if write
+        imwrite(oct(i).scale1, strcat(path_for_debug, 'oct', num2str(i), '_scale1.jpg'));
+        imwrite(oct(i).scale2, strcat(path_for_debug, 'oct', num2str(i), '_scale2.jpg'));
+        imwrite(oct(i).scale3, strcat(path_for_debug, 'oct', num2str(i), '_scale3.jpg'));
+        imwrite(oct(i).scale4, strcat(path_for_debug, 'oct', num2str(i), '_scale4.jpg'));
+        imwrite(oct(i).scale5, strcat(path_for_debug, 'oct', num2str(i), '_scale5.jpg'));
+        
+        imwrite(dog(i).scale1, strcat(path_for_debug, 'dog', num2str(i), '_scale1.jpg'));
+        imwrite(dog(i).scale2, strcat(path_for_debug, 'dog', num2str(i), '_scale2.jpg'));
+        imwrite(dog(i).scale3, strcat(path_for_debug, 'dog', num2str(i), '_scale3.jpg'));
+        imwrite(dog(i).scale4, strcat(path_for_debug, 'dog', num2str(i), '_scale4.jpg'));
+    end
 end
 
-dog4(:,:,1) = minus(oct4(:,:,1),oct4(:,:,2));
-dog4(:,:,2) = minus(oct4(:,:,2),oct4(:,:,3));
-dog4(:,:,3) = minus(oct4(:,:,3),oct4(:,:,4));
-dog4(:,:,4) = minus(oct4(:,:,4),oct4(:,:,5));
+%% >>> (7) <<<
 
-% imwrite(dog4(:,:,1), strcat('C:/Users/Sebastian/Pictures/ErnadTestDogs/dog4_scale1.jpg'));
-% imwrite(dog4(:,:,2), strcat('C:/Users/Sebastian/Pictures/ErnadTestDogs/dog4_scale2.jpg'));
-% imwrite(dog4(:,:,3), strcat('C:/Users/Sebastian/Pictures/ErnadTestDogs/dog4_scale3.jpg'));
-% imwrite(dog4(:,:,4), strcat('C:/Users/Sebastian/Pictures/ErnadTestDogs/dog4_scale4.jpg'));
+%%%%%% OCTAVES
+oct1(:,:,1) = oct(1).scale1;
+oct1(:,:,2) = oct(1).scale2;
+oct1(:,:,3) = oct(1).scale3;
+oct1(:,:,4) = oct(1).scale4;
+oct1(:,:,5) = oct(1).scale5;
+
+oct2(:,:,1) = oct(2).scale1;
+oct2(:,:,2) = oct(2).scale2;
+oct2(:,:,3) = oct(2).scale3;
+oct2(:,:,4) = oct(2).scale4;
+oct2(:,:,5) = oct(2).scale5;
+
+oct3(:,:,1) = oct(3).scale1;
+oct3(:,:,2) = oct(3).scale2;
+oct3(:,:,3) = oct(3).scale3;
+oct3(:,:,4) = oct(3).scale4;
+oct3(:,:,5) = oct(3).scale5;
+
+oct4(:,:,1) = oct(4).scale1;
+oct4(:,:,2) = oct(4).scale2;
+oct4(:,:,3) = oct(4).scale3;
+oct4(:,:,4) = oct(4).scale4;
+oct4(:,:,5) = oct(4).scale5;
+
+%%%%%% DOGS
+dog1(:,:,1) = dog(1).scale1;
+dog1(:,:,2) = dog(1).scale2;
+dog1(:,:,3) = dog(1).scale3;
+dog1(:,:,4) = dog(1).scale4;
+
+dog2(:,:,1) = dog(2).scale1;
+dog2(:,:,2) = dog(2).scale2;
+dog2(:,:,3) = dog(2).scale3;
+dog2(:,:,4) = dog(2).scale4;
+
+dog3(:,:,1) = dog(3).scale1;
+dog3(:,:,2) = dog(3).scale2;
+dog3(:,:,3) = dog(3).scale3;
+dog3(:,:,4) = dog(3).scale4;
+
+dog4(:,:,1) = dog(4).scale1;
+dog4(:,:,2) = dog(4).scale2;
+dog4(:,:,3) = dog(4).scale3;
+dog4(:,:,4) = dog(4).scale4;
 
 end
 
-function [ image_out ] = resize(image)
-% returns a new image half the size of inputImage by skipping every second
-% pixel
-image_out = image(1:2:end, 1:2:end);
+%% KERNEL SIZE DEPENDS ON SIGMA
+function I_conv = blur( image, sigma )
+
+% change kernel size depending on sigma
+kernelSize = round(sigma*3 - 1);
+if(kernelSize<1)
+    kernelSize = 1;
 end
 
-function [I_mapped] = mapIntervall(I)
-qMin = min(min(I));
-qMax = max(max(I));
-I_mapped = (I-qMin)/(qMax-qMin);
+h_hori = fspecial('gaussian', [1 kernelSize], sigma);
+h_vert = fspecial('gaussian', [kernelSize 1], sigma);
+
+I_conv = imfilter(image, h_hori, 'replicate');
+I_conv = imfilter(I_conv, h_vert, 'replicate');
+
+end
+
+%% REDUCE SIZE OF PICTURE IN HALF BY TAKING EVERY SECOND PIXEL
+
+function I_half = half_image( image )
+I_half=image(1:2:end,1:2:end) ;
 
 end
 
