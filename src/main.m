@@ -10,8 +10,8 @@ imA = im2double(imread(impath1));
 imB = im2double(imread(impath2));
 %% create DoG pyramids
 disp('DEFINE SCALE SPACE (DIFFERENCE OF GAUSSIANS)')
-[ octA1, octA2, octA3, octA4, dogA1, dogA2, dogA3, dogA4, sigmas ] = createDoG2(imA, false, false);
-[ octB1, octB2, octB3, octB4, dogB1, dogB2, dogB3, dogB4 ] = createDoG2(imB, false, false);
+[ octA1, octA2, octA3, octA4, dogA1, dogA2, dogA3, dogA4 ] = createDoG(imA);
+[ octB1, octB2, octB3, octB4, dogB1, dogB2, dogB3, dogB4 ] = createDoG(imB);
 
 %% find extrema
 disp('FIND SCALE SPACE EXTREMA')
@@ -24,8 +24,8 @@ extremaB = findExtrema( dogB1, dogB2, dogB3, dogB4 );
 disp('REMOVE LOW CONTRAST KEYPOINTS AND EDGES')
 leftoversA = removeLowContrast(extremaA, octA1);
 leftoversB = removeLowContrast(extremaB, octB1);
-keypointsA = leftoversA; %removeEdges(leftoversA, octA1);
-keypointsB = leftoversB; %removeEdges(leftoversB, octB1);
+keypointsA = removeEdges(leftoversA, octA1);
+keypointsB = removeEdges(leftoversB, octB1);
 % showKeypoints(imA, keypointsA, [0,0,0,0]);
 % showKeypoints(imB, keypointsB, [0,0,0,0]);
 

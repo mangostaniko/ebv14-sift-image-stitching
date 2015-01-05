@@ -4,13 +4,19 @@ function [ keypoints ] = removeEdges( extrema, im )
 % input: im ... double image (grayscale) of keypoint scale
 % output: keypoints ... extrema without edges (Harris-Corner Detector)
 
+
 tempkeys = zeros(size(extrema));
+
+% amount of good keypoints (= corners)
 count = 0;
 
 % get corners for every scaling level of the image
 for j=1:max(extrema(:,3))
+    % get corners using Harris
     temp   = corner(im(:,:,j), 'Harris');
-    temp_8 = add8Neighbours(temp); 
+    
+    % add a leeway of +1 Pixel in every direction 
+    temp_8 = add8Neighbors(temp); 
     
     % corner returns X Y coordinates, but we need Y X coordinates,
     % ==> switch them
@@ -25,22 +31,22 @@ end
 % loop through all keypoints
 for i=1:size(extrema,1)
     
-    % if the keypoint is in the keypoints of the found corners, a dd to
-    % temporary keypoints
     corn = [corners(extrema(i,3)).Y corners(extrema(i,3)).X];
     corn_8 = [corners(extrema(i,3)).Y8 corners(extrema(i,3)).X8];
     
+    % if the keypoint is in the keypoints of the found corners, add to
+    % temporary keypoints 
     if (ismember(extrema(i,1:2), corn))
         count = count + 1;
         tempkeys(count,:) = extrema(i,:);
         
+    % if the keypoint is in the 8 neighborhood add it to temporary
+    % keypoints
     elseif ismember(extrema(i,1:2), corn_8)
         count = count + 1;
         tempkeys(count,:) = extrema(i,:);
     end
 end
-
-%keypoints = zeros(size(tempkeys));
 
 % read out the remaining keypoints into keypoints
 for i=1:count
@@ -49,9 +55,8 @@ end
 end
 
 
-
-
-function [ corners8 ] = add8Neighbours( corners )
+%% SIMPLE FUNCTION TO ADD 8 NEIGHBORS TO ALL PREVIOUSLY FOUND CORNERS
+function [ corners8 ] = add8Neighbors( corners )
 
 corners8 = zeros(8*size(corners, 1), size(corners, 2));
 
