@@ -77,17 +77,17 @@ imBext(mask3)= im2double(imB(indAtoB));
 % Replicate values along the left seem
 edgeNodesX = [extendCornersTX(1),extendCornersTX(1),extendCornersTX(4),extendCornersTX(4)];
 edgeNodesY = [extendCornersTY(1),extendCornersTY(1)+1,extendCornersTY(4)+1,extendCornersTY(4)];
-imBext = replicateEdge(imBext, edgeNodesX, edgeNodesY, 20, 'left');
+imBext = replicateEdge(imBext, edgeNodesX, edgeNodesY, 10, 'left');
 
 % Replicate values along the top seem
 edgeNodesX = [extendCornersTX(1),extendCornersTX(2),extendCornersTX(2)+1,extendCornersTX(1)+1];
 edgeNodesY = [extendCornersTY(1),extendCornersTY(2),extendCornersTY(2),extendCornersTY(1)];
-imBext = replicateEdge(imBext, edgeNodesX, edgeNodesY, 20, 'up');
+imBext = replicateEdge(imBext, edgeNodesX, edgeNodesY, 10, 'up');
 
 % Replicate values along the bottom seem
 edgeNodesX = [extendCornersTX(4),extendCornersTX(3),extendCornersTX(3)-1,extendCornersTX(4)-1];
 edgeNodesY = [extendCornersTY(4),extendCornersTY(3),extendCornersTY(3),extendCornersTY(4)];
-imBext = replicateEdge(imBext, edgeNodesX, edgeNodesY, 20, 'down');
+imBext = replicateEdge(imBext, edgeNodesX, edgeNodesY, 10, 'down');
 
 % edgeMask = poly2mask(edgeNodesY, edgeNodesX, sizeMosaic(1), sizeMosaic(2));
 % [rows,cols] = ind2sub(sizeMosaic,find(edgeMask));
