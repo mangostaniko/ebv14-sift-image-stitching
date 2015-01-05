@@ -34,11 +34,48 @@
 (1-1,5 Seiten)\\
 entspricht dem (aktualisierten) Konzept
 \subsection{Ziel}
+Das Ziel ist es zwei Bilder mit überlappenden Bildbereichen (also gleiche Szene mit horizontal verschobener Kamera) anhand von in beiden Bildern vorhandenen Bildmerkmalen (Interest Points) zu einem Bildmosaik zusammenzufügen, sodass die zusammengehörenden Interest Points übereinanderliegen.
+
 \subsection{Eingabe}
+Als Eingabedaten werden zwei Bilddateien im Format JPEG oder PNG, die die unten beschriebenen Voraussetzungen erfüllen, verwendet.
+
 \subsection{Ausgabe}
+Das Ergebnis ist ein Bildmosaik im selben Format wie die Eingabebilder, das aus Transformation der Einzelbilder entsteht, sodass die gemeinsamen Merkmale übereinstimmen.
+
 \subsection{Voraussetzungen und Bedingungen}
+Der Einfachheit halber werden folgende Eigenschaften der Eingabebilder vorausgesetzt:
+\begin{itemize}
+	\item Die Bilder sind Abbildungen der gleichen Szene, die nur horizontal versetzt sind
+	\item Es müssen überlappende Bereiche in den Bildern vorhanden sein, die kontrastreiche Interest Points aufweisen
+	\item Die Belichtungsverhältnisse müssen in beiden Bildern möglichst gleich sein (ähnliche Zeit, Ausrichtung bezüglich der Lichtquelle, gleiche Kamera!)
+	\item Perspektivische Verzerrungen sollten möglichst vermieden werden, indem entfernte Motive verwendet werden und die Brennweite möglichst hoch gewählt wird.
+	\item Möglichst anorganische Strukturen mit klaren Umrissen als zentrales Motiv (Bäume etc. nur am Rande)
+	\item Keine beweglichen Objekte, durch die Interests Points verdeckt werden könnten.
+\end{itemize}
+
 \subsection{Methodik}
+Der folgende Verfahrensablauf wird implementiert:
+\begin{itemize}
+	\item Die Bilder werden eingelesen.
+	\item Dann werden die Bildpyramiden (DoG) für SIFT aufgebaut, mittels wiederholt ausgeführtem Gauss-Filter und Downsampling.
+	\item In der Folge werden mittels SIFT die Keypoint-Descriptions erstellt.
+	\item Korrespondierende Keypoints werden gefunden und zu Merkmalspaaren zusammengefasst.
+	\item Mittels RANSAC (Random Sample Consensus) wird die homographische Transformationsmatrix ermittelt, mit der die Bilder so überandergelegt werden, dass die korrespondierenden Keypoints übereinstimmen.
+\end{itemize}
+
+Weiters wurde ein GUI implementiert.
+
 \subsection{Evaluierungsfragen}
+\begin{itemize}
+	\item Werden sinnvolle Merkmale gefunden?
+	\item Werden übereinstimmende Bildpaare gefunden?
+	\item Werden die Bilder korrekt zusammengefügt?
+	\item Hat die Auflösung der Eingabebilder einen merklichen Einfluss auf das Ergebnis?
+	\item Welche Bilddaten / Szenen sind ungünstig für den Erfolg des Verfahrens?
+	\item Ist das GUI intuitiv aufgebaut?
+\end{itemize}
+
+
 %%------------------------------------------------------
 
 %%------------------------------------------------------
