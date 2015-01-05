@@ -57,7 +57,9 @@ Der Einfachheit halber werden folgende Eigenschaften der Eingabebilder vorausges
 Der folgende Verfahrensablauf wird implementiert:
 \begin{itemize}
 	\item Die Bilder werden eingelesen.
-	\item Dann werden die Bildpyramiden (DoG) für SIFT aufgebaut, mittels wiederholt ausgeführtem Gauss-Filter und Downsampling.
+	\item Dann wird eine Bildpyramide (Difference of Gaussian, kurz DoG) für SIFT aufgebaut, mittels wiederholt ausgeführtem Gauss-Filter und Downsampling.
+	\item Mithilfe der Bildpyramide werden Extrempunkte gefunden (Minima und Maxima der DoG Bilder).
+	\item Unpassende Extrempunkte (geringer Kontrast, Kanten) werden entfernt, die verbleibenden Extrema sind die gesuchten Keypoints.
 	\item In der Folge werden mittels SIFT die Keypoint-Descriptions erstellt.
 	\item Korrespondierende Keypoints werden gefunden und zu Merkmalspaaren zusammengefasst.
 	\item Mittels RANSAC (Random Sample Consensus) wird die homographische Transformationsmatrix ermittelt, mit der die Bilder so überandergelegt werden, dass die korrespondierenden Keypoints übereinstimmen.
@@ -107,12 +109,15 @@ Die Merkmale - Interest Points oder Keypoints - werden mittels Scale Invariant F
 Der SIFT-Algorithmus ist in mehrere Schritte unterteilt, in denen Skalierung, Position und Orientierung der Interest Points ermittelt wird. Abschließend muss jeder Punkt eindeutig beschrieben werden, um die Korrespondenzanalyse zu ermöglichen.
 
 \subsubsection{Bildpyramiden}
-Um die Skalierungsinvarianz zu garantieren, ist eine Multiskalenanalyse der Bilder notwendig. 
+Um die Skalierungsinvarianz zu garantieren, ist eine Multiskalenanalyse der Bilder notwendig. Im Zuge dessen wird eine Bildpyramide aufgebaut, bestehend aus 4 Oktaven mit jeweils 5 Frequenzstufen. Von Oktave zu Oktave wird die Auflösung des Bildes halbiert und innerhalb der Oktaven wird iterativ gefiltert. \\
+Ausgehend von dieser Bildpyramide werden nun pro Oktave 4 DoG-Bilder erstellt indem sukzessive die Differenz der gefilterten Bilder berechnet wird. 
 
 \subsubsection{Position der Interest Points}
-Interest Points stellen besonders markante, in einer lokalen Umgebung möglichst einzigartige Bildpunkte mit einer klaren Position dar. Punkte, an denen sich im DoG-Bild ein lokales Minimum oder Maximum befindet, sind somit gute Kandidaten für Interest Points. Die Extrema werden in jeder Oktave der DoG-Bildpyramide gesucht. Für jedes Pixel werden dafür die umliegenden Nachbarn derselben, sowie der darüber und darunter liegenden Ebene betrachtet.\\
+Interest Points stellen besonders markante, in einer lokalen Umgebung möglichst einzigartige Bildpunkte dar. Punkte, an denen sich im DoG-Bild ein lokales Minimum oder Maximum befindet, sind somit gute Kandidaten für Interest Points. Die Extrema werden in jeder Oktave der DoG-Bildpyramide gesucht. Für jedes Pixel werden dafür die umliegenden Nachbarn derselben, sowie der darüber und darunter liegenden Ebene betrachtet.\\
 Um die Position des Extremums noch exakter - also im Subpixelbereich - zu bestimmen, wird danach noch eine Taylorapproximation durchgeführt.\\
-Schließlich werden Punkte mit zuringem Kontrast und jene, die an einer Kante liegen, verworfen.
+Extrempunkte die wenig Kontrast aufweisen oder eine Kante darstellen, werden an dieser Stelle wieder verworfen. 
+
+
 
 \subsubsection{Umgebungsorientierung der Keypoints}
 Um Rotationsinvarianz der Keypoint-Deskriptoren zu gewährleisten, wird zusätzlich zur Keypoint-Position die Richtung maximaler Änderung, also der Gradient, der Umgebung um den Keypoint gespeichert. Die einzelnen Bestandteile des Deskriptors umfassen auch einige Orientierungen, welche nun relativ zur Grundorientierung der Umgebung definiert werden können.\\
