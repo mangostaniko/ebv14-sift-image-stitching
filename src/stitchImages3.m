@@ -69,12 +69,12 @@ indAtoB = sub2ind([m2, n2, 3],x,y,z);
 imBext = zeros([sizeMosaic,3]);
 imBext(mask3)= im2double(imB(indAtoB));
 
-figure('name','imAext');
-imshow(imAext);
-figure('name','imBext');
-imshow(imBext);
-figure('name','mask');
-imshow(mask);
+% figure('name','imAext');
+% imshow(imAext);
+% figure('name','imBext');
+% imshow(imBext);
+% figure('name','mask');
+% imshow(mask);
 
 % perform multiresolution spline
 if spline
