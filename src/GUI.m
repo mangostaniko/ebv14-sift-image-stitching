@@ -153,8 +153,8 @@ global leftpictureFileName;
 global guiHandle;
 guiHandle = handles;
 %% create full image paths
-leftpictureAbsolutePath = strcat(rightpicturePathName,rightpictureFileName);
-rightpictureAbsolutePath = strcat(leftpicturePathName,leftpictureFileName);
+rightpictureAbsolutePath = strcat(rightpicturePathName,rightpictureFileName);
+leftpictureAbsolutePath = strcat(leftpicturePathName,leftpictureFileName);
 %% give the user feedback
 set(handles.text17, 'String','Calculating result...');
 set(handles.calculate, 'Enable','off');

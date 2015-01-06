@@ -105,7 +105,7 @@ imBext = replicateEdge(imBext, edgeNodesX, edgeNodesY, 10, 'down');
 % Perform multiresolution spline
 if spline
     mosaic = multiResSpline(imAext,imBext,mask);
-    figure('name','mosaic: multiresolutin spline');
+    figure('name','mosaic: multiresolution spline');
     imshow(mosaic);
     
 % Without multiresolution spline
