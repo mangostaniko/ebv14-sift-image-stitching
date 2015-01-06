@@ -150,6 +150,8 @@ global rightpictureFileName;
 global rightpicturePathName;
 global leftpicturePathName;
 global leftpictureFileName;
+global guiHandle;
+guiHandle = handles;
 %% create full image paths
 leftpictureAbsolutePath = strcat(rightpicturePathName,rightpictureFileName);
 rightpictureAbsolutePath = strcat(leftpicturePathName,leftpictureFileName);
@@ -174,7 +176,7 @@ else
     showMatches = false;
 end
 %% call main program
-main(leftpictureAbsolutePath,rightpictureAbsolutePath,MRS,showKeyp,showMatches,handles);
+main(leftpictureAbsolutePath,rightpictureAbsolutePath,MRS,showKeyp,showMatches);
 
 
 % --- Executes on button press in reset.
