@@ -1,6 +1,10 @@
-function [ stitchedImage ] = mainOLD( impath1, impath2 )
+function [ stitchedImage ] = mainCMD( impath1, impath2, showK, showM, useMRS )
 % input: impath1, impath2 ... paths to images (JPG or PNG)
+%        showK            ... boolean, true if you want to show the keypoints
+%        showM            ... boolean, true if you want to show matching keypoints
+%        useMRS           ... boolean, true if you want to you use multires. splining
 % output: stitchedImage ... stitched image (JPG or PNG)
+
 %% read and convert images
 % note: in images x are columns, y are rows.
 % however later we use an internal representation which is (x,y)
@@ -52,5 +56,5 @@ HAtoB = findHomography(matches);
 %% stitch images
 disp('STITCH IMAGES')
 %stitchImages2( imA, imB, HBtoA );
-stitchImages( imA, imB, HBtoA,HAtoB,true);
+stitchImages( imA, imB, HBtoA,HAtoB,useMRS);
 end
