@@ -50,7 +50,11 @@ Der Einfachheit halber werden folgende Eigenschaften der Eingabebilder vorausges
 	\item Die Belichtungsverhältnisse müssen in beiden Bildern möglichst gleich sein (ähnliche Zeit, Ausrichtung bezüglich der Lichtquelle, gleiche Kamera!)
 	\item Perspektivische Verzerrungen sollten möglichst vermieden werden, indem entfernte Motive verwendet werden und die Brennweite möglichst hoch gewählt wird.
 	\item Möglichst anorganische Strukturen mit klaren Umrissen als zentrales Motiv (Bäume etc. nur am Rande)
-	\item Keine beweglichen Objekte, durch die Interests Points verdeckt werden könnten.
+	\item Keine beweglichen Objekte, durch die Interest Points verdeckt werden könnten.
+	\item Die Bildauflösung sollte ungefähr bei 500*500 Pixel liegen. Eine höhere
+	Auflösung kann zu deutlich längerer Rechenzeit und möglicherweise schlechteren
+	Ergebnissen führen. Ein zu kleines Bild kann vielleicht nicht richtig
+	zusammengesetzt werden.
 \end{itemize}
 
 \subsection{Methodik}
@@ -86,7 +90,10 @@ Weiters wurde ein GUI implementiert.
 \section{Arbeitsteilung}
 (0,5 Seiten)\\
 Wer hat welche Aufgaben übernommen (MATLAB-Funktionen, Abschnitt im Bericht, Evaluierung, Datenerfassung, etc.)?\\\\
-Evaluierung, Datenerfassung, sowie Teile der Funktionalität und des Berichts wurden gemeinsam erarbeitet. Speziell im Bereich der Schnittstellen wurde natürlich eng zusammengearbeitet.\\Die folgende Tabelle zeigt die Haupt-Aufgabenbereiche, d.h. zu den genannten Themen wurden die entsprechenden Matlab-Funktionen und Abschnitte im Bericht erstellt.
+Evaluierung, Datenerfassung, sowie Teile der Funktionalität und des Berichts
+wurden gemeinsam erarbeitet und die Implementierungsphase war von gemeinsamen
+Debugging geprägt.
+Speziell im Bereich der Schnittstellen wurde natürlich eng zusammengearbeitet.\\Die folgende Tabelle zeigt die Haupt-Aufgabenbereiche, d.h. zu den genannten Themen wurden die entsprechenden Matlab-Funktionen und Abschnitte im Bericht erstellt.
 \begin{center}
   \begin{tabular}{ |l|l| }
     \hline
@@ -159,8 +166,35 @@ Wie habt ihr die im vorhergehnden Abschnitt vorgestellte Methodik praktisch umge
 Hier ist Platz für Implementierungsdetails wie zB. gewählte Parameter. \\
 Wie startet der User das Programm? Welche Parameter hat der User zu setzen?\\
 Auch in diesem Abschnitt können Referenzen und Zitate notwendig sein.\\\\
-Die in Abschnitt 3 (Methodik) beschriebene Funktionalität ist in Matlab-Funktionen gegliedert und in main.m zur kompletten Image-Stitching-Pipeline zusammengefügt. Der Prozess wird durch main('Pfad zum linken Bild', 'Pfad zum rechten Bild') gestartet. Optional kann eine grafische Oberfläche mittels Aufruf von GUI.m verwendet werden. Alle notwendigen Schritte sind in dieser erklärt.\\
-Um vor dem Endresult, also dem gestitchten Bild, die gefundenen Keypoints oder das Matching der Keypoints beider Bilder ausgeben zu lassen, können die Funktionen showKeypoints.m und showMatches.m. In main.m können dazu einfach die Zeilen mit 'showKeypoints' und 'showMatches' dekommentiert werden.\\\\
+Die in Abschnitt 3 (Methodik) beschriebene Funktionalität ist in
+Matlab-Funktionen gegliedert und in main.m zur kompletten
+Image-Stitching-Pipeline zusammengefügt. Der Prozess wird durch mainCMD('Pfad
+zum linken Bild', 'Pfad zum rechten Bild', showK, showM, useMRS ) gestartet,
+wobei die letzteren drei Parameter Boolean-Werte sind, mit denen Details der
+Berechnung bestimmt werden können.
+Es ist jedoch empfohlen die grafische Oberfläche mittels Aufruf
+von GUI.m zu verwenden.
+Alle notwendigen Schritte sind in dieser erklärt.\\
+Die grafische Oberfläche ruft die Methode main auf, in der alle weiteren
+Methoden der Reihe nach verwendet werden. \\\\
+Nachdem die Bilder eingelesen wurden werden in einem ersten Schritt im Rahmen
+der Methode createDoG die Bildpyramiden aufgebaut, die benötigt werden um
+Interest Points zu finden. Die generierten DoG-Bilder (Difference of
+Gaussians) werden daraufhin in der Funktion findExtrema auf Minima und
+Maxima untersucht. Dabei wird für eine effiziente Berechnung dieser auf
+einen kleinen Trick zurückgegriffen: Damit ein Pixel mit allen 26 direkten
+Nachbarn schnell verglichen werden kann, wird das gesamte Bild mithilfe der
+Funktion imfilter verschoben und verglichen. Die gefundenen Extrema werden
+in einem weiteren Schritt in der Funktion removeLowContrast dezimiert, indem
+alle potentiellen Keypoints an deren Stelle kein ausreichender Kontrast
+vorliegt, verworfen werden. Um die Qualität der verwendeten Keypoints zu
+verbessern, werden daraufhin in der Methode removeEdges alle Keypoints
+entfernt die keine \"Ecken\" darstellen, das bedeutet Kanten werden
+verworfen, da diese nicht eindeutig genug wären, um ein Matching zu
+ermöglichen. Nach diesen Schritten sind die finalen Keypoints vorhanden und
+werden genauer spezifiziert:\\\\
+
+
 Für ein reibungsloses Zusammenspielen der einzelnen Komponenten sind in den Funktions-Headern die Schnittstellen definiert, also das Format der Parameter und Rückgabewerte beschrieben. Für genauere Information zu den einzelnen Funktionen sind daher diese heranzuziehen.\\\\
 TODO\\
 %%------------------------------------------------------
