@@ -60,7 +60,7 @@ HAtoB = findHomography(matches);
 %% stitch images
 disp('STITCH IMAGES')
 %stitchImages2( imA, imB, HBtoA );
-stitchImages3( imA, imB, HBtoA,HAtoB,true);
+stitchImages( imA, imB, HBtoA,HAtoB,true);
 
 
 end
