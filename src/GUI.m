@@ -23,7 +23,7 @@ function varargout = GUI(varargin)
 
 % Edit the above text to modify the response to help GUI
 
-% Last Modified by GUIDE v2.5 06-Jan-2015 11:51:26
+% Last Modified by GUIDE v2.5 06-Jan-2015 12:48:37
 % global leftpictureFileName;
 % global leftpicturePathName;
 % global rightpictureFileName;
@@ -155,7 +155,6 @@ leftpictureAbsolutePath = strcat(rightpicturePathName,rightpictureFileName);
 rightpictureAbsolutePath = strcat(leftpicturePathName,leftpictureFileName);
 %% give the user feedback
 set(handles.text17, 'String','Calculating result...');
-set(handles.text18, 'String','This may take a while.');
 set(handles.calculate, 'Enable','off');
 drawnow; % forces the GUI to redraw
 %% read Checkboxes
@@ -175,7 +174,7 @@ else
     showMatches = false;
 end
 %% call main program
-main(leftpictureAbsolutePath,rightpictureAbsolutePath,MRS,showKeyp,showMatches);
+main(leftpictureAbsolutePath,rightpictureAbsolutePath,MRS,showKeyp,showMatches,handles);
 
 
 % --- Executes on button press in reset.
@@ -251,6 +250,9 @@ set(handles.pushbutton9, 'BackgroundColor','green');
 if(get(handles.pushbutton10, 'BackgroundColor')==[0,1,0])
     set(handles.calculate, 'Enable','on');
 end
+else
+    set(handles.pushbutton9, 'BackgroundColor','white');
+    set(handles.pushbutton9, 'String','Select left image');
 end
 
 
@@ -292,6 +294,9 @@ if(rightpicturePathName ~= 0)
 if(get(handles.pushbutton9, 'BackgroundColor')==[0,1,0])
     set(handles.calculate, 'Enable','on');
 end
+else
+    set(handles.pushbutton10, 'BackgroundColor','white');
+    set(handles.pushbutton10, 'String','Select left image');
 end
 
 % --- Executes during object creation, after setting all properties.
