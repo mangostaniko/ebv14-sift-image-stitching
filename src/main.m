@@ -1,5 +1,8 @@
-function [ stitchedImage ] = main( impath1, impath2 )
+function [ stitchedImage ] = main( impath1, impath2, useMRS, showK, showM)
 % input: impath1, impath2 ... paths to images (JPG or PNG)
+%        useMRS ... boolean, use Multi-Resolution-Splines?
+%        showK ... boolean, show all found keypoints?
+%        showM ... boolean, show all found matches?
 % output: stitchedImage ... stitched image (JPG or PNG)
 
 %% read and convert images

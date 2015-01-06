@@ -1,3 +1,4 @@
+% Author: Patrick Wahrmann
 function varargout = GUI(varargin)
 % GUI MATLAB code for GUI.fig
 %      GUI, by itself, creates a new GUI or raises the existing
@@ -22,7 +23,7 @@ function varargout = GUI(varargin)
 
 % Edit the above text to modify the response to help GUI
 
-% Last Modified by GUIDE v2.5 04-Jan-2015 20:34:02
+% Last Modified by GUIDE v2.5 06-Jan-2015 11:51:26
 % global leftpictureFileName;
 % global leftpicturePathName;
 % global rightpictureFileName;
@@ -122,39 +123,60 @@ end
 
 
 
-function volume_Callback(hObject, eventdata, handles)
-% hObject    handle to volume (see GCBO)
-% eventdata  reserved - to be defined in a future version of MATLAB
-% handles    structure with handles and user data (see GUIDATA)
-
-% Hints: get(hObject,'String') returns contents of volume as text
-%        str2double(get(hObject,'String')) returns contents of volume as a double
-volume = str2double(get(hObject, 'String'));
-if isnan(volume)
-    set(hObject, 'String', 0);
-    errordlg('Input must be a number','Error');
-end
-
-% Save the new volume value
-handles.metricdata.volume = volume;
-guidata(hObject,handles)
+% function volume_Callback(hObject, eventdata, handles)
+% % hObject    handle to volume (see GCBO)
+% % eventdata  reserved - to be defined in a future version of MATLAB
+% % handles    structure with handles and user data (see GUIDATA)
+% 
+% % Hints: get(hObject,'String') returns contents of volume as text
+% %        str2double(get(hObject,'String')) returns contents of volume as a double
+% volume = str2double(get(hObject, 'String'));
+% if isnan(volume)
+%     set(hObject, 'String', 0);
+%     errordlg('Input must be a number','Error');
+% end
+% 
+% % Save the new volume value
+% handles.metricdata.volume = volume;
+% guidata(hObject,handles)
 
 % --- Executes on button press in calculate.
 function calculate_Callback(hObject, eventdata, handles)
 % hObject    handle to calculate (see GCBO)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    structure with handles and user data (see GUIDATA)
+%% define global variables
 global rightpictureFileName;
 global rightpicturePathName;
 global leftpicturePathName;
 global leftpictureFileName;
+%% create full image paths
 leftpictureAbsolutePath = strcat(rightpicturePathName,rightpictureFileName);
 rightpictureAbsolutePath = strcat(leftpicturePathName,leftpictureFileName);
+%% give the user feedback
 set(handles.text17, 'String','Calculating result...');
 set(handles.text18, 'String','This may take a while.');
 set(handles.calculate, 'Enable','off');
-drawnow;
-main(leftpictureAbsolutePath,rightpictureAbsolutePath);
+drawnow; % forces the GUI to redraw
+%% read Checkboxes
+if(get(handles.checkboxMRS,'Value')==1)
+    MRS = true;
+else
+    MRS = false;
+end
+if(get(handles.checkboxKeypoints,'Value')==1)
+    showKeyp = true;
+else
+    showKeyp = false;
+end
+if(get(handles.checkboxMatches,'Value')==1)
+    showMatches = true;
+else
+    showMatches = false;
+end
+%% call main program
+main(leftpictureAbsolutePath,rightpictureAbsolutePath,MRS,showKeyp,showMatches);
+
 
 % --- Executes on button press in reset.
 function reset_Callback(hObject, eventdata, handles)
@@ -277,3 +299,44 @@ function text17_CreateFcn(hObject, eventdata, handles)
 % hObject    handle to text17 (see GCBO)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    empty - handles not created until after all CreateFcns called
+
+
+% --- Executes on button press in checkboxMRS.
+function checkboxMRS_Callback(hObject, eventdata, handles)
+% hObject    handle to checkboxMRS (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    structure with handles and user data (see GUIDATA)
+% Hint: get(hObject,'Value') returns toggle state of checkboxMRS
+global MRS;
+if(get(hObject,'Value')==1)
+    MRS = true;
+else
+    MRS = false;
+end
+
+
+% --- Executes on button press in checkboxKeypoints.
+function checkboxKeypoints_Callback(hObject, eventdata, handles)
+% hObject    handle to checkboxKeypoints (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    structure with handles and user data (see GUIDATA)
+% Hint: get(hObject,'Value') returns toggle state of checkboxKeypoints
+global showKeyp;
+if(get(hObject,'Value')==1)
+    showKeyp = true;
+else
+    showKeyp = false;
+end
+
+% --- Executes on button press in checkboxMatches.
+function checkboxMatches_Callback(hObject, eventdata, handles)
+% hObject    handle to checkboxMatches (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    structure with handles and user data (see GUIDATA)
+% Hint: get(hObject,'Value') returns toggle state of checkboxKeypoints
+global showMatches;
+if(get(hObject,'Value')==1)
+    showMatches = true;
+else
+    showMatches = false;
+end
