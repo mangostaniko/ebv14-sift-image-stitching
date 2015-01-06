@@ -54,8 +54,11 @@ orientationsA = findOrientations( keypointsA, octA1 );
 orientationsB = findOrientations( keypointsB, octB1 );
 % orientationsA = findOrientations2( keypointsA, {octA1, octA2, octA3, octA4}, sigmas );
 % orientationsB = findOrientations2( keypointsB, {octB1, octB2, octB3, octB4}, sigmas );
-%showKeypoints( imA, keypointsA, orientationsA);
-%showKeypoints( imB, keypointsB, orientationsB);
+
+if showK
+    showKeypoints( imA, keypointsA, orientationsA);
+    showKeypoints( imB, keypointsB, orientationsB);
+end
 
 %% create descriptors
 disp('DEFINE KEYPOINT SIFT DESCRIPTORS')
@@ -73,7 +76,9 @@ drawnow; % forces the GUI to redraw
 matches = matchKeypoints(keypointsA(:,1:2), keypointsB(:,1:2), descriptorsA, descriptorsB);
 %showKeypoints( imA, matches(:, 1:2), 0);
 %showKeypoints( imB, matches(:, 3:4), 0);
-%showMatches( imA, imB, matches(:, 1:2), matches(:, 3:4));
+if showM
+    showMatches( imA, imB, matches(:, 1:2), matches(:, 3:4));
+end
 
 %% find homography (ransac)
 disp('FIND HOMOGRAPHY FOR STITCHING')
