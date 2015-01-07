@@ -7,7 +7,7 @@ Notes for evaluation:
 GUI VERSION
 - set Matlab path to the src directory
 - open and run GUI.m (not GUI.fig!)
-- choose images you want to stitch and click on "calculate"
+- choose images you want to stitch and click on "calculate" (choose left and right images correctly to avoid errors)
 - be patient
 
 COMMAND LINE VERSION
