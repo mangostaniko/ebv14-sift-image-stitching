@@ -276,10 +276,6 @@ Die Funktion showMatches kann benutzt werden um anzuzeigen welche Keypoints in d
 %%------------------------------------------------------
 \newpage
 \section{Evaluierung}
-(2-X Seiten)\\
-Hier stellt ihr euren Datensatz vor und beantwortet Evaluierungsfragen:\\
-z.B. Fakten zum Datensatz: Anzahl der Bilder, Größe der Bilder, Quelle des Datensatzes (falls selbst aufgenommen: Aufnahmegerät, Einstellungen,... / falls nicht selbst erstellt: Datenbank vostellen...)\\
-Diskussion der Evaluierungsfragen: Beantwortung der Fragen, Diskussion anhand von Beispielen, Diskussion von Grenzfällen: für welche Bilder funktioniert die Implementierung, für welche nicht? Worin unterscheiden sich diese Bilder? etc.
 
 \subsection{Datensatz}
 
@@ -311,7 +307,7 @@ Diskussion der Evaluierungsfragen: Beantwortung der Fragen, Diskussion anhand vo
 \begin{center}
 \includegraphics[width=1.0\textwidth]{buntS.png}
 \caption{fig:bunt: stitched}
-\label{buntS}
+\label{fig:buntS}
 \end{center}
 \end{figure}
 
@@ -408,24 +404,24 @@ Diskussion der Evaluierungsfragen: Beantwortung der Fragen, Diskussion anhand vo
 		Quelle: Patrick Wahrman\\
 		Aufnahmegerät: Spiegelreflexkamera Pentax K30 \\
 		Einstellungen für beide Bilder: \\
-		Brennweite: 200mm. \\
-		Belichtungszeit: 1/13s \\
-		Blendenzahl: 3.5.
+		Brennweite: 200mm \\
+		Belichtungszeit: 2s \\
+		Blendenzahl: 3.5
 
 	\item winter.jpg\\
 		Quelle: Patrick Wahrman\\
 		Aufnahmegerät: Spiegelreflexkamera Pentax K30 \\
 		Einstellungen für beide Bilder: \\
 		Brennweite: 120mm. \\
-		Belichtungszeit: 1/40s \\
+		Belichtungszeit: 1/100s \\
 		Blendenzahl: 3.5.
 
 	\item bunt.jpg\\
 		Quelle: Patrick Wahrman\\
 		Aufnahmegerät: Spiegelreflexkamera Pentax K30 \\
 		Einstellungen für beide Bilder: \\
-		Brennweite: 200mm. \\
-		Belichtungszeit: 1/13s \\
+		Brennweite: 200mm \\
+		Belichtungszeit: 2s\\
 		Blendenzahl: 3.5.
 
 	\item tower.jpg\\
@@ -457,19 +453,19 @@ Diskussion der Evaluierungsfragen: Beantwortung der Fragen, Diskussion anhand vo
 		Aufnahmegerät: Spiegelreflexkamera Pentax K30 \\
 		Einstellungen für beide Geräte: \\
 		Brennweite: 120mm. \\
-		Belichtungszeit: 1/40s \\
+		Belichtungszeit: 1/100s\\
 		Blendenzahl: 3.5.
 \end{itemize}
 
 \subsection{Diskussion der Evaluierungsfragen}
 
 \begin{itemize}
-	\item Werden sinnvolle Merkmale gefunden? f
+	\item Werden sinnvolle Merkmale gefunden? 
 		Ja. Die gefundenen Keypoints befinden sich an geeigneten Stellen im Bild und zeigen die korrekte Umgebungsorientierung.
 	\item Werden übereinstimmende Bildpaare gefunden? 
 		Obwohl vereinzelt auch nicht zusammenpassende Keypointpaare detektiert werden, wird die Zuordnung generell erfolgreich ausgeführt.
 	\item Werden die Bilder korrekt zusammengefügt? 
-		Abhängig von der perspektivischen Verzerrung der Bilder funktioniert das Image Stitching generell gut bis sehr gut (siehe Abbildungen \ref{fig:strand} und \ref{fig:strandS} bzw Abbildungen \ref{fig:skyline} und \ref{fig:skylineS}). In Bildbereichen, in denen keine Matches gefunden werden, können die Übergänge jedoch teilweise fehlerhaft sein (siehe Abbildungen \ref{fig:winter} und \ref{fig:winterS} bzw Abbildungen \ref{fig:demo} und \ref{fig:demoS}).
+		Abhängig von der perspektivischen Verzerrung der Bilder funktioniert das Image Stitching generell gut bis sehr gut (siehe Abbildungen \ref{fig:strand} und \ref{fig:strandS} bzw Abbildung \ref{fig:skylineS}). In Bildbereichen, in denen keine Matches gefunden werden, können die Übergänge jedoch teilweise fehlerhaft sein (siehe Abbildungen \ref{fig:winter} und \ref{fig:winterS} bzw Abbildungen \ref{fig:demo} und \ref{fig:demoS}).
 	\item Hat die Auflösung der Eingabebilder einen merklichen Einﬂuss auf das Ergebnis? 
 		Innerhalb des empfohlenen Rahmens gibt es keine ersichtlichen Unterschiede. Bei einer zu hohen Auflösung ist der Rechenaufwand zu groß und ein korrektes Ergebnis kann nicht garantiert werden. 
 	\item Welche Bilddaten / Szenen sind ungünstig für den Erfolg des Verfahrens? 
