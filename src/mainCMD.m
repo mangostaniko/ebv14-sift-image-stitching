@@ -76,5 +76,4 @@ HAtoB = findHomography(matches);
 %% stitch images
 disp('STITCH IMAGES')
 stitchedImage = stitchImages( imA, imB, HBtoA,HAtoB,useMRS);
-imwrite(stitchedImage, 'C:/Users/Sebastian/Pictures/B1_2.png');
 end
