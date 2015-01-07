@@ -15,6 +15,7 @@ drawnow; % forces the GUI to redraw
 imA = im2double(imread(impath1));
 imB = im2double(imread(impath2));
 
+
 %% create DoG pyramids
 disp('DEFINE SCALE SPACE (DIFFERENCE OF GAUSSIANS)')
 set(guiHandle.text19, 'String','[10%] DEFINING SCALE SPACE (DIFFERENCE OF GAUSSIANS)...');
@@ -23,14 +24,14 @@ drawnow; % forces the GUI to redraw
 [ octA1, octA2, octA3, octA4, dogA1, dogA2, dogA3, dogA4 ] = createDoG(imA);
 [ octB1, octB2, octB3, octB4, dogB1, dogB2, dogB3, dogB4 ] = createDoG(imB);
 
+
 %% find extrema
 disp('FIND SCALE SPACE EXTREMA')
 set(guiHandle.text19, 'String','[15%] FIND SCALE SPACE EXTREMA...');
 drawnow; % forces the GUI to redraw
 extremaA = findExtrema( dogA1, dogA2, dogA3, dogA4 );
 extremaB = findExtrema( dogB1, dogB2, dogB3, dogB4 );
-% showKeypoints(imA, extremaA, [0,0,0,0]);
-% showKeypoints(imB, extremaB, [0,0,0,0]);
+
 
 %% remove low contrast points & edges
 disp('REMOVE LOW CONTRAST KEYPOINTS AND EDGES')
@@ -41,25 +42,23 @@ leftoversA = removeLowContrast(extremaA, octA1);
 leftoversB = removeLowContrast(extremaB, octB1);
 keypointsA = leftoversA; removeEdges(leftoversA, octA1);
 keypointsB = leftoversB; removeEdges(leftoversB, octB1);
-% showKeypoints(imA, keypointsA, [0,0,0,0]);
-% showKeypoints(imB, keypointsB, [0,0,0,0]);
+
 drawnow();
+
+
 %% find keypoint orientation
 disp('FIND KEYPOINT ORIENTATIONS')
 set(guiHandle.text19, 'String','[30%] FINDING KEYPOINT ORIENTATIONS...');
 drawnow; % forces the GUI to redraw
 
-% note: with a little fix findOrientations seems to work better than findOrientations2
-% (something is wrong with findOrientations2)
 orientationsA = findOrientations( keypointsA, octA1 );
 orientationsB = findOrientations( keypointsB, octB1 );
-% orientationsA = findOrientations2( keypointsA, {octA1, octA2, octA3, octA4}, sigmas );
-% orientationsB = findOrientations2( keypointsB, {octB1, octB2, octB3, octB4}, sigmas );
 
 if showK
     showKeypoints( imA, keypointsA, orientationsA);
     showKeypoints( imB, keypointsB, orientationsB);
 end
+
 
 %% create descriptors
 disp('DEFINE KEYPOINT SIFT DESCRIPTORS')
@@ -69,17 +68,18 @@ drawnow; % forces the GUI to redraw
 descriptorsA = createDescriptors( octA1, keypointsA, orientationsA);
 descriptorsB = createDescriptors( octB1, keypointsB, orientationsB);
 
+
 %% match keypoints
 disp('MATCH KEYPOINTS')
 set(guiHandle.text19, 'String','[50%] MATCHING KEYPOINTS...');
 drawnow; % forces the GUI to redraw
 
 matches = matchKeypoints(keypointsA(:,1:2), keypointsB(:,1:2), descriptorsA, descriptorsB);
-%showKeypoints( imA, matches(:, 1:2), 0);
-%showKeypoints( imB, matches(:, 3:4), 0);
+
 if showM
     showMatches( imA, imB, matches(:, 1:2), matches(:, 3:4));
 end
+
 
 %% find homography (ransac)
 disp('FIND HOMOGRAPHY FOR STITCHING')
@@ -89,12 +89,12 @@ drawnow; % forces the GUI to redraw
 HBtoA = findHomography([matches(:,3:4),matches(:,1:2)]);
 HAtoB = findHomography(matches);
 
+
 %% stitch images
 disp('STITCH IMAGES')
 set(guiHandle.text19, 'String','[95%] STITCHING IMAGES...');
 drawnow; % forces the GUI to redraw
 
-%stitchImages2( imA, imB, HBtoA );
 stitchImages( imA, imB, HBtoA,HAtoB,useMRS);
 
 set(guiHandle.text19, 'String','[100%] DONE.');
