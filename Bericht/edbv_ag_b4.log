@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.1415926-2.5-1.40.14 (TeX Live 2013/Debian) (format=pdflatex 2015.1.4)  7 JAN 2015 19:04
+This is pdfTeX, Version 3.1415926-2.5-1.40.14 (TeX Live 2013/Debian) (format=pdflatex 2015.1.4)  7 JAN 2015 19:41
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -642,13 +642,7 @@ Overfull \hbox (16.93396pt too wide) in paragraph at lines 63--64
 ungsorientierungen
  []
 
-[2]
-Overfull \hbox (63.10774pt too wide) in paragraph at lines 66--67
-[]\OT1/cmr/m/n/10.95 uberandergelegt wer-den, dass die kor-re-spon-die-ren-den 
-Key-po-ints []ubereinstimmen. 
- []
-
-[3]
+[2] [3]
 Underfull \hbox (badness 10000) in paragraph at lines 87--90
 
  []
@@ -692,33 +686,38 @@ Underfull \hbox (badness 10000) in paragraph at lines 169--178
 
  []
 
-[9] [10] [11]
-Underfull \hbox (badness 10000) in paragraph at lines 249--252
+[9]
+Underfull \hbox (badness 10000) in paragraph at lines 206--220
+
+ []
+
+[10] [11] [12]
+Underfull \hbox (badness 10000) in paragraph at lines 250--253
 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 249--252
-
- []
-
-[12]
-Underfull \hbox (badness 10000) in paragraph at lines 259--266
+Underfull \hbox (badness 10000) in paragraph at lines 250--253
 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 259--266
+Underfull \hbox (badness 10000) in paragraph at lines 260--267
 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 259--266
+Underfull \hbox (badness 10000) in paragraph at lines 260--267
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 260--267
 
  []
 
 [13]
-Underfull \hbox (badness 10000) in paragraph at lines 272--275
+Underfull \hbox (badness 10000) in paragraph at lines 273--276
 
  []
 
@@ -726,112 +725,112 @@ Underfull \hbox (badness 10000) in paragraph at lines 272--275
 File: ./pictures/strand.jpg Graphic file (type jpg)
 
 <use ./pictures/strand.jpg>
-Package pdftex.def Info: ./pictures/strand.jpg used on input line 284.
+Package pdftex.def Info: ./pictures/strand.jpg used on input line 285.
 (pdftex.def)             Requested size: 347.12361pt x 114.80544pt.
 
 <./pictures/strandS.png, id=60, 719.68875pt x 340.27126pt>
 File: ./pictures/strandS.png Graphic file (type png)
 
 <use ./pictures/strandS.png>
-Package pdftex.def Info: ./pictures/strandS.png used on input line 292.
+Package pdftex.def Info: ./pictures/strandS.png used on input line 293.
 (pdftex.def)             Requested size: 347.12361pt x 164.12793pt.
 
 <./pictures/bunt.jpg, id=61, 909.3975pt x 301.125pt>
 File: ./pictures/bunt.jpg Graphic file (type jpg)
  <use ./pictures/bunt.jpg>
-Package pdftex.def Info: ./pictures/bunt.jpg used on input line 300.
+Package pdftex.def Info: ./pictures/bunt.jpg used on input line 301.
 (pdftex.def)             Requested size: 347.12361pt x 114.9433pt.
 
 <./pictures/buntS.png, id=62, 846.16125pt x 438.63875pt>
 File: ./pictures/buntS.png Graphic file (type png)
 
 <use ./pictures/buntS.png>
-Package pdftex.def Info: ./pictures/buntS.png used on input line 308.
+Package pdftex.def Info: ./pictures/buntS.png used on input line 309.
 (pdftex.def)             Requested size: 347.12361pt x 179.94344pt.
 
 <./pictures/tower.jpg, id=63, 254.6313pt x 130.086pt>
 File: ./pictures/tower.jpg Graphic file (type jpg)
 
 <use ./pictures/tower.jpg>
-Package pdftex.def Info: ./pictures/tower.jpg used on input line 316.
+Package pdftex.def Info: ./pictures/tower.jpg used on input line 317.
 (pdftex.def)             Requested size: 347.12361pt x 177.34135pt.
 
 <./pictures/towerS.png, id=64, 815.045pt x 542.025pt>
 File: ./pictures/towerS.png Graphic file (type png)
 
 <use ./pictures/towerS.png>
-Package pdftex.def Info: ./pictures/towerS.png used on input line 324.
+Package pdftex.def Info: ./pictures/towerS.png used on input line 325.
 (pdftex.def)             Requested size: 347.12361pt x 230.8414pt.
 
 <./pictures/sanmiguelito.jpg, id=65, 1430.34375pt x 401.5pt>
 File: ./pictures/sanmiguelito.jpg Graphic file (type jpg)
 
 <use ./pictures/sanmiguelito.jpg>
-Package pdftex.def Info: ./pictures/sanmiguelito.jpg used on input line 332.
+Package pdftex.def Info: ./pictures/sanmiguelito.jpg used on input line 333.
 (pdftex.def)             Requested size: 347.12361pt x 97.43408pt.
 
 <./pictures/sanmiguelitoS.png, id=66, 995.72pt x 409.53pt>
 File: ./pictures/sanmiguelitoS.png Graphic file (type png)
 
 <use ./pictures/sanmiguelitoS.png>
-Package pdftex.def Info: ./pictures/sanmiguelitoS.png used on input line 340.
+Package pdftex.def Info: ./pictures/sanmiguelitoS.png used on input line 341.
 (pdftex.def)             Requested size: 347.12361pt x 142.76898pt.
 
 <./pictures/skylineS.png, id=67, 1887.05pt x 565.11125pt>
 File: ./pictures/skylineS.png Graphic file (type png)
 
 <use ./pictures/skylineS.png>
-Package pdftex.def Info: ./pictures/skylineS.png used on input line 348.
+Package pdftex.def Info: ./pictures/skylineS.png used on input line 349.
 (pdftex.def)             Requested size: 347.12361pt x 103.94896pt.
 
 <./pictures/munich.jpg, id=68, 772.38562pt x 255.20343pt>
 File: ./pictures/munich.jpg Graphic file (type jpg)
 
 <use ./pictures/munich.jpg>
-Package pdftex.def Info: ./pictures/munich.jpg used on input line 356.
+Package pdftex.def Info: ./pictures/munich.jpg used on input line 357.
 (pdftex.def)             Requested size: 347.12361pt x 114.6925pt.
 
 <./pictures/munichS.png, id=69, 572.1375pt x 411.5375pt>
 File: ./pictures/munichS.png Graphic file (type png)
 
 <use ./pictures/munichS.png>
-Package pdftex.def Info: ./pictures/munichS.png used on input line 364.
+Package pdftex.def Info: ./pictures/munichS.png used on input line 365.
 (pdftex.def)             Requested size: 347.12361pt x 249.68741pt.
 
 <./pictures/demo.jpg, id=70, 1156.32pt x 418.56375pt>
 File: ./pictures/demo.jpg Graphic file (type jpg)
 
 <use ./pictures/demo.jpg>
-Package pdftex.def Info: ./pictures/demo.jpg used on input line 372.
+Package pdftex.def Info: ./pictures/demo.jpg used on input line 373.
 (pdftex.def)             Requested size: 347.12361pt x 125.64673pt.
 
 <./pictures/demoS.png, id=71, 748.7975pt x 601.24625pt>
 File: ./pictures/demoS.png Graphic file (type png)
 
 <use ./pictures/demoS.png>
-Package pdftex.def Info: ./pictures/demoS.png used on input line 380.
+Package pdftex.def Info: ./pictures/demoS.png used on input line 381.
 (pdftex.def)             Requested size: 347.12361pt x 278.7234pt.
 
 <./pictures/winter.jpg, id=72, 1139.00531pt x 376.40625pt>
 File: ./pictures/winter.jpg Graphic file (type jpg)
 
 <use ./pictures/winter.jpg>
-Package pdftex.def Info: ./pictures/winter.jpg used on input line 388.
+Package pdftex.def Info: ./pictures/winter.jpg used on input line 389.
 (pdftex.def)             Requested size: 347.12361pt x 114.70897pt.
 
 <./pictures/winterS.png, id=73, 924.45375pt x 501.875pt>
 File: ./pictures/winterS.png Graphic file (type png)
 
 <use ./pictures/winterS.png>
-Package pdftex.def Info: ./pictures/winterS.png used on input line 396.
+Package pdftex.def Info: ./pictures/winterS.png used on input line 397.
 (pdftex.def)             Requested size: 347.12361pt x 188.44771pt.
- [16 <./pictures/strand.jpg> <./pictures/strandS.png (PNG copy)>] [17 <./pictur
-es/bunt.jpg> <./pictures/buntS.png (PNG copy)>]
-[18 <./pictures/tower.jpg> <./pictures/towerS.png (PNG copy)>] [19 <./pictures/
-sanmiguelito.jpg> <./pictures/sanmiguelitoS.png (PNG copy)> <./pictures/skyline
-S.png (PNG copy)>] [20 <./pictures/munich.jpg> <./pictures/munichS.png (PNG cop
-y)>] [21 <./pictures/demo.jpg> <./pictures/demoS.png (PNG copy)>] [22 <./pictur
-es/winter.jpg> <./pictures/winterS.png (PNG copy)>] [23]
+ [16 <./pictures/strand.jpg>] [17 <./pictures/strandS.png (PNG copy)> <./pictur
+es/bunt.jpg>] [18 <./pictures/buntS.png (PNG copy)> <./pictures/tower.jpg>] [19
+ <./pictures/towerS.png (PNG copy)> <./pictures/sanmiguelito.jpg>] [20 <./pictu
+res/sanmiguelitoS.png (PNG copy)> <./pictures/skylineS.png (PNG copy)> <./pictu
+res/munich.jpg>] [21 <./pictures/munichS.png (PNG copy)> <./pictures/demo.jpg>]
+ [22 <./pictures/demoS.png (PNG copy)> <./pictures/winter.jpg>] [23 <./pictures
+/winterS.png (PNG copy)>]
 
 ! Package inputenc Error: Unicode char \u8:ﬂ not set up for use with LaTeX.
 
@@ -839,24 +838,24 @@ See the inputenc package documentation for explanation.
 Type  H <return>  for immediate help.
  ...                                              
                                                   
-l.469 ...der Eingabebilder einen merklichen Einﬂ
+l.470 ...der Eingabebilder einen merklichen Einﬂ
                                                   uss auf das Ergebnis?
 Your command was ignored.
 Type  I <command> <return>  to replace it with another command,
 or  <return>  to continue without it.
 
 [24]
-Underfull \hbox (badness 10000) in paragraph at lines 481--486
+Underfull \hbox (badness 10000) in paragraph at lines 482--487
 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 481--486
+Underfull \hbox (badness 10000) in paragraph at lines 482--487
 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 481--486
+Underfull \hbox (badness 10000) in paragraph at lines 482--487
 
  []
 
@@ -864,11 +863,11 @@ Underfull \hbox (badness 10000) in paragraph at lines 481--486
 Here is how much of TeX's memory you used:
  6216 strings out of 494976
  93398 string characters out of 6179138
- 207834 words of memory out of 5000000
+ 208834 words of memory out of 5000000
  9317 multiletter control sequences out of 15000+600000
  12714 words of font info for 49 fonts, out of 8000000 for 9000
  14 hyphenation exceptions out of 8191
- 48i,8n,52p,1148b,377s stack positions out of 5000i,500n,10000p,200000b,80000s
+ 48i,8n,52p,1149b,376s stack positions out of 5000i,500n,10000p,200000b,80000s
 </usr/share/texlive/texmf-dist
 /fonts/type1/public/amsfonts/cm/cmmi10.pfb></usr/share/texlive/texmf-dist/fonts
 /type1/public/amsfonts/cm/cmmi8.pfb></usr/share/texlive/texmf-dist/fonts/type1/
@@ -878,7 +877,7 @@ s/cm/cmr8.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cms
 sbx10.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy10.
 pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy8.pfb></u
 sr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmti10.pfb>
-Output written on edbv_ag_b4.pdf (26 pages, 6608980 bytes).
+Output written on edbv_ag_b4.pdf (26 pages, 6609402 bytes).
 PDF statistics:
  139 PDF objects out of 1000 (max. 8388607)
  86 compressed objects within 1 object stream

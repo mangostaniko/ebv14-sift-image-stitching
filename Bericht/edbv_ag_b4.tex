@@ -44,13 +44,13 @@ Das Ergebnis ist ein Bildmosaik im selben Format wie die Eingabebilder, das aus 
 \subsection{Voraussetzungen und Bedingungen}
 Der Einfachheit halber werden folgende Eigenschaften der Eingabebilder vorausgesetzt:
 \begin{itemize}
-	\item Die Bilder sind Abbildungen der gleichen Szene, die nur horizontal versetzt sind
-	\item Es müssen überlappende Bereiche in den Bildern vorhanden sein, die kontrastreiche Interest Points aufweisen
-	\item Die Belichtungsverhältnisse müssen in beiden Bildern möglichst gleich sein (ähnliche Zeit, Ausrichtung bezüglich der Lichtquelle, gleiche Kamera!)
+	\item Die Bilder sind Abbildungen der gleichen Szene, die nur horizontal versetzt sind.
+	\item Es müssen überlappende Bereiche in den Bildern vorhanden sein, die kontrastreiche Interest Points aufweisen.
+	\item Die Belichtungsverhältnisse müssen in beiden Bildern möglichst gleich sein (ähnliche Zeit, Ausrichtung bezüglich der Lichtquelle, gleiche Kamera!).
 	\item Perspektivische Verzerrungen sollten möglichst vermieden werden, indem entfernte Motive verwendet werden und die Brennweite möglichst hoch gewählt wird.
-	\item Möglichst anorganische Strukturen mit klaren Umrissen als zentrales Motiv (Bäume etc. nur am Rande)
+	\item Möglichst anorganische Strukturen mit klaren Umrissen als zentrales Motiv (Bäume etc. nur am Rande).
 	\item Keine beweglichen Objekte, durch die Interest Points verdeckt werden könnten.
-	\item Die Bildauflösung sollte ungefähr bei 500*500 Pixel liegen (Nur grober Richtwert, Seitenverhältnisse können selbstverständlich abweichen!). Eine zu hohe Auflösung kann zu deutlich längerer Rechenzeit und möglicherweise schlechteren Ergebnissen führen. Bilder zu geringer Auflösung können unter Umständen nicht richtig zusammengesetzt werden.
+	\item Die Bildauflösung sollte ungefähr bei 500x500 Pixel liegen (Nur grober Richtwert, Seitenverhältnisse können selbstverständlich abweichen!). Eine zu hohe Auflösung kann zu deutlich längerer Rechenzeit und möglicherweise schlechteren Ergebnissen führen. Bilder zu geringer Auflösung können unter Umständen nicht richtig zusammengesetzt werden.
 \end{itemize}
 
 \subsection{Methodik}
@@ -63,7 +63,7 @@ Der folgende Verfahrensablauf wurde implementiert:
 	\item Für Rotationsinvarianz werden die Keypoint-Umgebungsorientierungen bestimmt.
 	\item In der Folge werden mittels SIFT die Keypoint-Deskriptoren erstellt.
 	\item Korrespondierende Keypoints werden gefunden und zu Merkmalspaaren zusammengefasst.
-	\item Mittels RANSAC (Random Sample Consensus) wird die homographische Transformationsmatrix ermittelt, mit der die Bilder so überandergelegt werden, dass die korrespondierenden Keypoints übereinstimmen.
+	\item Mittels RANSAC (Random Sample Consensus Algorithmus) wird die homographische Transformationsmatrix ermittelt, mit der die Bilder so überandergelegt werden, dass die korrespondierenden Keypoints übereinstimmen.
 \end{itemize}
 
 Weiters wurde ein GUI implementiert.
@@ -85,7 +85,7 @@ Weiters wurde ein GUI implementiert.
 \newpage
 \section{Arbeitsteilung}
 Evaluierung, Datenerfassung, sowie Teile der Funktionalität und des Berichts
-wurden gemeinsam erarbeitet und die Implementierungsphase war von gemeinsamen
+wurden gemeinsam erarbeitet und die Implementierungsphase war von gemeinsamem
 Debugging geprägt. Speziell im Bereich der Schnittstellen wurde natürlich eng zusammengearbeitet.\\\\Die folgende Tabelle zeigt die Haupt-Aufgabenbereiche, d.h. zu den genannten Themen wurden die entsprechenden Matlab-Funktionen und Abschnitte im Bericht erstellt.
 \begin{center}
   \begin{tabular}{ |l|l| }
@@ -127,7 +127,7 @@ Um Rotationsinvarianz der Keypoint-Deskriptoren zu gewährleisten, wird zusätzl
 Um die dominante Umgebungsorientierung zu beschreiben werden innerhalb eines Fensters um den Keypoint für alle Pixel die Gradienten (als Vektoren definiert durch Magnitude und Winkel) ihrer unmittelbaren 4er-Nachbarschaft bestimmt. Diese werden dann je nach ihrer Orientierung  klassifiziert (hier in 36 Teile der vollen Umdrehung von 2pi radian) und die Magnituden aller Gradienten einer Klasse (bin) aufsummiert, es wird also ein Histogramm erstellt. Dabei werden die Beiträge der Magnituden nach Gauss'scher Gewichtung um den Keypoint verteilt, sodass weiter entfernte Gradienten weniger ins Gewicht fallen. Die nach Magnitude dominante Klasse definiert nun die Orientierung der Umgebung.\cite{lowe04}
 
 \subsubsection{Keypoint-Deskriptoren}
-Um die Korrespondenzanalyse zweier Keypoints unter hunderten weiteren und unter Umständen sehr ähnlichen Keypoints zu ermöglichen, muss jeder Keypoint möglichst eindeutig beschrieben sein. Die Deskriptoren durch welche die Keypoints beschrieben werden müssen aber auch eine gewisse Redundanz aufweisen, da sich korrespondierende Keypoints in anderen Bildern (hier in Aufnahmen derselben Szene mit anderen Einstellungen) in der Regel in Nuancen voneinander unterscheiden (Helligkeitsunterschiede, Verdeckungen, Verzerrungen, etc.). Neben einer gewissen Toleranz in der Korrespondenzanalyse (Matching) ist es daher wichtig, die Definition der für den Vergleich relevanten Grundstruktur in mehrere Teile aufzuspalten, die jeweils einen Beitrag zur Akzeptanzwahrscheinlichkeit des Keypoints liefern, sodass die Grundstruktur auch bei Abweichungen in einzelnen Teilen noch erkannt werden kann.\\
+Um die Korrespondenzanalyse zweier Keypoints unter hunderten weiteren und unter Umständen sehr ähnlichen Keypoints zu ermöglichen, muss jeder Keypoint möglichst eindeutig beschrieben sein. Die Deskriptoren durch welche die Keypoints beschrieben werden, müssen aber auch eine gewisse Redundanz aufweisen, da sich korrespondierende Keypoints in anderen Bildern (hier in Aufnahmen derselben Szene mit anderen Einstellungen) in der Regel in Nuancen voneinander unterscheiden (Helligkeitsunterschiede, Verdeckungen, Verzerrungen, etc.). Neben einer gewissen Toleranz in der Korrespondenzanalyse (Matching) ist es daher wichtig, die Definition der für den Vergleich relevanten Grundstruktur in mehrere Teile aufzuspalten, die jeweils einen Beitrag zur Akzeptanzwahrscheinlichkeit des Keypoints liefern, sodass die Grundstruktur auch bei Abweichungen in einzelnen Teilen noch erkannt werden kann.\\
 Bei SIFT werden daher die Deskriptoren durch Histogramme der Gradientenmagnituden nach 8 Orientierungsklassen (also ähnlich wie bei der Bestimmung der Umgebungsorientierung) aus 16 4*4-Fenstern um den Keypoint herum definiert. Das heißt für 16 Fenster gibt es jeweils 8 Klassen in denen Magnituden aufsummiert werden, die Definition eines SIFT-Deskriptors umfasst somit 128 Elemente.\cite{lowe04}
 
 \subsection{Matching} 
@@ -189,7 +189,7 @@ In unserer Implementierung richtet sich die Implementierung bei der Erstellung d
 Zu Beginn werden die Gaußbilder erstellt durch sukzessives Filtern mit Gaußfilter. Für jede Oktave wird dann die Auflösung halbiert, die Bilder der 4. Oktave haben also nur noch eine Auflösung von $\frac{1}{8} * Originalbild$.\\
 Mittels dieser Pyramide werden dann die DoG-Bilder durch Differenz der aufeinanderfolgenden Gauß-Bilder in jeder Oktave ermittelt. Am Ende erhält man also pro Oktave 5 Gaußbilder und 4 DoG-Bilder.\\
 Für den Multi-Resolution-Spline wird eine eigene Gaußpyramide aufgestellt, allerdings beschränkt auf 4 Levels anstatt bis zu einer Auflösung von $1x1$ Pixel Downsampling anzuwenden. Erstellt wird die Pyramide indem das Originalbild sukzessive mit einem Gaußfilter behandelt wird und die Auflösung dieses gegaußten Bildes anschließend um die Hälfte verringert wird. Der unterste Level der Pyramide ist dabei das Originalbild.\\
-Die in createGauss.m erstellte Gaußpyramide wird dann verwendet um die LoG-Bilder zu berechnen. Dafür wird sukzessive das Bild von einem Level höher auf der Pyramide auf die doppelte Größe skaliert und anschließend von dem Bild einen Level darunter subtrahiert, beim letzten Level ist das nicht mehr möglich, daher besteht der letzte Level der LoG-Pyramide aus dem untersten Level der Gaußpyramide. Um das ganz etwas zu verdeutlichen:
+Die in createGaussPyr.m erstellte Gaußpyramide wird dann verwendet um die LoG-Bilder zu berechnen. Dafür wird sukzessive das Bild von einem Level höher auf der Pyramide auf die doppelte Größe skaliert und anschließend von dem Bild einen Level darunter subtrahiert, beim letzten Level ist das nicht mehr möglich, daher besteht der letzte Level der LoG-Pyramide aus dem untersten Level der Gaußpyramide. Um das Ganze etwas zu verdeutlichen:
 \begin{eqnarray*}
 \ LoG_0 &=& G_0 - expand(G_1) \\
 \ LoG_{N-1} &=& G_{N-1} - expand(G) \\
@@ -215,19 +215,20 @@ vorliegt, verworfen werden. Um die Qualität der verwendeten Keypoints zu
 verbessern, werden daraufhin in der Methode removeEdges alle Keypoints
 entfernt die keine "`Ecken"' darstellen, das bedeutet Kanten werden
 verworfen, da diese nicht eindeutig genug wären, um ein Matching zu
-ermöglichen.
+ermöglichen.\\\\
+Die Methode removeEdges.m wurde implementiert, da sie Teil des Originalalgorithmus ist, wird jedoch in unserem Programm nicht verwendet, da bei Verwendung schlechtere Ergebnisse erzielt werden. 
 
 \subsection{Keypoint-Umgebungsorientierungen}
 \begin{itemize}
 	\item findOrientations.m 
 \end{itemize}
-Im nächsten Schritt werden in der Methode findOrientations für alle Keypoints die Umgebungsorientierungen bestimmt, um Rotationsinvarianz zu gewährleisten. Wie bereits im Abschnitt Methodik beschrieben, werden dazu die Magnituden der Gradienten aller Pixel in einem 9x9-Fenster um den Keypoint nach ihren Orientierungen klassifiziert und die Magnituden aller Gradienten einer Klasse aufsummiert (es wird also ein Histogramm erstellt). Dabei wird die 4er-Nachbarschaft der Pixel betrachtet. Wichtig ist, das die Gradienten immer in jenen Scale-Space-Stufen berechnet werden, in denen der Extrempunkt (potentieller Keypoint) gefunden wurde. Um die Orientierungen zu bestimmen, wird atan2 verwendet, da die Fallbehandlungen die bei atan notwendig sind, inkludiert sind. Die Magnituden werden in 36 Klassen (zu je 10$\,^{\circ}$) unterteilt und summiert. Dabei werden sie mit einer um den Keypoints verteilten Gauss'schen Gewichtung versehen. Die Orientierung der dominanten Klasse wird als Umgebungsorientierung des Keypoints herangezogen, wobei einfach der Median des 10$\,^{\circ}$-Intervalls gewählt wird.\cite{lowe04} 
+Im nächsten Schritt werden in der Methode findOrientations für alle Keypoints die Umgebungsorientierungen bestimmt, um Rotationsinvarianz zu gewährleisten. Wie bereits im Abschnitt Methodik beschrieben, werden dazu die Magnituden der Gradienten aller Pixel in einem 9x9-Fenster um den Keypoint nach ihren Orientierungen klassifiziert und die Magnituden aller Gradienten einer Klasse aufsummiert (es wird also ein Histogramm erstellt). Dabei wird die 4er-Nachbarschaft der Pixel betrachtet. Wichtig ist, dass die Gradienten immer in jenen Scale-Space-Stufen berechnet werden, in denen der Extrempunkt (potentieller Keypoint) gefunden wurde. Um die Orientierungen zu bestimmen, wird atan2 verwendet, da die Fallbehandlungen die bei atan notwendig sind, inkludiert sind. Die Magnituden werden in 36 Klassen (zu je 10$\,^{\circ}$) unterteilt und summiert. Dabei werden sie mit einer um den Keypoints verteilten Gauss'schen Gewichtung versehen. Die Orientierung der dominanten Klasse wird als Umgebungsorientierung des Keypoints herangezogen, wobei einfach der Median des 10$\,^{\circ}$-Intervalls gewählt wird.\cite{lowe04} 
 
 \subsection{SIFT-Deskriptoren}
 \begin{itemize}
 	\item createDescriptors.m 
 \end{itemize}
-Nun werden, wie in Methodik beschrieben, die Keypoint-Deskriptoren erstellt. Dies geschieht in der Methode createDescriptors, wo für 16 4x4-Fenster um den Keypoint jeweils wie in findOrienations Histogramme der Gradientenmagnituden erstellt werden. Die Gauss'sche Gewichtung erfolgt dabei mit sigma von 2. Die Magnituden werden in 8 Klassen aufsummiert. Im Sinne der Rotationsinvarianz werden die Orientierungen relativ zur Keypoint-Umgebungsorientierung bestimmt. Insgesammt ergibt sich somit für einen SIFT-Deskriptor ein Vektor von 16*8 = 128 Elementen. Diese werden in Folge noch normalisiert (nach euklidischer Norm), und dannach Magnituden größer als 1/5 auf diesen Wert gesetzt, um den Einfluss von Beleuchtungsunterschieden zu vermindern, (dannach wird erneut normalisiert). Zu beachten ist noch, dass der Einfachheit halber Keypoints, die zu nah an den Bildrändern liegen (so dass die Fenster über den Rand hinausgehen würden), nicht berücksichtigt werden.
+Nun werden, wie in Methodik beschrieben, die Keypoint-Deskriptoren erstellt. Dies geschieht in der Methode createDescriptors, wo für 16 4x4-Fenster um den Keypoint jeweils wie in findOrienations Histogramme der Gradientenmagnituden erstellt werden. Die Gauss'sche Gewichtung erfolgt dabei mit sigma von 2. Die Magnituden werden in 8 Klassen aufsummiert. Im Sinne der Rotationsinvarianz werden die Orientierungen relativ zur Keypoint-Umgebungsorientierung bestimmt. Insgesammt ergibt sich somit für einen SIFT-Deskriptor ein Vektor von 16*8 = 128 Elementen. Diese werden in Folge noch normalisiert (nach euklidischer Norm), und danach Magnituden größer als 1/5 auf diesen Wert gesetzt, um den Einfluss von Beleuchtungsunterschieden zu vermindern, (danach wird erneut normalisiert). Zu beachten ist noch, dass der Einfachheit halber Keypoints, die zu nah an den Bildrändern liegen (so dass die Fenster über den Rand hinausgehen würden), nicht berücksichtigt werden.
 
 \subsection{Keypoint-Matching}
 \begin{itemize}
@@ -236,7 +237,7 @@ Nun werden, wie in Methodik beschrieben, die Keypoint-Deskriptoren erstellt. Die
 Aufgabe dieser Funktion ist es, Keypointpaare mit minimalem Winkelabstand zu finden. Dieser lässt sich leicht aus dem Skalarprodukt der beiden Vektoren ermitteln. Dafür wird über die Liste der Keypoints des ersten Bildes iteriert. Jeder Keypoint wird dabei durch den entsprechenden Zeilenindex in den Positions- und Deskriptormatrizen dargestellt. \\ 
 Für jeden Deskriptor des ersten Bildes können die entsprechenden Skalarprodukte für alle Deskriptoren des zweiten Bildes mittels einer einzigen Vektor-Matrix-Multiplikation berechnet werden. Der Vektor der zugehörigen Winkel wird daraufhin sortiert, der kleinste gewählt und der entsprechende Deskriptor des zweiten Bildes identifiziert und dessen Index abgespeichert. Die entsprechende Variable $matchInd$ hat die Form $matchInd( Index_{Keypoint in Bild1} ) = Index_{Keypoint in Bild 2}$. Auch der Winkelabstand wird abgespeichert. \\
 Als Schwellwert für den Vergleich zwischen kleinstem und zweitkleinstem Winkelabstand wird der Wert 0.6 von Weyand\cite{pandemo} übernommen. \\
-Falls $Index_{Keypoint in Bild 2}$ bereits in $matchInd$ abgespeichert wurde, werden die Winkelabstände verglichen. Ist der aktuelle Wert kleiner, wird Falls $Index_{Keypoint in Bild 2}$ an früherer Stelle durch 0 ersetzt. \\
+Falls $Index_{Keypoint in Bild 2}$ bereits in $matchInd$ abgespeichert wurde, werden die Winkelabstände verglichen. Ist der aktuelle Wert kleiner, wird $Index_{Keypoint in Bild 2}$ an früherer Stelle durch 0 ersetzt. \\
 Am Ende werden die Positionen der zugeordneten Paare\\$matchInd(Index_{Keypoint in Bild1} \neq 0)$  zurückgegeben.
 
 \subsection{Homographische Transformation}
@@ -279,7 +280,7 @@ Die Funktion showMatches kann benutzt werden um anzuzeigen welche Keypoints in d
 
 \subsection{Datensatz}
 
-\begin{figure}
+\begin{figure}[h]
 \begin{center}
 \includegraphics[width=1.0\textwidth]{strand.jpg}
 \caption{strand: links und rechts}
@@ -306,7 +307,7 @@ Die Funktion showMatches kann benutzt werden um anzuzeigen welche Keypoints in d
 \begin{figure}
 \begin{center}
 \includegraphics[width=1.0\textwidth]{buntS.png}
-\caption{fig:bunt: stitched}
+\caption{bunt: stitched}
 \label{fig:buntS}
 \end{center}
 \end{figure}
@@ -412,7 +413,7 @@ Die Funktion showMatches kann benutzt werden um anzuzeigen welche Keypoints in d
 		Quelle: Patrick Wahrman\\
 		Aufnahmegerät: Spiegelreflexkamera Pentax K30 \\
 		Einstellungen für beide Bilder: \\
-		Brennweite: 120mm. \\
+		Brennweite: 120mm \\
 		Belichtungszeit: 1/100s \\
 		Blendenzahl: 3.5.
 
@@ -428,7 +429,7 @@ Die Funktion showMatches kann benutzt werden um anzuzeigen welche Keypoints in d
 		Quelle: Ernad Sehic\\
 		Aufnahmegerät: Spiegelreflexkamera Sony \\
 		Einstellungen für beide Geräte: \\
-		Brennweite: 35mm. \\
+		Brennweite: 35mm \\
 		Belichtungszeit: 1/250s \\
 		Blendenzahl: 13.
 
@@ -444,7 +445,7 @@ Die Funktion showMatches kann benutzt werden um anzuzeigen welche Keypoints in d
 		Quelle: Patrick Wahrman\\
 		Aufnahmegerät: Spiegelreflexkamera Pentax K30 \\
 		Einstellungen für beide Geräte: \\
-		Brennweite: 120mm. \\
+		Brennweite: 120mm \\
 		Belichtungszeit: 1/40s \\
 		Blendenzahl: 3.5.
 
@@ -452,7 +453,7 @@ Die Funktion showMatches kann benutzt werden um anzuzeigen welche Keypoints in d
 		Quelle: Patrick Wahrnamm\\
 		Aufnahmegerät: Spiegelreflexkamera Pentax K30 \\
 		Einstellungen für beide Geräte: \\
-		Brennweite: 120mm. \\
+		Brennweite: 120mm \\
 		Belichtungszeit: 1/100s\\
 		Blendenzahl: 3.5.
 \end{itemize}
