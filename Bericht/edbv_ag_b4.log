@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.1415926-2.5-1.40.14 (TeX Live 2013/Debian) (format=pdflatex 2015.1.4)  7 JAN 2015 16:58
+This is pdfTeX, Version 3.1415926-2.5-1.40.14 (TeX Live 2013/Debian) (format=pdflatex 2015.1.4)  7 JAN 2015 18:50
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -496,18 +496,18 @@ LaTeX Warning: Unused global option(s):
 (./edbv_ag_b4.aux)
 \openout1 = `edbv_ag_b4.aux'.
 
-LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 15.
-LaTeX Font Info:    ... okay on input line 15.
-LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 15.
-LaTeX Font Info:    ... okay on input line 15.
-LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 15.
-LaTeX Font Info:    ... okay on input line 15.
-LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 15.
-LaTeX Font Info:    ... okay on input line 15.
-LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 15.
-LaTeX Font Info:    ... okay on input line 15.
-LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 15.
-LaTeX Font Info:    ... okay on input line 15.
+LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 16.
+LaTeX Font Info:    ... okay on input line 16.
+LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 16.
+LaTeX Font Info:    ... okay on input line 16.
+LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 16.
+LaTeX Font Info:    ... okay on input line 16.
+LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 16.
+LaTeX Font Info:    ... okay on input line 16.
+LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 16.
+LaTeX Font Info:    ... okay on input line 16.
+LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 16.
+LaTeX Font Info:    ... okay on input line 16.
 
 (/usr/share/texlive/texmf-dist/tex/context/base/supp-pdf.mkii
 [Loading MPS to PDF converter (version 2006.09.02).]
@@ -603,11 +603,11 @@ Package caption Info: End \AtBeginDocument code.
 * \@reversemarginfalse
 * (1in=72.27pt=25.4mm, 1cm=28.453pt)
 
-LaTeX Font Info:    Try loading font information for U+msa on input line 31.
+LaTeX Font Info:    Try loading font information for U+msa on input line 32.
 (/usr/share/texlive/texmf-dist/tex/latex/amsfonts/umsa.fd
 File: umsa.fd 2013/01/14 v3.01 AMS symbols A
 )
-LaTeX Font Info:    Try loading font information for U+msb on input line 31.
+LaTeX Font Info:    Try loading font information for U+msb on input line 32.
 
 (/usr/share/texlive/texmf-dist/tex/latex/amsfonts/umsb.fd
 File: umsb.fd 2013/01/14 v3.01 AMS symbols B
@@ -617,112 +617,245 @@ File: umsb.fd 2013/01/14 v3.01 AMS symbols B
 
 
 {/var/lib/texmf/fonts/map/pdftex/updmap/pdftex.map}]
-LaTeX Font Info:    Try loading font information for OMS+cmr on input line 46.
+LaTeX Font Info:    Try loading font information for OMS+cmr on input line 47.
 
 (/usr/share/texlive/texmf-dist/tex/latex/base/omscmr.fd
 File: omscmr.fd 1999/05/25 v2.5h Standard LaTeX font definitions
 )
 LaTeX Font Info:    Font shape `OMS/cmr/m/n' in size <10.95> not available
-(Font)              Font shape `OMS/cmsy/m/n' tried instead on input line 46.
+(Font)              Font shape `OMS/cmsy/m/n' tried instead on input line 47.
 
-Overfull \hbox (7.8089pt too wide) in paragraph at lines 48--49
+Overfull \hbox (7.8089pt too wide) in paragraph at lines 49--50
 []\OT1/cmr/m/n/10.95 Die Be-lich-tungs-verh[]altnisse m[]ussen in bei-den Bil-d
 ern m[]oglichst gleich
  []
 
 
-Overfull \hbox (17.60304pt too wide) in paragraph at lines 49--50
+Overfull \hbox (17.60304pt too wide) in paragraph at lines 50--51
 \OT1/cmr/m/n/10.95 in-dem ent-fern-te Mo-ti-ve ver-wen-det wer-den und die Bren
 n-wei-te m[]oglichst
  []
 
 
-Overfull \hbox (16.93396pt too wide) in paragraph at lines 62--63
+Overfull \hbox (16.93396pt too wide) in paragraph at lines 63--64
 []\OT1/cmr/m/n/10.95 F[]ur Ro-ta-ti-ons-in-va-ri-anz wer-den die Keypoint-Umgeb
 ungsorientierungen
  []
 
 [2]
-Overfull \hbox (63.10774pt too wide) in paragraph at lines 65--66
+Overfull \hbox (63.10774pt too wide) in paragraph at lines 66--67
 []\OT1/cmr/m/n/10.95 uberandergelegt wer-den, dass die kor-re-spon-die-ren-den 
 Key-po-ints []ubereinstimmen. 
  []
 
 [3]
-Underfull \hbox (badness 10000) in paragraph at lines 86--89
+Underfull \hbox (badness 10000) in paragraph at lines 87--90
 
  []
 
 
-Overfull \hbox (30.74435pt too wide) in paragraph at lines 90--100
+Overfull \hbox (30.74435pt too wide) in paragraph at lines 91--101
  [] 
  []
 
 [4] [5] [6]
-Underfull \hbox (badness 10000) in paragraph at lines 133--137
+Underfull \hbox (badness 10000) in paragraph at lines 134--138
 
  []
 
 
-Overfull \hbox (0.56982pt too wide) in paragraph at lines 139--143
+Overfull \hbox (0.56982pt too wide) in paragraph at lines 140--144
 \OT1/cmr/m/n/10.95 von Ur-sprung und Ska-lie-rung des Ko-or-di-na-ten-sys-tems 
 der Bil-der abh[]angt,
  []
 
 [7] [8]
-Overfull \hbox (13.65378pt too wide) in paragraph at lines 168--177
+Overfull \hbox (13.65378pt too wide) in paragraph at lines 169--178
 \OT1/cmr/m/n/10.95 lin-ken Bild', 'Pfad zum rech-ten Bild', showKey-po-ints, sh
 ow-Mat-ches, useMRS
  []
 
 
-Overfull \hbox (14.59546pt too wide) in paragraph at lines 168--177
+Overfull \hbox (14.59546pt too wide) in paragraph at lines 169--178
 \OT1/cmr/m/n/10.95 ) ge-st-ar-tet, wo-bei die letz-te-ren drei Pa-ra-me-ter Boo
 lean-Werte sind: showKey-
  []
 
 
-Overfull \hbox (0.79784pt too wide) in paragraph at lines 168--177
+Overfull \hbox (0.79784pt too wide) in paragraph at lines 169--178
 \OT1/cmr/m/n/10.95 Es ist je-doch emp-foh-len die gra-fi-sche Ober-fl[]ache mit
 -tels Auf-ruf von GUI.m
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 168--177
+Underfull \hbox (badness 10000) in paragraph at lines 169--178
 
  []
 
 [9] [10] [11]
-Underfull \hbox (badness 10000) in paragraph at lines 248--251
+Underfull \hbox (badness 10000) in paragraph at lines 249--252
 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 248--251
+Underfull \hbox (badness 10000) in paragraph at lines 249--252
 
  []
 
 [12]
-Underfull \hbox (badness 10000) in paragraph at lines 258--265
+Underfull \hbox (badness 10000) in paragraph at lines 259--266
 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 258--265
+Underfull \hbox (badness 10000) in paragraph at lines 259--266
 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 258--265
+Underfull \hbox (badness 10000) in paragraph at lines 259--266
 
  []
 
 [13]
-Underfull \hbox (badness 10000) in paragraph at lines 271--274
+Underfull \hbox (badness 10000) in paragraph at lines 272--275
 
  []
 
-[14] [15]
+[14] [15] <./pictures/strand.jpg, id=59, 771.63281pt x 255.20343pt>
+File: ./pictures/strand.jpg Graphic file (type jpg)
+
+<use ./pictures/strand.jpg>
+Package pdftex.def Info: ./pictures/strand.jpg used on input line 288.
+(pdftex.def)             Requested size: 347.12361pt x 114.80544pt.
+
+<./pictures/strandS.png, id=60, 719.68875pt x 340.27126pt>
+File: ./pictures/strandS.png Graphic file (type png)
+
+<use ./pictures/strandS.png>
+Package pdftex.def Info: ./pictures/strandS.png used on input line 296.
+(pdftex.def)             Requested size: 347.12361pt x 164.12793pt.
+
+<./pictures/bunt.jpg, id=61, 909.3975pt x 301.125pt>
+File: ./pictures/bunt.jpg Graphic file (type jpg)
+ <use ./pictures/bunt.jpg>
+Package pdftex.def Info: ./pictures/bunt.jpg used on input line 304.
+(pdftex.def)             Requested size: 347.12361pt x 114.9433pt.
+
+<./pictures/buntS.png, id=62, 846.16125pt x 438.63875pt>
+File: ./pictures/buntS.png Graphic file (type png)
+
+<use ./pictures/buntS.png>
+Package pdftex.def Info: ./pictures/buntS.png used on input line 312.
+(pdftex.def)             Requested size: 347.12361pt x 179.94344pt.
+
+<./pictures/tower.jpg, id=63, 254.6313pt x 130.086pt>
+File: ./pictures/tower.jpg Graphic file (type jpg)
+
+<use ./pictures/tower.jpg>
+Package pdftex.def Info: ./pictures/tower.jpg used on input line 320.
+(pdftex.def)             Requested size: 347.12361pt x 177.34135pt.
+
+<./pictures/towerS.png, id=64, 815.045pt x 542.025pt>
+File: ./pictures/towerS.png Graphic file (type png)
+
+<use ./pictures/towerS.png>
+Package pdftex.def Info: ./pictures/towerS.png used on input line 328.
+(pdftex.def)             Requested size: 347.12361pt x 230.8414pt.
+
+<./pictures/sanmiguelito.jpg, id=65, 1430.34375pt x 401.5pt>
+File: ./pictures/sanmiguelito.jpg Graphic file (type jpg)
+
+<use ./pictures/sanmiguelito.jpg>
+Package pdftex.def Info: ./pictures/sanmiguelito.jpg used on input line 336.
+(pdftex.def)             Requested size: 347.12361pt x 97.43408pt.
+
+<./pictures/sanmiguelitoS.png, id=66, 995.72pt x 409.53pt>
+File: ./pictures/sanmiguelitoS.png Graphic file (type png)
+
+<use ./pictures/sanmiguelitoS.png>
+Package pdftex.def Info: ./pictures/sanmiguelitoS.png used on input line 344.
+(pdftex.def)             Requested size: 347.12361pt x 142.76898pt.
+
+<./pictures/skylineS.png, id=67, 1887.05pt x 565.11125pt>
+File: ./pictures/skylineS.png Graphic file (type png)
+
+<use ./pictures/skylineS.png>
+Package pdftex.def Info: ./pictures/skylineS.png used on input line 352.
+(pdftex.def)             Requested size: 347.12361pt x 103.94896pt.
+
+<./pictures/munich.jpg, id=68, 772.38562pt x 255.20343pt>
+File: ./pictures/munich.jpg Graphic file (type jpg)
+
+<use ./pictures/munich.jpg>
+Package pdftex.def Info: ./pictures/munich.jpg used on input line 360.
+(pdftex.def)             Requested size: 347.12361pt x 114.6925pt.
+
+<./pictures/munichS.png, id=69, 572.1375pt x 411.5375pt>
+File: ./pictures/munichS.png Graphic file (type png)
+
+<use ./pictures/munichS.png>
+Package pdftex.def Info: ./pictures/munichS.png used on input line 368.
+(pdftex.def)             Requested size: 347.12361pt x 249.68741pt.
+
+<./pictures/demo.jpg, id=70, 1156.32pt x 418.56375pt>
+File: ./pictures/demo.jpg Graphic file (type jpg)
+
+<use ./pictures/demo.jpg>
+Package pdftex.def Info: ./pictures/demo.jpg used on input line 376.
+(pdftex.def)             Requested size: 347.12361pt x 125.64673pt.
+
+<./pictures/demoS.png, id=71, 748.7975pt x 601.24625pt>
+File: ./pictures/demoS.png Graphic file (type png)
+
+<use ./pictures/demoS.png>
+Package pdftex.def Info: ./pictures/demoS.png used on input line 384.
+(pdftex.def)             Requested size: 347.12361pt x 278.7234pt.
+
+<./pictures/winter.jpg, id=72, 1139.00531pt x 376.40625pt>
+File: ./pictures/winter.jpg Graphic file (type jpg)
+
+<use ./pictures/winter.jpg>
+Package pdftex.def Info: ./pictures/winter.jpg used on input line 392.
+(pdftex.def)             Requested size: 347.12361pt x 114.70897pt.
+
+<./pictures/winterS.png, id=73, 924.45375pt x 501.875pt>
+File: ./pictures/winterS.png Graphic file (type png)
+
+<use ./pictures/winterS.png>
+Package pdftex.def Info: ./pictures/winterS.png used on input line 400.
+(pdftex.def)             Requested size: 347.12361pt x 188.44771pt.
+ [16 <./pictures/strand.jpg>] [17 <./pictures/strandS.png (PNG copy)> <./pictur
+es/bunt.jpg>] [18 <./pictures/buntS.png (PNG copy)> <./pictures/tower.jpg>] [19
+ <./pictures/towerS.png (PNG copy)> <./pictures/sanmiguelito.jpg>] [20 <./pictu
+res/sanmiguelitoS.png (PNG copy)> <./pictures/skylineS.png (PNG copy)> <./pictu
+res/munich.jpg>] [21 <./pictures/munichS.png (PNG copy)> <./pictures/demo.jpg>]
+ [22 <./pictures/demoS.png (PNG copy)> <./pictures/winter.jpg>] [23 <./pictures
+/winterS.png (PNG copy)>]
+
+LaTeX Warning: Reference `strand' on page 24 undefined on input line 472.
+
+
+LaTeX Warning: Reference `strandS' on page 24 undefined on input line 472.
+
+
+LaTeX Warning: Reference `skyline' on page 24 undefined on input line 472.
+
+
+LaTeX Warning: Reference `skylineS' on page 24 undefined on input line 472.
+
+
+LaTeX Warning: Reference `winter' on page 24 undefined on input line 472.
+
+
+LaTeX Warning: Reference `winterS' on page 24 undefined on input line 472.
+
+
+LaTeX Warning: Reference `demo' on page 24 undefined on input line 472.
+
+
+LaTeX Warning: Reference `demoS' on page 24 undefined on input line 472.
+
 
 ! Package inputenc Error: Unicode char \u8:ﬂ not set up for use with LaTeX.
 
@@ -730,49 +863,68 @@ See the inputenc package documentation for explanation.
 Type  H <return>  for immediate help.
  ...                                              
                                                   
-l.290 ...der Eingabebilder einen merklichen Einﬂ
+l.473 ...der Eingabebilder einen merklichen Einﬂ
                                                   uss auf das Ergebnis?
 Your command was ignored.
 Type  I <command> <return>  to replace it with another command,
 or  <return>  to continue without it.
 
-[16]
-Underfull \hbox (badness 10000) in paragraph at lines 302--307
+
+LaTeX Warning: Reference `sanmiguelito' on page 24 undefined on input line 476.
+
+
+
+LaTeX Warning: Reference `sanmiguelitoS' on page 24 undefined on input line 476
+.
+
+
+LaTeX Warning: Reference `munich' on page 24 undefined on input line 476.
+
+
+LaTeX Warning: Reference `munichS' on page 24 undefined on input line 476.
+
+[24] [25]
+Underfull \hbox (badness 10000) in paragraph at lines 485--490
 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 302--307
+Underfull \hbox (badness 10000) in paragraph at lines 485--490
 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 302--307
+Underfull \hbox (badness 10000) in paragraph at lines 485--490
 
  []
 
-[17] (./edbv_ag_b4.bbl) [18] (./edbv_ag_b4.aux) ) 
+[26] (./edbv_ag_b4.bbl) [27] (./edbv_ag_b4.aux)
+
+LaTeX Warning: There were undefined references.
+
+ ) 
 Here is how much of TeX's memory you used:
- 6118 strings out of 494976
- 91347 string characters out of 6179138
- 206676 words of memory out of 5000000
- 9237 multiletter control sequences out of 15000+600000
- 12714 words of font info for 49 fonts, out of 8000000 for 9000
+ 6230 strings out of 494976
+ 93530 string characters out of 6179138
+ 208834 words of memory out of 5000000
+ 9330 multiletter control sequences out of 15000+600000
+ 13022 words of font info for 50 fonts, out of 8000000 for 9000
  14 hyphenation exceptions out of 8191
- 48i,8n,52p,1148b,231s stack positions out of 5000i,500n,10000p,200000b,80000s
-</usr/share/texlive/texmf-dist
-/fonts/type1/public/amsfonts/cm/cmmi10.pfb></usr/share/texlive/texmf-dist/fonts
-/type1/public/amsfonts/cm/cmmi8.pfb></usr/share/texlive/texmf-dist/fonts/type1/
-public/amsfonts/cm/cmr10.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/
-amsfonts/cm/cmr12.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfont
-s/cm/cmr8.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cms
-sbx10.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy10.
-pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy8.pfb></u
-sr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmti10.pfb>
-Output written on edbv_ag_b4.pdf (18 pages, 152295 bytes).
+ 48i,8n,52p,1148b,377s stack positions out of 5000i,500n,10000p,200000b,80000s
+</usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmbx10.pfb></us
+r/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi10.pfb></usr/shar
+e/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi8.pfb></usr/share/texli
+ve/texmf-dist/fonts/type1/public/amsfonts/cm/cmr10.pfb></usr/share/texlive/texm
+f-dist/fonts/type1/public/amsfonts/cm/cmr12.pfb></usr/share/texlive/texmf-dist/
+fonts/type1/public/amsfonts/cm/cmr8.pfb></usr/share/texlive/texmf-dist/fonts/ty
+pe1/public/amsfonts/cm/cmssbx10.pfb></usr/share/texlive/texmf-dist/fonts/type1/
+public/amsfonts/cm/cmsy10.pfb></usr/share/texlive/texmf-dist/fonts/type1/public
+/amsfonts/cm/cmsy8.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfon
+ts/cm/cmti10.pfb>
+Output written on edbv_ag_b4.pdf (27 pages, 6619282 bytes).
 PDF statistics:
- 98 PDF objects out of 1000 (max. 8388607)
- 68 compressed objects within 1 object stream
+ 146 PDF objects out of 1000 (max. 8388607)
+ 91 compressed objects within 1 object stream
  0 named destinations out of 1000 (max. 500000)
- 1 words of extra memory for PDF output out of 10000 (max. 10000000)
+ 76 words of extra memory for PDF output out of 10000 (max. 10000000)
 
