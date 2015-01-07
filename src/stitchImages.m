@@ -1,5 +1,6 @@
 function [mosaic] = stitchImages( imA, imB, HBtoA, HAtoB, spline )
 %% STITCHIMAGES3 Creates image mosaic 
+%% Author: Hanna Huber
 %   Input: imA, imB ... m1xn1, m2xn2 images
 %          HBtoA    ... 3x3 homography matrix s.t Hx2 = x1 (with hom. coords)
 %          HAtoB    ... 3x3 homography matrix s.t Hx1 = x2 (with hom. coords)
