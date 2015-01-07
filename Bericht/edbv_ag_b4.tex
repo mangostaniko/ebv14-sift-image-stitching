@@ -6,6 +6,7 @@
 \usepackage{algorithmic}
 %%\usepackage{algorithm}
 \usepackage{graphicx}
+\graphicspath{ {./pictures/} }
 \usepackage{amsmath,amssymb}
 \usepackage{subcaption}
 \captionsetup{compatibility=false}
@@ -212,7 +213,7 @@ in einem weiteren Schritt in der Funktion removeLowContrast dezimiert, indem
 alle potentiellen Keypoints an deren Stelle kein ausreichender Kontrast
 vorliegt, verworfen werden. Um die Qualität der verwendeten Keypoints zu
 verbessern, werden daraufhin in der Methode removeEdges alle Keypoints
-entfernt die keine \"Ecken\" darstellen, das bedeutet Kanten werden
+entfernt die keine "`Ecken"' darstellen, das bedeutet Kanten werden
 verworfen, da diese nicht eindeutig genug wären, um ein Matching zu
 ermöglichen.
 
@@ -283,110 +284,182 @@ Diskussion der Evaluierungsfragen: Beantwortung der Fragen, Diskussion anhand vo
 \subsection{Datensatz}
 
 \begin{figure}
-\includegraphics{strand.png}
+\begin{center}
+\includegraphics[width=1.0\textwidth]{strand.jpg}
 \caption{strand: links und rechts}
-\label{strand}
+\label{fig:strand}
+\end{center}
 \end{figure}
 
 \begin{figure}
-\includegraphics{strandS.png}
+\begin{center}
+\includegraphics[width=1.0\textwidth]{strandS.png}
 \caption{strand: stitched}
-\label{strandS}
+\label{fig:strandS}
+\end{center}
 \end{figure}
 
 \begin{figure}
-\includegraphics{bunt.png}
+\begin{center}
+\includegraphics[width=1.0\textwidth]{bunt.jpg}
 \caption{bunt: links und rechts}
-\label{bunt}
+\label{fig:bunt}
+\end{center}
 \end{figure}
 
 \begin{figure}
-\includegraphics{buntS.png}
-\caption{bunt: stitched}
+\begin{center}
+\includegraphics[width=1.0\textwidth]{buntS.png}
+\caption{fig:bunt: stitched}
 \label{buntS}
+\end{center}
 \end{figure}
 
 \begin{figure}
-\includegraphics{tower.png}
+\begin{center}
+\includegraphics[width=1.0\textwidth]{tower.jpg}
 \caption{tower: links und rechts}
-\label{tower}
+\label{fig:tower}
+\end{center}
 \end{figure}
 
 \begin{figure}
-\includegraphics{towerS.png}
+\begin{center}
+\includegraphics[width=1.0\textwidth]{towerS.png}
 \caption{tower: stitched}
-\label{towerS}
+\label{fig:towerS}
+\end{center}
 \end{figure}
 
 \begin{figure}
-\includegraphics{sanmiguelito.png}
+\begin{center}
+\includegraphics[width=1.0\textwidth]{sanmiguelito.jpg}
 \caption{sanmiguelito: links und rechts}
-\label{sanmiguelito}
+\label{fig:sanmiguelito}
+\end{center}
 \end{figure}
 
 \begin{figure}
-\includegraphics{sanmiguelitoS.png}
+\begin{center}
+\includegraphics[width=1.0\textwidth]{sanmiguelitoS.png}
 \caption{sanmiguelito: stitched}
-\label{sanmiguelitoS}
+\label{fig:sanmiguelitoS}
+\end{center}
 \end{figure}
 
 \begin{figure}
-\includegraphics{skyline.png}
-\caption{skyline: links und rechts}
-\label{skyline}
-\end{figure}
-
-\begin{figure}
-\includegraphics{skylineS.png}
+\begin{center}
+\includegraphics[width=1.0\textwidth]{skylineS.png}
 \caption{skyline: stitched}
-\label{skylineS}
+\label{fig:skylineS}
+\end{center}
 \end{figure}
 
 \begin{figure}
-\includegraphics{munich.png}
+\begin{center}
+\includegraphics[width=1.0\textwidth]{munich.jpg}
 \caption{munich: links und rechts}
-\label{munich}
+\label{fig:munich}
+\end{center}
 \end{figure}
 
 \begin{figure}
-\includegraphics{munichS.png}
+\begin{center}
+\includegraphics[width=1.0\textwidth]{munichS.png}
 \caption{munich: stitched}
-\label{munichS}
+\label{fig:munichS}
+\end{center}
 \end{figure}
 
 \begin{figure}
-\includegraphics{demo.png}
+\begin{center}
+\includegraphics[width=1.0\textwidth]{demo.jpg}
 \caption{demo: links und rechts}
-\label{demo}
+\label{fig:demo}
+\end{center}
 \end{figure}
 
 \begin{figure}
-\includegraphics{demoS.png}
+\begin{center}
+\includegraphics[width=1.0\textwidth]{demoS.png}
 \caption{demo: stitched}
-\label{demoS}
+\label{fig:demoS}
+\end{center}
 \end{figure}
 
 \begin{figure}
-\includegraphics{winter.png}
+\begin{center}
+\includegraphics[width=1.0\textwidth]{winter.jpg}
 \caption{winter: links und rechts}
-\label{winter}
+\label{fig:winter}
+\end{center}
 \end{figure}
 
 \begin{figure}
-\includegraphics{winterS.png}
+\begin{center}
+\includegraphics[width=1.0\textwidth]{winterS.png}
 \caption{winter: stitched}
-\label{winterS}
+\label{fig:winterS}
+\end{center}
 \end{figure}
 
 \begin{itemize}
-\item strand.png
-\item bunt.png
-\item tower.png
-\item sanmiguelito.png
-\item strand.png
-\item munich.png
-\item demo.png
-\en{itemize}
+	\item strand.jpg\\
+		Quelle: Patrick Wahrman\\
+		Aufnahmegerät: Spiegelreflexkamera Pentax K30 \\
+		Einstellungen für beide Bilder: \\
+		Brennweite: 200mm. \\
+		Belichtungszeit: 1/13s \\
+		Blendenzahl: 3.5.
+
+	\item winter.jpg\\
+		Quelle: Patrick Wahrman\\
+		Aufnahmegerät: Spiegelreflexkamera Pentax K30 \\
+		Einstellungen für beide Bilder: \\
+		Brennweite: 120mm. \\
+		Belichtungszeit: 1/40s \\
+		Blendenzahl: 3.5.
+
+	\item bunt.jpg\\
+		Quelle: Patrick Wahrman\\
+		Aufnahmegerät: Spiegelreflexkamera Pentax K30 \\
+		Einstellungen für beide Bilder: \\
+		Brennweite: 200mm. \\
+		Belichtungszeit: 1/13s \\
+		Blendenzahl: 3.5.
+
+	\item tower.jpg\\
+		Quelle: Ernad Sehic\\
+		Aufnahmegerät: Spiegelreflexkamera Sony \\
+		Einstellungen für beide Geräte: \\
+		Brennweite: 35mm. \\
+		Belichtungszeit: 1/250s \\
+		Blendenzahl: 13.
+
+	\item sanmiguelito.jpg\\
+		Quelle: Nikolaus Leopold \\
+		Aufnahmegerät: gewöhnliche Digitalkamera Canon\\
+		Standardeinstellungen für beide Bilder
+
+	\item demo.jpg\\
+		Quelle: \cite{pandemo}
+
+	\item munich.jpg\\
+		Quelle: Patrick Wahrman\\
+		Aufnahmegerät: Spiegelreflexkamera Pentax K30 \\
+		Einstellungen für beide Geräte: \\
+		Brennweite: 120mm. \\
+		Belichtungszeit: 1/40s \\
+		Blendenzahl: 3.5.
+
+	\item skyline.jpg\\
+		Quelle: Patrick Wahrnamm\\
+		Aufnahmegerät: Spiegelreflexkamera Pentax K30 \\
+		Einstellungen für beide Geräte: \\
+		Brennweite: 120mm. \\
+		Belichtungszeit: 1/40s \\
+		Blendenzahl: 3.5.
+\end{itemize}
 
 \subsection{Diskussion der Evaluierungsfragen}
 
@@ -396,11 +469,11 @@ Diskussion der Evaluierungsfragen: Beantwortung der Fragen, Diskussion anhand vo
 	\item Werden übereinstimmende Bildpaare gefunden? 
 		Obwohl vereinzelt auch nicht zusammenpassende Keypointpaare detektiert werden, wird die Zuordnung generell erfolgreich ausgeführt.
 	\item Werden die Bilder korrekt zusammengefügt? 
-		Abhängig von der perspektivischen Verzerrung der Bilder funktioniert das Image Stitching generell gut bis sehr gut (siehe \figref{strand} und \figref{strandS} bzw \figref{skyline} und \figref{skylineS}). In Bildbereichen, in denen keine Matches gefunden werden, können die Übergänge jedoch teilweise fehlerhaft sein (siehe \figref{winter} und \figref{winterS} bzw \figref{demo} und \figref{demoS}).
+		Abhängig von der perspektivischen Verzerrung der Bilder funktioniert das Image Stitching generell gut bis sehr gut (siehe \ref{strand} und \ref{strandS} bzw \ref{skyline} und \ref{skylineS}). In Bildbereichen, in denen keine Matches gefunden werden, können die Übergänge jedoch teilweise fehlerhaft sein (siehe \ref{winter} und \ref{winterS} bzw \ref{demo} und \ref{demoS}).
 	\item Hat die Auflösung der Eingabebilder einen merklichen Einﬂuss auf das Ergebnis? 
 		Innerhalb des empfohlenen Rahmens gibt es keine ersichtlichen Unterschiede. Bei einer zu hohen Auflösung ist der Rechenaufwand zu groß und ein korrektes Ergebnis kann nicht garantiert werden. 
 	\item Welche Bilddaten / Szenen sind ungünstig für den Erfolg des Verfahrens? 
-		Das rechte Bild darf keine Bereiche darstellen, die links vom linken Bild liegen (siehe \figref{sanmiguelito} und \figref{sanmiguelitoS}). Perspektivische Verzerrungen führen ebenfalls zu Fehlern, Rotationen dürfen also lediglich in der xy-Ebene stattfinden (siehe \figref{munich} und \figref{munichS}). Dazu sind unterschiedliche oder schlechte , wie z.B. am Abend vorherrschende, Lichtverhältnisse problematisch.
+		Das rechte Bild darf keine Bereiche darstellen, die links vom linken Bild liegen (siehe \ref{sanmiguelito} und \ref{sanmiguelitoS}). Perspektivische Verzerrungen führen ebenfalls zu Fehlern, Rotationen dürfen also lediglich in der xy-Ebene stattfinden (siehe \ref{munich} und \ref{munichS}). Dazu sind unterschiedliche oder schlechte , wie z.B. am Abend vorherrschende, Lichtverhältnisse problematisch.
 	\item Ist das GUI intuitiv aufgebaut?
 		Das GUI ist simpel gestaltet und selbsterklärend. Die Mouseover-Funktion liefert zusätzliche Informationen.
 \end{itemize}
