@@ -1,5 +1,6 @@
 function [ mosaic ] = multiResSpline( imArgb, imBrgb, mask )
 %% MULITRESSPLINE Blends images using multiresolution spline
+%%  Author: Hanna Huber
 %   Input: imA, imB ... mxn or mxnx3 images to be splined
 %          mask     ... mxn logical image
 %                       mask=1 for pixels that are taken from imB
