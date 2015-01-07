@@ -136,7 +136,7 @@ Bei SIFT werden daher die Deskriptoren durch Histogramme der Gradientenmagnitude
 
 \subsection{Matching} 
 Nun müssen Keypoints, die denselben Interest Point beschreiben, einander zugewiesen werden. Wie bei Lowe\cite{lowe04} wird dazu der Nearest-Neighbor-Ansatz gewählt.\\
-Allerdings wird statt der euklidischen Distanz der Winkel zwischen den Deskriptor-Vektoren der entsprechenden Keypoints zwischen den Vektoren minimiert. Dieser lässt sich leicht aus dem Skalarprodukt der beiden Vektoren ermitteln. Für jeden Deskriptor des ersten Bildes können die entsprechenden Skalarprodukte für alle Deskriptoren des zweiten Bildes mittels einer einzigen Vektor-Matrix-Multiplikation berechnet werden.\\
+Allerdings wird statt der euklidischen Distanz der Winkel zwischen den Deskriptor-Vektoren der entsprechenden Keypoints zwischen den Vektoren minimiert, der sich mithilfe des Skalarpodukt leicht berechnen lässt. \\
 Um die Eindeutigkeit der Zuweisung zu garantieren, wird der kleinste Winkel mit dem zweitkleinsten verglichen\cite{lowe04}. Nur wenn deren Verhältnis unter einem Schwellwert liegt, wird die Zuweisung akzeptiert.\\
 Zusätzlich wird überprüft, ob der Deskriptor mit minimalem Winkelabstand bereits einem zuvor betrachteten Deskriptor zugewiesen wurde. In diesem Fall wird dieser durch den aktuellen Deskriptor ersetzt.\\
 
@@ -149,8 +149,15 @@ Da eine korrekte Lösung des oben beschriebenen Gleichungssystems stark von Ursp
 \subsection{Image Stitching}
 Das Bildmosaik wird erstellt, indem das rechte Bild, $imB$, mithilfe der Homographie ins Koordinatensystem des linken Bildes, $imA$, transformiert wird. Um durch gerundete Daten entstehende Löcher zu vermeiden, wird dafür zunächst die Lage des transformierten Bildes im neuen Koordinatensystem ermittelt, indem die Ecken von $imB$ transformiert werden. Damit kann die Größe des Bildmosaiks berechnet werden.\\
 Nun wird $imA$ entsprechend erweitert und eine Maske von derselben Größe erstellt, die die Region für das transformierte $imB$ enthält. Für diese Region werden anschließend mithilfe der inversen Homographie die entsprechenden Bildwerte berechnet. \\
-Für das naive Splining wird schließlich das Bildmosaik mittels $I_{Mosaik}=(1-I_{Maske})\cdot I_{A,erweitert} + I_{Maske}\cdot I_{B,tranformiert+erweitert}$ erstellt. \\
-Für das Multiresolution Splining\cite{spline83} werden von beiden (erweiterten bzw transformierten) Bildern sowie der Maske Laplacepyramiden erstellt. Dadurch wird der Frequenzbereich in einzelne Bandbreiten von einer Oktave aufgeteilt. Nun wird auf jeder Ebene wie beim naiven Splining ein Bildmosaik zusammengesetzt. Am Ende werden die Bilder der Mosaikpyramide schließlich zu einem Mosaik zusammengefügt.
+Für das naive Splining wird schließlich das Bildmosaik mittels 
+\begin{equation}\label{naive}
+	I_{Mosaik}=(1-I_{Maske})\cdot I_{A,erweitert} + I_{Maske}\cdot I_{B,tranformiert+erweitert}
+\end{equation} erstellt. \\
+Für das Multiresolution Splining\cite{spline83} werden von beiden (erweiterten bzw transformierten) Bildern sowie der Maske Laplacepyramiden erstellt. Dadurch wird der Frequenzbereich in einzelne Bandbreiten von einer Oktave aufgeteilt. Nun wird auf jeder Ebene $j$ wie beim naiven Splining ein Bildmosaik zusammengesetzt:
+\begin{equation}\label{mrs}
+	I_{Mosaik,j}=(1-G_{Maske,j})\cdot L_{A,erweitert,j} + L_{Maske}\cdot I_{B,tranformiert+erweitert,j}
+\end{equation} \\ 
+Dafür werden für das linke und rechte Bild die Laplacebilder und für die Maske das Gaußbild der entsprechenden Ebene verwendet. Am Ende werden die Bilder der Mosaikpyramide schließlich zu einem Mosaik zusammengefügt.
 
 %%------------------------------------------------------
 
@@ -163,17 +170,39 @@ Wie habt ihr die im vorhergehnden Abschnitt vorgestellte Methodik praktisch umge
 Hier ist Platz für Implementierungsdetails wie zB. gewählte Parameter. \\
 Wie startet der User das Programm? Welche Parameter hat der User zu setzen?\\
 Auch in diesem Abschnitt können Referenzen und Zitate notwendig sein.\\\\
+
+\subsection{Aufrufen der Image-Stitching-Pipeline und Einlesen der Bilder}
+\begin{itemize}
+	\item gui.m 
+	\item main.m 
+	\item mainCMD.m
+\end{itemize}
 Die in Abschnitt 3 (Methodik) beschriebene Funktionalität ist in
 Matlab-Funktionen gegliedert und in main.m zur kompletten
 Image-Stitching-Pipeline zusammengefügt. Der Prozess wird durch mainCMD('Pfad
-zum linken Bild', 'Pfad zum rechten Bild', showKeypoints, showMatches, useMRS ) gestartet, wobei die letzteren drei Parameter Boolean-Werte sind: showKeypoints bzw. showMatches zeigen vor dem fertigen Bild die gefundenen Keypoints sowie das Matching an. Ist useMRS gesetzt, wird der Multi-Resoltion-Spline-Ansatz für das Stitching verwendet, was zu weicheren Bildverläufen/-nähten führt.
+zum linken Bild', 'Pfad zum rechten Bild', showKeypoints, showMatches, useMRS ) gestartet, wobei die letzteren drei Parameter Boolean-Werte sind: showKeypoints bzw. showMatches zeigen vor dem fertigen Bild die gefundenen Keypoints sowie das Matching an. Ist useMRS gesetzt, wird der Multi-Resoltion-Spline-Ansatz für das Stitching verwendet, was zu weicheren Bildverläufen/-nähten führt. \\
 Es ist jedoch empfohlen die grafische Oberfläche mittels Aufruf
 von GUI.m zu verwenden. Alle notwendigen Schritte sind in dieser erklärt.\\
 Die grafische Oberfläche ruft die Methode main auf, in der alle weiteren
-Methoden der Reihe nach verwendet werden. \\\\
+Methoden der Reihe nach verwendet werden.
+
+\subsection{Bildpyramiden}
+\begin{itemize}
+	\item createDog.m 
+	\item createGaussPyr.m 
+	\item createLog.m
+\end{itemize}
 Nachdem die Bilder eingelesen wurden werden in einem ersten Schritt im Rahmen
 der Methode createDoG die Bildpyramiden aufgebaut, die benötigt werden um
-Interest Points zu finden. Die generierten DoG-Bilder (Difference of
+Interest Points zu finden. 
+
+\subsection{Position der Interest Points}
+\begin{itemize}
+	\item findExtrema.m 
+	\item removeLowContrast.m
+	\item removeEdges.m
+\end{itemize}
+Die generierten DoG-Bilder (Difference of
 Gaussians) werden daraufhin in der Funktion findExtrema auf Minima und
 Maxima untersucht. Dabei wird für eine effiziente Berechnung dieser auf
 einen kleinen Trick zurückgegriffen: Damit ein Pixel mit allen 26 direkten
@@ -185,11 +214,60 @@ vorliegt, verworfen werden. Um die Qualität der verwendeten Keypoints zu
 verbessern, werden daraufhin in der Methode removeEdges alle Keypoints
 entfernt die keine \"Ecken\" darstellen, das bedeutet Kanten werden
 verworfen, da diese nicht eindeutig genug wären, um ein Matching zu
-ermöglichen.\\
-Im nächsten Schritt werden in der Methode findOrientations für alle Keypoints die Umgebungsorientierungen bestimmt, um Rotationsinvarianz zu gewährleisten. Wie bereits im Abschnitt Methodik beschrieben, werden dazu die Magnituden der Gradienten aller Pixel in einem 9x9-Fenster um den Keypoint nach ihren Orientierungen klassifiziert und die Magnituden aller Gradienten einer Klasse aufsummiert (es wird also ein Histogramm erstellt). Dabei wird die 4er-Nachbarschaft der Pixel betrachtet. Wichtig ist, das die Gradienten immer in jenen Scale-Space-Stufen berechnet werden, in denen der Extrempunkt (potentieller Keypoint) gefunden wurde. Um die Orientierungen zu bestimmen, wird atan2 verwendet, da die Fallbehandlungen die bei atan notwendig sind, inkludiert sind. Die Magnituden werden in 36 Klassen (zu je 10$\,^{\circ}$) unterteilt und summiert. Dabei werden sie mit einer um den Keypoints verteilten Gauss'schen Gewichtung versehen. Die Orientierung der dominanten Klasse wird als Umgebungsorientierung des Keypoints herangezogen, wobei einfach der Median des 10$\,^{\circ}$-Intervalls gewählt wird.\cite{lowe04} \\\\
-Nun werden, wie in Methodik beschrieben, die Keypoint-Deskriptoren erstellt. Dies geschieht in der Methode createDescriptors, wo für 16 4x4-Fenster um den Keypoint jeweils wie in findOrienations Histogramme der Gradientenmagnituden erstellt werden. Die Gauss'sche Gewichtung erfolgt dabei mit sigma von 2. Die Magnituden werden in 8 Klassen aufsummiert. Im Sinne der Rotationsinvarianz werden die Orientierungen relativ zur Keypoint-Umgebungsorientierung bestimmt. Insgesammt ergibt sich somit für einen SIFT-Deskriptor ein Vektor von 16*8 = 128 Elementen. Diese werden in Folge noch normalisiert (nach euklidischer Norm), und dannach Magnituden größer als 1/5 auf diesen Wert gesetzt, um den Einfluss von Beleuchtungsunterschieden zu vermindern, (dannach wird erneut normalisiert). Zu beachten ist noch, dass der Einfachheit halber Keypoints, die zu nah an den Bildrändern liegen (so dass die Fenster über den Rand hinausgehen würden), nicht berücksichtigt werden.\\\\
-Für ein reibungsloses Zusammenspielen der einzelnen Komponenten sind in den Funktions-Headern die Schnittstellen definiert, also das Format der Parameter und Rückgabewerte beschrieben. Für genauere Information zu den einzelnen Funktionen sind daher diese heranzuziehen.\\\\
+ermöglichen.
+
+\subsection{Keypoint-Umgebungsorientierungen}
+\begin{itemize}
+	\item findOrientations.m 
+\end{itemize}
+Im nächsten Schritt werden in der Methode findOrientations für alle Keypoints die Umgebungsorientierungen bestimmt, um Rotationsinvarianz zu gewährleisten. Wie bereits im Abschnitt Methodik beschrieben, werden dazu die Magnituden der Gradienten aller Pixel in einem 9x9-Fenster um den Keypoint nach ihren Orientierungen klassifiziert und die Magnituden aller Gradienten einer Klasse aufsummiert (es wird also ein Histogramm erstellt). Dabei wird die 4er-Nachbarschaft der Pixel betrachtet. Wichtig ist, das die Gradienten immer in jenen Scale-Space-Stufen berechnet werden, in denen der Extrempunkt (potentieller Keypoint) gefunden wurde. Um die Orientierungen zu bestimmen, wird atan2 verwendet, da die Fallbehandlungen die bei atan notwendig sind, inkludiert sind. Die Magnituden werden in 36 Klassen (zu je 10$\,^{\circ}$) unterteilt und summiert. Dabei werden sie mit einer um den Keypoints verteilten Gauss'schen Gewichtung versehen. Die Orientierung der dominanten Klasse wird als Umgebungsorientierung des Keypoints herangezogen, wobei einfach der Median des 10$\,^{\circ}$-Intervalls gewählt wird.\cite{lowe04} 
+
+\subsection{SIFT-Deskriptoren}
+\begin{itemize}
+	\item createDescriptors.m 
+\end{itemize}
+Nun werden, wie in Methodik beschrieben, die Keypoint-Deskriptoren erstellt. Dies geschieht in der Methode createDescriptors, wo für 16 4x4-Fenster um den Keypoint jeweils wie in findOrienations Histogramme der Gradientenmagnituden erstellt werden. Die Gauss'sche Gewichtung erfolgt dabei mit sigma von 2. Die Magnituden werden in 8 Klassen aufsummiert. Im Sinne der Rotationsinvarianz werden die Orientierungen relativ zur Keypoint-Umgebungsorientierung bestimmt. Insgesammt ergibt sich somit für einen SIFT-Deskriptor ein Vektor von 16*8 = 128 Elementen. Diese werden in Folge noch normalisiert (nach euklidischer Norm), und dannach Magnituden größer als 1/5 auf diesen Wert gesetzt, um den Einfluss von Beleuchtungsunterschieden zu vermindern, (dannach wird erneut normalisiert). Zu beachten ist noch, dass der Einfachheit halber Keypoints, die zu nah an den Bildrändern liegen (so dass die Fenster über den Rand hinausgehen würden), nicht berücksichtigt werden.
+
+\subsection{Keypoint-Matching}
+\begin{itemize}
+	\item matchKeypoints.m
+\end{itemize}
+Aufgabe dieser Funktion ist es, Keypointpaare mit minimalem Winkelabstand zu finden. Dieser lässt sich leicht aus dem Skalarprodukt der beiden Vektoren ermitteln. Dafür wird über die Liste der Keypoints des ersten Bildes iteriert. Jeder Keypoint wird dabei durch den entsprechenden Zeilenindex in den Positions- und Deskriptormatrizen dargestellt. \\ 
+Für jeden Deskriptor des ersten Bildes können die entsprechenden Skalarprodukte für alle Deskriptoren des zweiten Bildes mittels einer einzigen Vektor-Matrix-Multiplikation berechnet werden. Der Vektor der zugehörigen Winkel wird daraufhin sortiert, der kleinste gewählt und der entsprechende Deskriptor des zweiten Bildes identifiziert und dessen Index abgespeichert. Die entsprechende Variable $matchInd$ hat die Form $matchInd( Index_{Keypoint in Bild1} ) = Index_{Keypoint in Bild 2}$. Auch der Winkelabstand wird abgespeichert. \\
+Als Schwellwert für den Vergleich zwischen kleinstem und zweitkleinstem Winkelabstand wird der Wert 0.6 von Weyand\cite{pandemo} übernommen. \\
+Falls $Index_{Keypoint in Bild 2}$ bereits in $matchInd$ abgespeichert wurde, werden die Winkelabstände verglichen. Ist der aktuelle Wert kleiner, wird Falls $Index_{Keypoint in Bild 2}$ an früherer Stelle durch 0 ersetzt. \\
+Am Ende werden die Positionen der zugeordneten Paare ( $matchInd( Index_{Keypoint in Bild1} \neq 0$ ) zurückgegeben.
+
+\subsection{Homographische Transformation}
+\begin{itemize}
+	\item findHomography.m 
+	\item fitSample.m 
+	\item normalizeSample.m
+	\item normalizationMatrix.m
+\end{itemize}
+ In findHomography.m ist der RANSAC-Algorithmus implementiert. Der von Weyand\cite{pandemo} empfohlenen Größe für die Iterationsschritte, $2^{Anzahl der Matches} \cdot 10$, wurde eine obere Schranke von $10^5$ Iterationen hinzugefügt. \\
+Das mittels $datasample$ ausgewählte Sample von Matches wird mittels normalizeSample.m normalisiert. normalizeSample.m verwendet dabei die Tranformationsmatrizen, die mithilfe von normalizationMatrix.m berechnet werden. \\
+Anschließend berechnet fitSample.m die entsprechende Homographie-Matrix $H$. \\
+Nun wird $H$ in findHomographie auf alle Keypointpaare angewendet und die Inliers werden gezählt. Dabei wird die euklidische Distanz zwischen dem transformierten Punkt und dem zweiten Punkt des Keypointpaares berechnet. Als Schwellwert  wird hierbei der Wert 0.02 verwendet. Gegenbenenfalls wird die bis zu diesem Punkt beste Matrix $Hbest$ durch die aktuelle ersetzt. Am Ende wird $Hbest$ zurückgegeben.
+
+\subsection{Stitching}
+\begin{itemize}
+	\item stitchImages.m 
+	\item multiResSpline.m 
+	\item replicateEdge.m
+\end{itemize}
+Zunächst werden die Koordinaten der Eckpunkte des rechten Bildes mithilfe der Homographie-Matrix $HBtoA$ ins Koordinatensystem des linken Bildes transformiert. Dadurch kann die Lage des Bildes und somit die Größe des Bildmosaiks bestimmt werden. Liegt das rechte Bild an manchen Stellen oberhalb des linken Bildes, ist zusätzlich eine Verschiebung in den positiven Koordinatenbereich nötig. \\
+Als nächstes werden die Bildwerte des linken Bildes unter Verwendung der Lageinformation bzw. Verschiebung in das noch leere Bildmosaik eingetragen. \\
+Eine weitere Matrix derselben Größe wird erstellt, die die Werte des zweiten Bildes an der entsprechenden Stelle enthalten soll. Mithilfe der (verschobenen) transformierten Eckpunkte wird eine Maske erstellt, die angibt, welche Punkte im Bildmosaik Bildwerte des rechten Bildes enthalten sollen. Um die entsprechenden Werte zu berechnen, wird diese Maske zurückverschoben und die ursprünglichen Koordinaten werden mittels $HAtoB$ ermittelt. Nun können die Bildwerte in die zweite leere Matrix eingetragen werden. \\
+Falls das endgültige Bildmosaik mittels Multiresoultion-Spline zusammengefügt werden soll, wird das rechte Bild innerhalb des Mosaiks ein wenig erweitert, indem die Werte an der Kante in die entsprechende Richtung repliziert werden. Dadurch werden die Kanten, die an der Grenze zwischen Bildwerten und Nulleinträgen der Matrix entstehen, verschoben. Das das Splining mit Laplacepyramiden arbeitet, würden diese Kanten andernfalls entlang der Naht unerwünschte Effekte hervorrufen. Der Parameter $width$ bestimmt das Ausmaß der Replikation und wird auf 10 (d.h. zehn Zeilen bzw. Spalten) gesetzt. Größere Werte führen zu unerwünschten Unschärfeeffekten. Sollte der Abstand zwischen Naht und Bildrand geringer sein, wird dies berücksichtigt. \\
+ Da die Maske unverändert bleibt, wird das Bild im endgültigen Mosaik nicht erweitert. \\
+Dieses wird in multeResSpline.m zusammengesetzt. Dafür werden Laplacepyramiden für beide Bilder erstellt. Zusätzlich wird eine Gaußpyramide für die Maske erstellt, was die Übergänge weicher macht. Nach \eqref{mrs} wird das endgültige Mosaik auf jeder Ebene separat zusammengefügt. Am Ende wird die Pyramide wiederzusammengsetzt und das Bildmosaik zurückgegeben. \\
+Ohne Multiresolution-Spline wird das Mosaik bereits nach dem Einfügen des transformierten Bildes in das zweite leere Mosaik mittels \eqref{naive} zusammengefügt.
+
+
 TODO\\
+
+Für ein reibungsloses Zusammenspielen der einzelnen Komponenten sind in den Funktions-Headern die Schnittstellen definiert, also das Format der Parameter und Rückgabewerte beschrieben. Für genauere Information zu den einzelnen Funktionen sind daher diese heranzuziehen.
 %%------------------------------------------------------
 
 %%------------------------------------------------------
