@@ -34,8 +34,8 @@ extremaB = findExtrema( dogB1, dogB2, dogB3, dogB4 );
 
 
 %% remove low contrast points & edges
-disp('REMOVE LOW CONTRAST KEYPOINTS AND EDGES')
-set(guiHandle.text19, 'String','[25%] REMOVING LOW CONTRAST KEYPOINTS AND EDGES...');
+disp('REMOVE UNSUITABLE KEYPOINTS')
+set(guiHandle.text19, 'String','[25%] REMOVE UNSUITABLE KEYPOINTS...');
 drawnow; % forces the GUI to redraw
 
 leftoversA = removeLowContrast(extremaA, octA1);

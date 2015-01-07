@@ -26,7 +26,7 @@ extremaB = findExtrema( dogB1, dogB2, dogB3, dogB4 );
 
 
 %% remove low contrast points & edges
-disp('REMOVE LOW CONTRAST KEYPOINTS AND EDGES')
+disp('REMOVE UNSUITABLE KEYPOINTS')
 leftoversA = removeLowContrast(extremaA, octA1);
 leftoversB = removeLowContrast(extremaB, octB1);
 
