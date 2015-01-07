@@ -5,7 +5,7 @@ function [ HBest ] = findHomography( matches )
 %% RANSAC
 
 % define number of iterations and number of randomly selected matches
-iterations = min(2^size(matches,1)*10,10^5); 
+iterations = min(2^size(matches,1)*10,10^4);
 sampleSize = 4;
 tol = 10^(-2);
 
