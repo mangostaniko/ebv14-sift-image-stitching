@@ -39,8 +39,8 @@ drawnow; % forces the GUI to redraw
 
 leftoversA = removeLowContrast(extremaA, octA1);
 leftoversB = removeLowContrast(extremaB, octB1);
-keypointsA = removeEdges(leftoversA, octA1);
-keypointsB = removeEdges(leftoversB, octB1);
+keypointsA = leftoversA; removeEdges(leftoversA, octA1);
+keypointsB = leftoversB; removeEdges(leftoversB, octB1);
 % showKeypoints(imA, keypointsA, [0,0,0,0]);
 % showKeypoints(imB, keypointsB, [0,0,0,0]);
 drawnow();

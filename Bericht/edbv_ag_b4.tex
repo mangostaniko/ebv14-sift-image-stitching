@@ -51,10 +51,7 @@ Der Einfachheit halber werden folgende Eigenschaften der Eingabebilder vorausges
 	\item Perspektivische Verzerrungen sollten möglichst vermieden werden, indem entfernte Motive verwendet werden und die Brennweite möglichst hoch gewählt wird.
 	\item Möglichst anorganische Strukturen mit klaren Umrissen als zentrales Motiv (Bäume etc. nur am Rande)
 	\item Keine beweglichen Objekte, durch die Interest Points verdeckt werden könnten.
-	\item Die Bildauflösung sollte ungefähr bei 500*500 Pixel liegen. Eine höhere
-	Auflösung kann zu deutlich längerer Rechenzeit und möglicherweise schlechteren
-	Ergebnissen führen. Ein zu kleines Bild kann vielleicht nicht richtig
-	zusammengesetzt werden.
+	\item Die Bildauflösung sollte ungefähr bei 500*500 Pixel liegen (Nur grober Richtwert, Seitenverhältnisse können selbstverständlich abweichen!). Eine zu hohe Auflösung kann zu deutlich längerer Rechenzeit und möglicherweise schlechteren Ergebnissen führen. Bilder zu geringer Auflösung können unter Umständen nicht richtig zusammengesetzt werden.
 \end{itemize}
 
 \subsection{Methodik}
@@ -169,12 +166,9 @@ Auch in diesem Abschnitt können Referenzen und Zitate notwendig sein.\\\\
 Die in Abschnitt 3 (Methodik) beschriebene Funktionalität ist in
 Matlab-Funktionen gegliedert und in main.m zur kompletten
 Image-Stitching-Pipeline zusammengefügt. Der Prozess wird durch mainCMD('Pfad
-zum linken Bild', 'Pfad zum rechten Bild', showK, showM, useMRS ) gestartet,
-wobei die letzteren drei Parameter Boolean-Werte sind, mit denen Details der
-Berechnung bestimmt werden können.
+zum linken Bild', 'Pfad zum rechten Bild', showKeypoints, showMatches, useMRS ) gestartet, wobei die letzteren drei Parameter Boolean-Werte sind: showKeypoints bzw. showMatches zeigen vor dem fertigen Bild die gefundenen Keypoints sowie das Matching an. Ist useMRS gesetzt, wird der Multi-Resoltion-Spline-Ansatz für das Stitching verwendet, was zu weicheren Bildverläufen/-nähten führt.
 Es ist jedoch empfohlen die grafische Oberfläche mittels Aufruf
-von GUI.m zu verwenden.
-Alle notwendigen Schritte sind in dieser erklärt.\\
+von GUI.m zu verwenden. Alle notwendigen Schritte sind in dieser erklärt.\\
 Die grafische Oberfläche ruft die Methode main auf, in der alle weiteren
 Methoden der Reihe nach verwendet werden. \\\\
 Nachdem die Bilder eingelesen wurden werden in einem ersten Schritt im Rahmen
@@ -191,10 +185,9 @@ vorliegt, verworfen werden. Um die Qualität der verwendeten Keypoints zu
 verbessern, werden daraufhin in der Methode removeEdges alle Keypoints
 entfernt die keine \"Ecken\" darstellen, das bedeutet Kanten werden
 verworfen, da diese nicht eindeutig genug wären, um ein Matching zu
-ermöglichen. Nach diesen Schritten sind die finalen Keypoints vorhanden und
-werden genauer spezifiziert:\\\\
-
-
+ermöglichen.\\
+Im nächsten Schritt werden in der Methode findOrientations für alle Keypoints die Umgebungsorientierungen bestimmt, um Rotationsinvarianz zu gewährleisten. Wie bereits im Abschnitt Methodik beschrieben, werden dazu die Magnituden der Gradienten aller Pixel in einem 9x9-Fenster um den Keypoint nach ihren Orientierungen klassifiziert und die Magnituden aller Gradienten einer Klasse aufsummiert (es wird also ein Histogramm erstellt). Dabei wird die 4er-Nachbarschaft der Pixel betrachtet. Wichtig ist, das die Gradienten immer in jenen Scale-Space-Stufen berechnet werden, in denen der Extrempunkt (potentieller Keypoint) gefunden wurde. Um die Orientierungen zu bestimmen, wird atan2 verwendet, da die Fallbehandlungen die bei atan notwendig sind, inkludiert sind. Die Magnituden werden in 36 Klassen (zu je 10$\,^{\circ}$) unterteilt und summiert. Dabei werden sie mit einer um den Keypoints verteilten Gauss'schen Gewichtung versehen. Die Orientierung der dominanten Klasse wird als Umgebungsorientierung des Keypoints herangezogen, wobei einfach der Median des 10$\,^{\circ}$-Intervalls gewählt wird.\cite{lowe04} \\\\
+Nun werden, wie in Methodik beschrieben, die Keypoint-Deskriptoren erstellt. Dies geschieht in der Methode createDescriptors, wo für 16 4x4-Fenster um den Keypoint jeweils wie in findOrienations Histogramme der Gradientenmagnituden erstellt werden. Die Gauss'sche Gewichtung erfolgt dabei mit sigma von 2. Die Magnituden werden in 8 Klassen aufsummiert. Im Sinne der Rotationsinvarianz werden die Orientierungen relativ zur Keypoint-Umgebungsorientierung bestimmt. Insgesammt ergibt sich somit für einen SIFT-Deskriptor ein Vektor von 16*8 = 128 Elementen. Diese werden in Folge noch normalisiert (nach euklidischer Norm), und dannach Magnituden größer als 1/5 auf diesen Wert gesetzt, um den Einfluss von Beleuchtungsunterschieden zu vermindern, (dannach wird erneut normalisiert). Zu beachten ist noch, dass der Einfachheit halber Keypoints, die zu nah an den Bildrändern liegen (so dass die Fenster über den Rand hinausgehen würden), nicht berücksichtigt werden.\\\\
 Für ein reibungsloses Zusammenspielen der einzelnen Komponenten sind in den Funktions-Headern die Schnittstellen definiert, also das Format der Parameter und Rückgabewerte beschrieben. Für genauere Information zu den einzelnen Funktionen sind daher diese heranzuziehen.\\\\
 TODO\\
 %%------------------------------------------------------

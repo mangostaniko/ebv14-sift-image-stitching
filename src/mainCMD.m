@@ -25,8 +25,8 @@ extremaB = findExtrema( dogB1, dogB2, dogB3, dogB4 );
 disp('REMOVE LOW CONTRAST KEYPOINTS AND EDGES')
 leftoversA = removeLowContrast(extremaA, octA1);
 leftoversB = removeLowContrast(extremaB, octB1);
-keypointsA = removeEdges(leftoversA, octA1);
-keypointsB = removeEdges(leftoversB, octB1);
+keypointsA = leftoversA; %removeEdges(leftoversA, octA1);
+keypointsB = leftoversB; %removeEdges(leftoversB, octB1);
 % showKeypoints(imA, keypointsA, [0,0,0,0]);
 % showKeypoints(imB, keypointsB, [0,0,0,0]);
 %% find keypoint orientation
@@ -37,8 +37,10 @@ orientationsA = findOrientations( keypointsA, octA1 );
 orientationsB = findOrientations( keypointsB, octB1 );
 % orientationsA = findOrientations2( keypointsA, {octA1, octA2, octA3, octA4}, sigmas );
 % orientationsB = findOrientations2( keypointsB, {octB1, octB2, octB3, octB4}, sigmas );
-%showKeypoints( imA, keypointsA, orientationsA);
-%showKeypoints( imB, keypointsB, orientationsB);
+if (showK)
+    showKeypoints( imA, keypointsA, orientationsA);
+    showKeypoints( imB, keypointsB, orientationsB);
+end
 %% create descriptors
 disp('DEFINE KEYPOINT SIFT DESCRIPTORS')
 descriptorsA = createDescriptors( octA1, keypointsA, orientationsA);
@@ -48,7 +50,9 @@ disp('MATCH KEYPOINTS')
 matches = matchKeypoints(keypointsA(:,1:2), keypointsB(:,1:2), descriptorsA, descriptorsB);
 %showKeypoints( imA, matches(:, 1:2), 0);
 %showKeypoints( imB, matches(:, 3:4), 0);
-showMatches( imA, imB, matches(:, 1:2), matches(:, 3:4));
+if (showM)
+    showMatches( imA, imB, matches(:, 1:2), matches(:, 3:4));
+end
 %% find homography (ransac)
 disp('FIND HOMOGRAPHY FOR STITCHING')
 HBtoA = findHomography([matches(:,3:4),matches(:,1:2)]);

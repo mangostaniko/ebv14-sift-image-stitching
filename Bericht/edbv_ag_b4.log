@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.1415926-2.5-1.40.14 (TeX Live 2013/Debian) (format=pdflatex 2015.1.4)  6 JAN 2015 00:19
+This is pdfTeX, Version 3.1415926-2.5-1.40.14 (TeX Live 2013/Debian) (format=pdflatex 2015.1.4)  7 JAN 2015 01:03
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -637,84 +637,106 @@ n-wei-te m[]oglichst
  []
 
 
-Overfull \hbox (16.93396pt too wide) in paragraph at lines 63--64
+Overfull \hbox (16.93396pt too wide) in paragraph at lines 64--65
 []\OT1/cmr/m/n/10.95 F[]ur Ro-ta-ti-ons-in-va-ri-anz wer-den die Keypoint-Umgeb
 ungsorientierungen
  []
 
 [2]
-Overfull \hbox (63.10774pt too wide) in paragraph at lines 66--67
+Overfull \hbox (63.10774pt too wide) in paragraph at lines 67--68
 []\OT1/cmr/m/n/10.95 uberandergelegt wer-den, dass die kor-re-spon-die-ren-den 
 Key-po-ints []ubereinstimmen. 
  []
 
 [3]
-Overfull \hbox (2.03093pt too wide) in paragraph at lines 87--90
+Overfull \hbox (2.03093pt too wide) in paragraph at lines 88--94
 \OT1/cmr/m/n/10.95 Wer hat wel-che Auf-ga-ben []ubernommen (MATLAB-Funktionen, 
 Ab-schnitt
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 87--90
+Underfull \hbox (badness 10000) in paragraph at lines 88--94
 
  []
 
 
-Overfull \hbox (30.74435pt too wide) in paragraph at lines 91--101
+Overfull \hbox (30.74435pt too wide) in paragraph at lines 95--105
  [] 
  []
 
 [4] [5] [6]
-Underfull \hbox (badness 10000) in paragraph at lines 134--138
+Underfull \hbox (badness 10000) in paragraph at lines 138--142
 
  []
 
 
-Overfull \hbox (32.1435pt too wide) in paragraph at lines 140--144
+Overfull \hbox (32.1435pt too wide) in paragraph at lines 144--148
 \OT1/cmr/m/n/10.95 Um die bei-den Bil-der zu ei-nem Bild zu-sam-men-zuf[]uhren,
  muss ei-ne Homographie-
  []
 
 
-Overfull \hbox (0.56982pt too wide) in paragraph at lines 140--144
+Overfull \hbox (0.56982pt too wide) in paragraph at lines 144--148
 \OT1/cmr/m/n/10.95 von Ur-sprung und Ska-lie-rung des Ko-or-di-na-ten-sys-tems 
 der Bil-der abh[]angt,
  []
 
 [7] [8]
-Underfull \hbox (badness 10000) in paragraph at lines 156--167
+Underfull \hbox (badness 10000) in paragraph at lines 160--194
 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 156--167
+Overfull \hbox (13.65378pt too wide) in paragraph at lines 160--194
+\OT1/cmr/m/n/10.95 lin-ken Bild', 'Pfad zum rech-ten Bild', showKey-po-ints, sh
+ow-Mat-ches, useMRS
+ []
+
+
+Overfull \hbox (14.59546pt too wide) in paragraph at lines 160--194
+\OT1/cmr/m/n/10.95 ) ge-st-ar-tet, wo-bei die letz-te-ren drei Pa-ra-me-ter Boo
+lean-Werte sind: showKey-
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 160--194
 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 156--167
+Underfull \hbox (badness 10000) in paragraph at lines 160--194
 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 156--167
+Underfull \hbox (badness 10000) in paragraph at lines 160--194
 
  []
 
-[9] [10]
-Underfull \hbox (badness 10000) in paragraph at lines 180--185
+
+Underfull \hbox (badness 10000) in paragraph at lines 160--194
 
  []
 
-[11] (./edbv_ag_b4.bbl) [12] (./edbv_ag_b4.aux) ) 
+
+Underfull \hbox (badness 10000) in paragraph at lines 160--194
+
+ []
+
+[9] [10] [11]
+Underfull \hbox (badness 10000) in paragraph at lines 207--212
+
+ []
+
+[12] (./edbv_ag_b4.bbl) [13] (./edbv_ag_b4.aux) ) 
 Here is how much of TeX's memory you used:
- 6113 strings out of 494976
- 91312 string characters out of 6179138
- 204656 words of memory out of 5000000
- 9232 multiletter control sequences out of 15000+600000
+ 6114 strings out of 494976
+ 91320 string characters out of 6179138
+ 208656 words of memory out of 5000000
+ 9233 multiletter control sequences out of 15000+600000
  12714 words of font info for 49 fonts, out of 8000000 for 9000
  14 hyphenation exceptions out of 8191
- 48i,8n,52p,922b,231s stack positions out of 5000i,500n,10000p,200000b,80000s
+ 48i,8n,52p,1153b,231s stack positions out of 5000i,500n,10000p,200000b,80000s
 </usr/share/texlive/texmf-dist
 /fonts/type1/public/amsfonts/cm/cmmi10.pfb></usr/share/texlive/texmf-dist/fonts
 /type1/public/amsfonts/cm/cmmi8.pfb></usr/share/texlive/texmf-dist/fonts/type1/
@@ -722,11 +744,12 @@ public/amsfonts/cm/cmr10.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/
 amsfonts/cm/cmr12.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfont
 s/cm/cmr8.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cms
 sbx10.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy10.
-pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmti10.pfb>
-Output written on edbv_ag_b4.pdf (12 pages, 122171 bytes).
+pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy8.pfb></u
+sr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmti10.pfb>
+Output written on edbv_ag_b4.pdf (13 pages, 133186 bytes).
 PDF statistics:
- 75 PDF objects out of 1000 (max. 8388607)
- 52 compressed objects within 1 object stream
+ 83 PDF objects out of 1000 (max. 8388607)
+ 58 compressed objects within 1 object stream
  0 named destinations out of 1000 (max. 500000)
  1 words of extra memory for PDF output out of 10000 (max. 10000000)
 
