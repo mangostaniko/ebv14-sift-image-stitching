@@ -31,8 +31,6 @@
 
 %%------------------------------------------------------
 \section{Gewählte Problemstellung}
-(1-1,5 Seiten)\\
-entspricht dem (aktualisierten) Konzept
 \subsection{Ziel}
 Das Ziel ist es zwei Bilder mit überlappenden Bildbereichen (also gleiche Szene mit horizontal verschobener Kamera) anhand von in beiden Bildern vorhandenen Bildmerkmalen (Interest Points) zu einem Bildmosaik zusammenzufügen, sodass die zusammengehörenden Interest Points übereinanderliegen.
 
@@ -85,12 +83,9 @@ Weiters wurde ein GUI implementiert.
 %%------------------------------------------------------
 \newpage
 \section{Arbeitsteilung}
-(0,5 Seiten)\\
-Wer hat welche Aufgaben übernommen (MATLAB-Funktionen, Abschnitt im Bericht, Evaluierung, Datenerfassung, etc.)?\\\\
 Evaluierung, Datenerfassung, sowie Teile der Funktionalität und des Berichts
 wurden gemeinsam erarbeitet und die Implementierungsphase war von gemeinsamen
-Debugging geprägt.
-Speziell im Bereich der Schnittstellen wurde natürlich eng zusammengearbeitet.\\Die folgende Tabelle zeigt die Haupt-Aufgabenbereiche, d.h. zu den genannten Themen wurden die entsprechenden Matlab-Funktionen und Abschnitte im Bericht erstellt.
+Debugging geprägt. Speziell im Bereich der Schnittstellen wurde natürlich eng zusammengearbeitet.\\\\Die folgende Tabelle zeigt die Haupt-Aufgabenbereiche, d.h. zu den genannten Themen wurden die entsprechenden Matlab-Funktionen und Abschnitte im Bericht erstellt.
 \begin{center}
   \begin{tabular}{ |l|l| }
     \hline
@@ -164,14 +159,7 @@ Dafür werden für das linke und rechte Bild die Laplacebilder und für die Mask
 %%------------------------------------------------------
 \newpage
 \section{Implementierung}
-(1-X Seiten)\\
-Hier gebt ihr einen Überblick über eure Implementierung:\\
-Wie habt ihr die im vorhergehnden Abschnitt vorgestellte Methodik praktisch umgesetzt? Wie werden die einzelnen Methoden kombiniert (zB. Implementierungspipeline)?\\
-Hier ist Platz für Implementierungsdetails wie zB. gewählte Parameter. \\
-Wie startet der User das Programm? Welche Parameter hat der User zu setzen?\\
-Auch in diesem Abschnitt können Referenzen und Zitate notwendig sein.\\\\
-
-\subsection{Aufrufen der Image-Stitching-Pipeline und Einlesen der Bilder}
+\subsection{Aufrufen der Image-Stitching-Pipeline}
 \begin{itemize}
 	\item gui.m 
 	\item main.m 
@@ -257,8 +245,8 @@ Am Ende werden die Positionen der zugeordneten Paare\\$matchInd(Index_{Keypoint 
 	\item normalizeSample.m
 	\item normalizationMatrix.m
 \end{itemize}
-In findHomography.m ist der RANSAC-Algorithmus implementiert. Der von Weyand\cite{pandemo} empfohlenen Anzahl an Iterationen, $10 \cdot 2^{AnzahlMatches}$, wurde eine obere Schranke von $10^5$ Iterationen hinzugefügt.\\
-Das mittels $datasample$ ausgewählte Sample von Matches wird mittels normalizeSample.m normalisiert. normalizeSample.m verwendet dabei die Tranformationsmatrizen, die mithilfe von normalizationMatrix.m berechnet werden. Anschließend berechnet fitSample.m die entsprechende Homographie Matrix $H$. \\
+In findHomography.m ist der RANSAC-Algorithmus implementiert. Der von Weyand\cite{pandemo} empfohlenen Anzahl an Iterationen, $10 \cdot 2^{AnzahlMatches}$, wurde eine obere Schranke von $10^4$ Iterationen hinzugefügt.\\\\
+Das mittels $datasample$ ausgewählte Sample von Matches wird mittels normalizeSample.m normalisiert. normalizeSample.m verwendet dabei die Tranformationsmatrizen, die mithilfe von normalizationMatrix.m berechnet werden. Anschließend berechnet fitSample.m die entsprechende Homographie Matrix $H$. \\\\
 Nun wird $H$ in findHomographie auf alle Keypointpaare angewendet und die Inliers werden gezählt.Dabei wird die euklidische Distanz zwischen dem transformierten Punkt und dem zweiten Punkt des Keypointpaares berechnet. Als Schwellwert wird hierbei der Wert 0.02 verwendet. Gegenbenenfalls wird die bis zu diesem Punkt beste Matrix $Hbest$ durch die aktuelle ersetzt. Am Ende wird $Hbest$ zurückgegeben.
 
 \subsection{Stitching}
@@ -267,37 +255,54 @@ Nun wird $H$ in findHomographie auf alle Keypointpaare angewendet und die Inlier
 	\item multiResSpline.m 
 	\item replicateEdge.m
 \end{itemize}
-Zunächst werden die Koordinaten der Eckpunkte des rechten Bildes mithilfe der Homographie-Matrix $HBtoA$ ins Koordinatensystem des linken Bildes transformiert. Dadurch kann die Lage des Bildes und somit die Größe des Bildmosaiks bestimmt werden. Liegt das rechte Bild an manchen Stellen oberhalb des linken Bildes, ist zusätzlich eine Verschiebung in den positiven Koordinatenbereich nötig. \\
+Zunächst werden die Koordinaten der Eckpunkte des rechten Bildes mithilfe der Homographie-Matrix $HBtoA$ ins Koordinatensystem des linken Bildes transformiert. Dadurch kann die Lage des Bildes und somit die Größe des Bildmosaiks bestimmt werden. Liegt das rechte Bild an manchen Stellen oberhalb des linken Bildes, ist zusätzlich eine Verschiebung in den positiven Koordinatenbereich nötig. \\\\
 Als nächstes werden die Bildwerte des linken Bildes unter Verwendung der Lageinformation bzw. Verschiebung in das noch leere Bildmosaik eingetragen. \\
-Eine weitere Matrix derselben Größe wird erstellt, die die Werte des zweiten Bildes an der entsprechenden Stelle enthalten soll. Mithilfe der (verschobenen) transformierten Eckpunkte wird eine Maske erstellt, die angibt, welche Punkte im Bildmosaik Bildwerte des rechten Bildes enthalten sollen. Um die entsprechenden Werte zu berechnen, wird diese Maske zurückverschoben und die ursprünglichen Koordinaten werden mittels $HAtoB$ ermittelt. Nun können die Bildwerte in die zweite leere Matrix eingetragen werden. \\
-Falls das endgültige Bildmosaik mittels Multiresoultion-Spline zusammengefügt werden soll, wird das rechte Bild innerhalb des Mosaiks ein wenig erweitert, indem die Werte an der Kante in die entsprechende Richtung repliziert werden. Dadurch werden die Kanten, die an der Grenze zwischen Bildwerten und Nulleinträgen der Matrix entstehen, verschoben. Das das Splining mit Laplacepyramiden arbeitet, würden diese Kanten andernfalls entlang der Naht unerwünschte Effekte hervorrufen. Der Parameter $width$ bestimmt das Ausmaß der Replikation und wird auf 10 (d.h. zehn Zeilen bzw. Spalten) gesetzt. Größere Werte führen zu unerwünschten Unschärfeeffekten. Sollte der Abstand zwischen Naht und Bildrand geringer sein, wird dies berücksichtigt. \\
+Eine weitere Matrix derselben Größe wird erstellt, die die Werte des zweiten Bildes an der entsprechenden Stelle enthalten soll. Mithilfe der (verschobenen) transformierten Eckpunkte wird eine Maske erstellt, die angibt, welche Punkte im Bildmosaik Bildwerte des rechten Bildes enthalten sollen. Um die entsprechenden Werte zu berechnen, wird diese Maske zurückverschoben und die ursprünglichen Koordinaten werden mittels $HAtoB$ ermittelt. Nun können die Bildwerte in die zweite leere Matrix eingetragen werden. \\\\
+Falls das endgültige Bildmosaik mittels Multiresolution-Spline zusammengefügt werden soll, wird das rechte Bild innerhalb des Mosaiks ein wenig erweitert, indem die Werte an der Kante in die entsprechende Richtung repliziert werden. Dadurch werden die Kanten, die an der Grenze zwischen Bildwerten und Nulleinträgen der Matrix entstehen, verschoben. Das das Splining mit Laplacepyramiden arbeitet, würden diese Kanten andernfalls entlang der Naht unerwünschte Effekte hervorrufen. Der Parameter $width$ bestimmt das Ausmaß der Replikation und wird auf 10 (d.h. zehn Zeilen bzw. Spalten) gesetzt. Größere Werte führen zu unerwünschten Unschärfeeffekten. Sollte der Abstand zwischen Naht und Bildrand geringer sein, wird dies berücksichtigt. \\
  Da die Maske unverändert bleibt, wird das Bild im endgültigen Mosaik nicht erweitert. \\
-Dieses wird in multeResSpline.m zusammengesetzt. Dafür werden Laplacepyramiden für beide Bilder erstellt. Zusätzlich wird eine Gaußpyramide für die Maske erstellt, was die Übergänge weicher macht. Nach \eqref{mrs} wird das endgültige Mosaik auf jeder Ebene separat zusammengefügt. Am Ende wird die Pyramide wiederzusammengsetzt und das Bildmosaik zurückgegeben. \\
-Ohne Multiresolution-Spline wird das Mosaik bereits nach dem Einfügen des transformierten Bildes in das zweite leere Mosaik mittels \eqref{naive} zusammengefügt.\\\\
+Dieses wird in multeResSpline.m zusammengesetzt. Dafür werden Laplacepyramiden für beide Bilder erstellt. Zusätzlich wird eine Gaußpyramide für die Maske erstellt, was die Übergänge weicher macht. Nach \eqref{mrs} wird das endgültige Mosaik auf jeder Ebene separat zusammengefügt. Am Ende wird die Pyramide wiederzusammengsetzt und das Bildmosaik zurückgegeben. \\\\
+Ohne Multiresolution-Spline wird das Mosaik bereits nach dem Einfügen des transformierten Bildes in das zweite leere Mosaik mittels \eqref{naive} zusammengefügt.
+
+\subsection{Anzeige Keypoints bzw. Matching}
+\begin{itemize}
+	\item showKeypoints.m
+	\item showMatches.m
+\end{itemize}
+Die Funktionen showKeypoints.m und showMatches.m können verwendet werden um die Position der Keypoints im Bild anzuzeigen. Bei showKeypoints können zusätzlich Orientierungen als Eingabeparameter übergeben werden um diese ebenfalls anzuzeigen. Sollen keine Orientierungen angezeigt werden, so kann man diesen Input einfach auslassen.\\\\
+Die Funktion showMatches kann benutzt werden um anzuzeigen welche Keypoints in den beiden Input-Bildern zugeordnet wurden, dafür müssen die Parameter für die Keypoints allerdings richtig geordnet und gleich lang sein, es empfiehlt sich der Aufruf also immer nur nach der Funktion matchKeypoints. Hier kann man auch sehr leicht sehen ob die Keypoints korrekt zugeordnet wurden oder nicht.
 %%------------------------------------------------------
 
 %%------------------------------------------------------
 \newpage
-\subsection{Anzeige Keypoints bzw. Matching}
-INSERT STUFF HERE :)
 \section{Evaluierung}
 (2-X Seiten)\\
 Hier stellt ihr euren Datensatz vor und beantwortet Evaluierungsfragen:\\
 z.B. Fakten zum Datensatz: Anzahl der Bilder, Größe der Bilder, Quelle des Datensatzes (falls selbst aufgenommen: Aufnahmegerät, Einstellungen,... / falls nicht selbst erstellt: Datenbank vostellen...)\\
 Diskussion der Evaluierungsfragen: Beantwortung der Fragen, Diskussion anhand von Beispielen, Diskussion von Grenzfällen: für welche Bilder funktioniert die Implementierung, für welche nicht? Worin unterscheiden sich diese Bilder? etc.
+
+\begin{itemize}
+	\item Werden sinnvolle Merkmale gefunden? 
+		Ja. Die gefundenen Keypoints befinden sich an geeigneten Stellen im Bild und zeigen die korrekte Umgebungsorientierung.
+	\item Werden übereinstimmende Bildpaare gefunden? 
+		Obwohl vereinzelt auch nicht zusammenpassende Keypointpaare detektiert werden, wird die Zuordnung generell erfolgreich ausgeführt.
+	\item Werden die Bilder korrekt zusammengefügt? 
+		Abhängig von der perspektivischen Verzerrung der Bilder funktioniert das Image Stitching generell gut bis sehr gut. In Bildbereichen, in denen keine Matches gefunden werden, können die Übergänge jedoch fehlerhaft sein.
+	\item Hat die Auflösung der Eingabebilder einen merklichen Einﬂuss auf das Ergebnis? 
+		Innerhalb des empfohlenen Rahmens gibt es keine ersichtlichen Unterschiede. Bei einer zu hohen Auflösung ist der Rechenaufwand zu groß und ein korrektes Ergebnis kann nicht garantiert werden. 
+	\item Welche Bilddaten / Szenen sind ungünstig für den Erfolg des Verfahrens? 
+		Das rechte Bild darf keine Bereiche darstellen, die links vom linken Bild liegen. Perspektivische Verzerrungen führen ebenfalls zu Fehlern, Rotationen dürfen also lediglich in der xy-Ebene stattfinden. Dazu sind unterschiedliche oder schlechte Lichtverhältnisse, wie z.B. am Abend vorherrschende, problematisch.
+	\item Ist das GUI intuitiv aufgebaut?
+		Das GUI ist simpel gestaltet und selbsterklärend. Die Mouseover-Funktion liefert zusätzliche Informationen.
+\end{itemize}
 %%------------------------------------------------------
 
 %%------------------------------------------------------
 \newpage
 \section{Schlusswort}
-(max. 1 Seite)\\
-Hier fasst ihr Ergebnisse eures Projekt zusammen:\\
-Welche Schlussfolgerung lässt sich ziehen? Gibt es offene Probleme? Wie lässt sich eure Lösung noch verbessern? etc.\\\\
 Da der SIFT-Algorithmus eine hohe Komplexität aufweist, haben wir uns bereits zu Beginn für eine Einschränkung der möglichen Inputbilder entschieden. Es war unser Anspruch, die Ergebnisse des Originalalgorithmus lediglich für diese eingeschränkte Auswahl und auch nicht in vergleichbarer Qualität zu reproduzieren. \\
-Im Zuge unserer Arbeit wurden diese Vorgaben geringfügig erweitert, jedoch im Allgemeinen eingehalten. Unsere Erwartungen, dass unser Programm nicht mit dem Originalalgorithmus vergleichbar sein würde, wurden bestätigt. \\\\
-Für Bilder, die die vorgegebenen Voraussetzungen erfüllen, werden beim Image Stitching gute bis sehr gute Ergebnisse erzielt. Sobald die Inputdaten allerdings von den Vorgaben abweichen, sind die Resultate sehr fehlerhaft. Man könnte das Programm deshalb noch dahingehend verbessern, dass es weniger anfällig für Abweichungen ist und auch momentan ausgeschlossene Daten wie perspektivisch verzerrte Bilder erfolgreich gestitcht werden. \\\\
-Insgesamt sind wir jedoch zufrieden mit dem Ergebnis!\\
-Ich bin ein positiver Satz.
+Im Zuge unserer Arbeit wurden diese Vorgaben geringfügig erweitert, jedoch im Allgemeinen eingehalten.\\\\
+Für Bilder, die die vorgegebenen Voraussetzungen erfüllen, werden beim Image Stitching gute bis sehr gute Ergebnisse erzielt. Sobald die Inputdaten allerdings von den Vorgaben abweichen, sind die Resultate sehr fehlerhaft. Man könnte das Programm deshalb noch dahingehend verbessern, dass es weniger anfällig für Abweichungen ist und auch momentan ausgeschlossene Daten wie perspektivisch verzerrte Bilder erfolgreich gestitcht werden.\\\\
+Uns war bewusst, dass es sich bei SIFT um state-of-the-art Technologie handelt, und dass wir kaum eine vollständige Implementierung des von Lowe\cite{lowe04} beschriebenen Algorithmus erzielen würden. Bei der Wahl des Themas waren wir uns der Herausforderung bewusst. Insgesamt sind wir daher zufrieden mit dem Ergebnis!\\
 %%------------------------------------------------------
 
 %%------------------------------------------------------
