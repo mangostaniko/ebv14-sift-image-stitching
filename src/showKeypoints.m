@@ -15,6 +15,8 @@ lineWid = 1;
 color = [0, 0.8, 1];
 if nargin < 3
     orientations = 0;
+else 
+    orientations = varargin{1};
 end
 
 %% DRAW IN FIGURE ON THE IMAGE
