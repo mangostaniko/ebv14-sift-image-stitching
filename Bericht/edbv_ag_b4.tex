@@ -141,7 +141,7 @@ Um die Eindeutigkeit der Zuweisung zu garantieren, wird der kleinste Winkel mit 
 Zusätzlich wird überprüft, ob der Deskriptor mit minimalem Winkelabstand bereits einem zuvor betrachteten Deskriptor zugewiesen wurde. In diesem Fall wird dieser durch den aktuellen Deskriptor ersetzt.\\
 
 \subsection{Homographische Transformation}
-Um die beiden Bilder zu einem Bild zusammenzuführen, muss eine Homographie-Matrix $H$ ermittelt werden, die die Koordinaten der Bildpunkte eines Bildes in entsprechende Koordinaten im Koordinatensystem des anderen Bildes umwandelt. Dies gilt insbesondere für Keypoint-Paare, also $X_2=H\cdot X_1$ für ein Keypoint-Paar $(X_1,X_2)$. $H$ wird mithilfe des Random Sample Consensus-Algorithmus\cite{dubrovsky09} berechnet.\\
+Um die beiden Bilder zu einem Bild zusammenzuführen, muss eine Homographie Matrix $H$ ermittelt werden, die die Koordinaten der Bildpunkte eines Bildes in entsprechende Koordinaten im Koordinatensystem des anderen Bildes umwandelt. Dies gilt insbesondere für Keypoint-Paare, also $X_2=H\cdot X_1$ für ein Keypoint-Paar $(X_1,X_2)$. $H$ wird mithilfe des Random Sample Consensus-Algorithmus\cite{dubrovsky09} berechnet.\\
 Die Information über die Koordinaten der Keypoint-Paare wird verwendet, um ein lineares Gleichungssystem aufzustellen, dessen Lösung die Koeffizienten der Matrix $H$ liefert. Dafür werden vier Keypoint-Paare benötigt.\cite{kriegman07}\\
 Der RANSAC-Algorithmus wählt diese in jedem Iterationsschritt - deren Anzahl wird zuvor festgelegt - zufällig aus und berechnet die zugehörige Matrix $H$. Daraufhin wird die Homographie auf alle zu einem Keypoint-Paar $(X_1,X_2)$ gehörigen Punkte $X_1$ angewendet. Liegt der transformierte Punkt innerhalb eines Toleranzbereichs um den Punkt $X_2$, wird er als \textit{Inlier} bezeichnet. In jedem Iterationsschritt, also für jedes $H$, wird die Anzahl der Inlier berechnet. Am Ende wird die Matrix mit den meisten Inliers als Homographie-Matrix gewählt.\\
 Da eine korrekte Lösung des oben beschriebenen Gleichungssystems stark von Ursprung und Skalierung des Koordinatensystems der Bilder abhängt, werden die Koordinaten der Keypoint-Paare zuvor normalisiert. Um die endgültige Homographie-Matrix zu erhalten, wird die Matrix $H$ am Ende noch mit den entsprechenden Transformationsmatrizen multipliziert.\cite{dubrovsky09}
@@ -184,7 +184,8 @@ zum linken Bild', 'Pfad zum rechten Bild', showKeypoints, showMatches, useMRS ) 
 Es ist jedoch empfohlen die grafische Oberfläche mittels Aufruf
 von GUI.m zu verwenden. Alle notwendigen Schritte sind in dieser erklärt.\\
 Die grafische Oberfläche ruft die Methode main auf, in der alle weiteren
-Methoden der Reihe nach verwendet werden.
+Methoden der Reihe nach verwendet werden.\\\\
+Für ein reibungsloses Zusammenspielen der einzelnen Komponenten sind in den Funktions-Headern die Schnittstellen definiert, also das Format der Parameter und Rückgabewerte beschrieben. Für genauere Information zu den einzelnen Funktionen sind daher diese heranzuziehen.
 
 \subsection{Bildpyramiden}
 \begin{itemize}
@@ -236,7 +237,7 @@ Aufgabe dieser Funktion ist es, Keypointpaare mit minimalem Winkelabstand zu fin
 Für jeden Deskriptor des ersten Bildes können die entsprechenden Skalarprodukte für alle Deskriptoren des zweiten Bildes mittels einer einzigen Vektor-Matrix-Multiplikation berechnet werden. Der Vektor der zugehörigen Winkel wird daraufhin sortiert, der kleinste gewählt und der entsprechende Deskriptor des zweiten Bildes identifiziert und dessen Index abgespeichert. Die entsprechende Variable $matchInd$ hat die Form $matchInd( Index_{Keypoint in Bild1} ) = Index_{Keypoint in Bild 2}$. Auch der Winkelabstand wird abgespeichert. \\
 Als Schwellwert für den Vergleich zwischen kleinstem und zweitkleinstem Winkelabstand wird der Wert 0.6 von Weyand\cite{pandemo} übernommen. \\
 Falls $Index_{Keypoint in Bild 2}$ bereits in $matchInd$ abgespeichert wurde, werden die Winkelabstände verglichen. Ist der aktuelle Wert kleiner, wird Falls $Index_{Keypoint in Bild 2}$ an früherer Stelle durch 0 ersetzt. \\
-Am Ende werden die Positionen der zugeordneten Paare ( $matchInd( Index_{Keypoint in Bild1} \neq 0$ ) zurückgegeben.
+Am Ende werden die Positionen der zugeordneten Paare\\$matchInd(Index_{Keypoint in Bild1} \neq 0)$  zurückgegeben.
 
 \subsection{Homographische Transformation}
 \begin{itemize}
@@ -245,10 +246,9 @@ Am Ende werden die Positionen der zugeordneten Paare ( $matchInd( Index_{Keypoin
 	\item normalizeSample.m
 	\item normalizationMatrix.m
 \end{itemize}
- In findHomography.m ist der RANSAC-Algorithmus implementiert. Der von Weyand\cite{pandemo} empfohlenen Größe für die Iterationsschritte, $2^{Anzahl der Matches} \cdot 10$, wurde eine obere Schranke von $10^5$ Iterationen hinzugefügt. \\
-Das mittels $datasample$ ausgewählte Sample von Matches wird mittels normalizeSample.m normalisiert. normalizeSample.m verwendet dabei die Tranformationsmatrizen, die mithilfe von normalizationMatrix.m berechnet werden. \\
-Anschließend berechnet fitSample.m die entsprechende Homographie-Matrix $H$. \\
-Nun wird $H$ in findHomographie auf alle Keypointpaare angewendet und die Inliers werden gezählt. Dabei wird die euklidische Distanz zwischen dem transformierten Punkt und dem zweiten Punkt des Keypointpaares berechnet. Als Schwellwert  wird hierbei der Wert 0.02 verwendet. Gegenbenenfalls wird die bis zu diesem Punkt beste Matrix $Hbest$ durch die aktuelle ersetzt. Am Ende wird $Hbest$ zurückgegeben.
+In findHomography.m ist der RANSAC-Algorithmus implementiert. Der von Weyand\cite{pandemo} empfohlenen Anzahl an Iterationen, $10 \cdot 2^{AnzahlMatches}$, wurde eine obere Schranke von $10^5$ Iterationen hinzugefügt.\\
+Das mittels $datasample$ ausgewählte Sample von Matches wird mittels normalizeSample.m normalisiert. normalizeSample.m verwendet dabei die Tranformationsmatrizen, die mithilfe von normalizationMatrix.m berechnet werden. Anschließend berechnet fitSample.m die entsprechende Homographie Matrix $H$. \\
+Nun wird $H$ in findHomographie auf alle Keypointpaare angewendet und die Inliers werden gezählt.Dabei wird die euklidische Distanz zwischen dem transformierten Punkt und dem zweiten Punkt des Keypointpaares berechnet. Als Schwellwert wird hierbei der Wert 0.02 verwendet. Gegenbenenfalls wird die bis zu diesem Punkt beste Matrix $Hbest$ durch die aktuelle ersetzt. Am Ende wird $Hbest$ zurückgegeben.
 
 \subsection{Stitching}
 \begin{itemize}
@@ -262,12 +262,7 @@ Eine weitere Matrix derselben Größe wird erstellt, die die Werte des zweiten B
 Falls das endgültige Bildmosaik mittels Multiresoultion-Spline zusammengefügt werden soll, wird das rechte Bild innerhalb des Mosaiks ein wenig erweitert, indem die Werte an der Kante in die entsprechende Richtung repliziert werden. Dadurch werden die Kanten, die an der Grenze zwischen Bildwerten und Nulleinträgen der Matrix entstehen, verschoben. Das das Splining mit Laplacepyramiden arbeitet, würden diese Kanten andernfalls entlang der Naht unerwünschte Effekte hervorrufen. Der Parameter $width$ bestimmt das Ausmaß der Replikation und wird auf 10 (d.h. zehn Zeilen bzw. Spalten) gesetzt. Größere Werte führen zu unerwünschten Unschärfeeffekten. Sollte der Abstand zwischen Naht und Bildrand geringer sein, wird dies berücksichtigt. \\
  Da die Maske unverändert bleibt, wird das Bild im endgültigen Mosaik nicht erweitert. \\
 Dieses wird in multeResSpline.m zusammengesetzt. Dafür werden Laplacepyramiden für beide Bilder erstellt. Zusätzlich wird eine Gaußpyramide für die Maske erstellt, was die Übergänge weicher macht. Nach \eqref{mrs} wird das endgültige Mosaik auf jeder Ebene separat zusammengefügt. Am Ende wird die Pyramide wiederzusammengsetzt und das Bildmosaik zurückgegeben. \\
-Ohne Multiresolution-Spline wird das Mosaik bereits nach dem Einfügen des transformierten Bildes in das zweite leere Mosaik mittels \eqref{naive} zusammengefügt.
-
-
-TODO\\
-
-Für ein reibungsloses Zusammenspielen der einzelnen Komponenten sind in den Funktions-Headern die Schnittstellen definiert, also das Format der Parameter und Rückgabewerte beschrieben. Für genauere Information zu den einzelnen Funktionen sind daher diese heranzuziehen.
+Ohne Multiresolution-Spline wird das Mosaik bereits nach dem Einfügen des transformierten Bildes in das zweite leere Mosaik mittels \eqref{naive} zusammengefügt.\\\\
 %%------------------------------------------------------
 
 %%------------------------------------------------------
