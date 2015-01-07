@@ -74,41 +74,31 @@ indAtoB = sub2ind([m2, n2, 3],x,y,z);
 imBext = zeros([sizeMosaic,3]);
 imBext(mask3)= im2double(imB(indAtoB));
 
-%% Replicate edges along seem to avoid sharp edges during splining
-
-% Replicate values along the left seem
-edgeNodesX = [extendCornersTX(1),extendCornersTX(1),extendCornersTX(4),extendCornersTX(4)];
-edgeNodesY = [extendCornersTY(1),extendCornersTY(1)+1,extendCornersTY(4)+1,extendCornersTY(4)];
-imBext = replicateEdge(imBext, edgeNodesX, edgeNodesY, 10, 'left');
-
-% Replicate values along the top seem
-edgeNodesX = [extendCornersTX(1),extendCornersTX(2),extendCornersTX(2)+1,extendCornersTX(1)+1];
-edgeNodesY = [extendCornersTY(1),extendCornersTY(2),extendCornersTY(2),extendCornersTY(1)];
-imBext = replicateEdge(imBext, edgeNodesX, edgeNodesY, 10, 'up');
-
-% Replicate values along the bottom seem
-edgeNodesX = [extendCornersTX(4),extendCornersTX(3),extendCornersTX(3)-1,extendCornersTX(4)-1];
-edgeNodesY = [extendCornersTY(4),extendCornersTY(3),extendCornersTY(3),extendCornersTY(4)];
-imBext = replicateEdge(imBext, edgeNodesX, edgeNodesY, 10, 'down');
-
-% edgeMask = poly2mask(edgeNodesY, edgeNodesX, sizeMosaic(1), sizeMosaic(2));
-% [rows,cols] = ind2sub(sizeMosaic,find(edgeMask));
-% subCols =repmat(-20:1:-1,size(cols,1),1);
-% padCols = subCols+repmat(cols,1,20);
-% z = cat(3,ones(size(cols,1),20),2*ones(size(cols,1),20),3*ones(size(cols,1),20));
-% padInd = sub2ind(size(imBext),repmat(rows,1,20,3),cat(3,padCols,padCols,padCols),z);
-% replicatedEdgeInd = sub2ind(size(imBext),repmat(rows,1,20,3),repmat(cols,1,20,3),z);
-% imBext(padInd) = imBext(replicatedEdgeInd);
-
-%% Spline images
-
-% Perform multiresolution spline
+%% Spline images: Multeresolution Spline
 if spline
+    %% Replicate edges along seem to avoid sharp edges during splining
+
+    % Replicate values along the left seem
+    edgeNodesX = [extendCornersTX(1),extendCornersTX(1),extendCornersTX(4),extendCornersTX(4)];
+    edgeNodesY = [extendCornersTY(1),extendCornersTY(1)+1,extendCornersTY(4)+1,extendCornersTY(4)];
+    imBext = replicateEdge(imBext, edgeNodesX, edgeNodesY, 10, 'left');
+
+    % Replicate values along the top seem
+    edgeNodesX = [extendCornersTX(1),extendCornersTX(2),extendCornersTX(2)+1,extendCornersTX(1)+1];
+    edgeNodesY = [extendCornersTY(1),extendCornersTY(2),extendCornersTY(2),extendCornersTY(1)];
+    imBext = replicateEdge(imBext, edgeNodesX, edgeNodesY, 10, 'up');
+
+    % Replicate values along the bottom seem
+    edgeNodesX = [extendCornersTX(4),extendCornersTX(3),extendCornersTX(3)-1,extendCornersTX(4)-1];
+    edgeNodesY = [extendCornersTY(4),extendCornersTY(3),extendCornersTY(3),extendCornersTY(4)];
+    imBext = replicateEdge(imBext, edgeNodesX, edgeNodesY, 10, 'down');
+    
+    %% Perform multiresolution spline
     mosaic = multiResSpline(imAext,imBext,mask);
     figure('name','mosaic: multiresolution spline');
     imshow(mosaic);
     
-% Without multiresolution spline
+%% Spline images: Without multiresolution spline
 else
     mosaic = (1-mask3).*imAext + mask3.*imBext;
     figure('name','mosaic: naive spline');

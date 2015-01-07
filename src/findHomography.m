@@ -1,15 +1,11 @@
 function [ HBest ] = findHomography( matches )
 %% Author: Hanna Huber
-%  input: matches ... keypoints matches
+%  input: matches ... Nx4 matrix keypoints matches matches(i) = (p1',p2')
 %  output:      H ... homography matrix (determinded using RANSAC)
-%% DISCUSS: 
-% number of iterations
-% number of randomly selected matches
-% tol --> projected distance? d=(Hx1-x29^2+(Hy1+y2)^2
-% include minimal number of inliers?
+%% RANSAC
 
 % define number of iterations and number of randomly selected matches
-iterations = 10000; 
+iterations = min(2^size(matches,1)*10,10^5); 
 sampleSize = 4;
 tol = 10^(-2);
 
