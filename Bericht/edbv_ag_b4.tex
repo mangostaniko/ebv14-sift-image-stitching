@@ -196,17 +196,17 @@ Für ein reibungsloses Zusammenspielen der einzelnen Komponenten sind in den Fun
 Nachdem die Bilder eingelesen wurden, werden in einem ersten Schritt im Rahmen
 der Methode createDoG die Bildpyramiden aufgebaut, die benötigt werden um
 Interest Points zu finden. \\
-In unserer Implementierung richtet sich die Implementierung bei der Erstellung der DoG-Pyramide nach Lowe _cite{Lowe04}, indem wir 4 Oktaven berechnen mit jeweils 5 Frequenzstufen. Die Parameter des Gaußfilters (Sigma, Kernel) werden im Zuge der Berechnung immer neu angepasst.\\
-Zu Beginn werden die Gaußbilder erstellt durch sukzessives Filtern mit Gaußfilter. Für jede Oktave wird dann die Auflösung halbiert, die Bilder der 4. Oktave haben also nur noch eine Auflösung von $frac{1}{8} * Auflösung Originalbild$.\\
+In unserer Implementierung richtet sich die Implementierung bei der Erstellung der DoG-Pyramide nach Lowe \cite{lowe04}, indem wir 4 Oktaven berechnen mit jeweils 5 Frequenzstufen. Die Parameter des Gaußfilters (Sigma, Kernel) werden im Zuge der Berechnung immer neu angepasst.\\
+Zu Beginn werden die Gaußbilder erstellt durch sukzessives Filtern mit Gaußfilter. Für jede Oktave wird dann die Auflösung halbiert, die Bilder der 4. Oktave haben also nur noch eine Auflösung von $\frac{1}{8} * Originalbild$.\\
 Mittels dieser Pyramide werden dann die DoG-Bilder durch Differenz der aufeinanderfolgenden Gauß-Bilder in jeder Oktave ermittelt. Am Ende erhält man also pro Oktave 5 Gaußbilder und 4 DoG-Bilder.\\
 Für den Multi-Resolution-Spline wird eine eigene Gaußpyramide aufgestellt, allerdings beschränkt auf 4 Levels anstatt bis zu einer Auflösung von $1x1$ Pixel Downsampling anzuwenden. Erstellt wird die Pyramide indem das Originalbild sukzessive mit einem Gaußfilter behandelt wird und die Auflösung dieses gegaußten Bildes anschließend um die Hälfte verringert wird. Der unterste Level der Pyramide ist dabei das Originalbild.\\
 Die in createGauss.m erstellte Gaußpyramide wird dann verwendet um die LoG-Bilder zu berechnen. Dafür wird sukzessive das Bild von einem Level höher auf der Pyramide auf die doppelte Größe skaliert und anschließend von dem Bild einen Level darunter subtrahiert, beim letzten Level ist das nicht mehr möglich, daher besteht der letzte Level der LoG-Pyramide aus dem untersten Level der Gaußpyramide. Um das ganz etwas zu verdeutlichen:
-$LoG_0 = G_0 - expand(G_1) ... LoG_N-1 = G_N-1 - expand(G) und LoG_N = G_N$\\
+\begin{eqnarray*}
+\ LoG_0 &=& G_0 - expand(G_1) \\
+\ LoG_{N-1} &=& G_{N-1} - expand(G) \\
+\ LoG_N &=& G_N
+\end{eqnarray*}
 (expand stellt die Funktion dar, welche die Auflösung des Bildes wieder verdoppelt, in unserem Fall die Funktion imresize, als Skalierungsparameter wird dabei die Auflösung des größeren Bildes genommen, um Rundungsfehler miteinzubeziehen)
-
-
-
-
 
 \subsection{Position der Interest Points}
 \begin{itemize}
@@ -278,6 +278,8 @@ Ohne Multiresolution-Spline wird das Mosaik bereits nach dem Einfügen des trans
 
 %%------------------------------------------------------
 \newpage
+\subsection{Anzeige Keypoints bzw. Matching}
+INSERT STUFF HERE :)
 \section{Evaluierung}
 (2-X Seiten)\\
 Hier stellt ihr euren Datensatz vor und beantwortet Evaluierungsfragen:\\
@@ -291,7 +293,11 @@ Diskussion der Evaluierungsfragen: Beantwortung der Fragen, Diskussion anhand vo
 (max. 1 Seite)\\
 Hier fasst ihr Ergebnisse eures Projekt zusammen:\\
 Welche Schlussfolgerung lässt sich ziehen? Gibt es offene Probleme? Wie lässt sich eure Lösung noch verbessern? etc.\\\\
-Was für ein Abenteuer :D
+Da der SIFT-Algorithmus eine hohe Komplexität aufweist, haben wir uns bereits zu Beginn für eine Einschränkung der möglichen Inputbilder entschieden. Es war unser Anspruch, die Ergebnisse des Originalalgorithmus lediglich für diese eingeschränkte Auswahl und auch nicht in vergleichbarer Qualität zu reproduzieren. \\
+Im Zuge unserer Arbeit wurden diese Vorgaben geringfügig erweitert, jedoch im Allgemeinen eingehalten. Unsere Erwartungen, dass unser Programm nicht mit dem Originalalgorithmus vergleichbar sein würde, wurden bestätigt. \\\\
+Für Bilder, die die vorgegebenen Voraussetzungen erfüllen, werden beim Image Stitching gute bis sehr gute Ergebnisse erzielt. Sobald die Inputdaten allerdings von den Vorgaben abweichen, sind die Resultate sehr fehlerhaft. Man könnte das Programm deshalb noch dahingehend verbessern, dass es weniger anfällig für Abweichungen ist und auch momentan ausgeschlossene Daten wie perspektivisch verzerrte Bilder erfolgreich gestitcht werden. \\\\
+Insgesamt sind wir jedoch zufrieden mit dem Ergebnis!\\
+Ich bin ein positiver Satz.
 %%------------------------------------------------------
 
 %%------------------------------------------------------
