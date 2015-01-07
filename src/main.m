@@ -80,7 +80,12 @@ if showM
     showMatches( imA, imB, matches(:, 1:2), matches(:, 3:4));
 end
 
-
+if size(matches,1)==0
+    disp('NO MATCHES FOUND')
+    set(guiHandle.text19, 'String','NO MATCHES FOUND');
+    drawnow; % forces the GUI to redraw
+    return
+end
 %% find homography (ransac)
 disp('FIND HOMOGRAPHY FOR STITCHING')
 set(guiHandle.text19, 'String','[55%] SEARCHING FOR HOMOGRAPHY USED FOR STITCHING...');
