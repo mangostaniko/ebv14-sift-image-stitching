@@ -53,6 +53,10 @@ matches = matchKeypoints(keypointsA(:,1:2), keypointsB(:,1:2), descriptorsA, des
 if (showM)
     showMatches( imA, imB, matches(:, 1:2), matches(:, 3:4));
 end
+if size(matches,1)==0
+    disp('NO MATCHES FOUND')
+    return
+end
 %% find homography (ransac)
 disp('FIND HOMOGRAPHY FOR STITCHING')
 HBtoA = findHomography([matches(:,3:4),matches(:,1:2)]);
