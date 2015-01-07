@@ -40,8 +40,11 @@ drawnow; % forces the GUI to redraw
 
 leftoversA = removeLowContrast(extremaA, octA1);
 leftoversB = removeLowContrast(extremaB, octB1);
-keypointsA = leftoversA; removeEdges(leftoversA, octA1);
-keypointsB = leftoversB; removeEdges(leftoversB, octB1);
+
+% removeEdges is not used because it might lead to incorrect matching of
+% keypoints
+keypointsA = leftoversA; %removeEdges(leftoversA, octA1);
+keypointsB = leftoversB; %removeEdges(leftoversB, octB1);
 
 drawnow();
 
@@ -86,6 +89,8 @@ if size(matches,1)<4
     drawnow; % forces the GUI to redraw
     return
 end
+
+
 %% find homography (ransac)
 disp('FIND HOMOGRAPHY FOR STITCHING')
 set(guiHandle.text19, 'String','[55%] SEARCHING FOR HOMOGRAPHY USED FOR STITCHING...');
@@ -100,7 +105,7 @@ disp('STITCH IMAGES')
 set(guiHandle.text19, 'String','[95%] STITCHING IMAGES...');
 drawnow; % forces the GUI to redraw
 
-stitchImages( imA, imB, HBtoA,HAtoB,useMRS);
+stitchedImage = stitchImages( imA, imB, HBtoA,HAtoB,useMRS);
 
 set(guiHandle.text19, 'String','[100%] DONE.');
 drawnow; % forces the GUI to redraw
