@@ -193,9 +193,20 @@ Für ein reibungsloses Zusammenspielen der einzelnen Komponenten sind in den Fun
 	\item createGaussPyr.m 
 	\item createLog.m
 \end{itemize}
-Nachdem die Bilder eingelesen wurden werden in einem ersten Schritt im Rahmen
+Nachdem die Bilder eingelesen wurden, werden in einem ersten Schritt im Rahmen
 der Methode createDoG die Bildpyramiden aufgebaut, die benötigt werden um
-Interest Points zu finden. 
+Interest Points zu finden. \\
+In unserer Implementierung richtet sich die Implementierung bei der Erstellung der DoG-Pyramide nach Lowe _cite{Lowe04}, indem wir 4 Oktaven berechnen mit jeweils 5 Frequenzstufen. Die Parameter des Gaußfilters (Sigma, Kernel) werden im Zuge der Berechnung immer neu angepasst.\\
+Zu Beginn werden die Gaußbilder erstellt durch sukzessives Filtern mit Gaußfilter. Für jede Oktave wird dann die Auflösung halbiert, die Bilder der 4. Oktave haben also nur noch eine Auflösung von $frac{1}{8} * Auflösung Originalbild$.\\
+Mittels dieser Pyramide werden dann die DoG-Bilder durch Differenz der aufeinanderfolgenden Gauß-Bilder in jeder Oktave ermittelt. Am Ende erhält man also pro Oktave 5 Gaußbilder und 4 DoG-Bilder.\\
+Für den Multi-Resolution-Spline wird eine eigene Gaußpyramide aufgestellt, allerdings beschränkt auf 4 Levels anstatt bis zu einer Auflösung von $1x1$ Pixel Downsampling anzuwenden. Erstellt wird die Pyramide indem das Originalbild sukzessive mit einem Gaußfilter behandelt wird und die Auflösung dieses gegaußten Bildes anschließend um die Hälfte verringert wird. Der unterste Level der Pyramide ist dabei das Originalbild.\\
+Die in createGauss.m erstellte Gaußpyramide wird dann verwendet um die LoG-Bilder zu berechnen. Dafür wird sukzessive das Bild von einem Level höher auf der Pyramide auf die doppelte Größe skaliert und anschließend von dem Bild einen Level darunter subtrahiert, beim letzten Level ist das nicht mehr möglich, daher besteht der letzte Level der LoG-Pyramide aus dem untersten Level der Gaußpyramide. Um das ganz etwas zu verdeutlichen:
+$LoG_0 = G_0 - expand(G_1) ... LoG_N-1 = G_N-1 - expand(G) und LoG_N = G_N$\\
+(expand stellt die Funktion dar, welche die Auflösung des Bildes wieder verdoppelt, in unserem Fall die Funktion imresize, als Skalierungsparameter wird dabei die Auflösung des größeren Bildes genommen, um Rundungsfehler miteinzubeziehen)
+
+
+
+
 
 \subsection{Position der Interest Points}
 \begin{itemize}
