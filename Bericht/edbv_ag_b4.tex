@@ -280,17 +280,127 @@ Hier stellt ihr euren Datensatz vor und beantwortet Evaluierungsfragen:\\
 z.B. Fakten zum Datensatz: Anzahl der Bilder, Größe der Bilder, Quelle des Datensatzes (falls selbst aufgenommen: Aufnahmegerät, Einstellungen,... / falls nicht selbst erstellt: Datenbank vostellen...)\\
 Diskussion der Evaluierungsfragen: Beantwortung der Fragen, Diskussion anhand von Beispielen, Diskussion von Grenzfällen: für welche Bilder funktioniert die Implementierung, für welche nicht? Worin unterscheiden sich diese Bilder? etc.
 
+\subsection{Datensatz}
+
+\begin{figure}
+\includegraphics{strand.png}
+\caption{strand: links und rechts}
+\label{strand}
+\end{figure}
+
+\begin{figure}
+\includegraphics{strandS.png}
+\caption{strand: stitched}
+\label{strandS}
+\end{figure}
+
+\begin{figure}
+\includegraphics{bunt.png}
+\caption{bunt: links und rechts}
+\label{bunt}
+\end{figure}
+
+\begin{figure}
+\includegraphics{buntS.png}
+\caption{bunt: stitched}
+\label{buntS}
+\end{figure}
+
+\begin{figure}
+\includegraphics{tower.png}
+\caption{tower: links und rechts}
+\label{tower}
+\end{figure}
+
+\begin{figure}
+\includegraphics{towerS.png}
+\caption{tower: stitched}
+\label{towerS}
+\end{figure}
+
+\begin{figure}
+\includegraphics{sanmiguelito.png}
+\caption{sanmiguelito: links und rechts}
+\label{sanmiguelito}
+\end{figure}
+
+\begin{figure}
+\includegraphics{sanmiguelitoS.png}
+\caption{sanmiguelito: stitched}
+\label{sanmiguelitoS}
+\end{figure}
+
+\begin{figure}
+\includegraphics{skyline.png}
+\caption{skyline: links und rechts}
+\label{skyline}
+\end{figure}
+
+\begin{figure}
+\includegraphics{skylineS.png}
+\caption{skyline: stitched}
+\label{skylineS}
+\end{figure}
+
+\begin{figure}
+\includegraphics{munich.png}
+\caption{munich: links und rechts}
+\label{munich}
+\end{figure}
+
+\begin{figure}
+\includegraphics{munichS.png}
+\caption{munich: stitched}
+\label{munichS}
+\end{figure}
+
+\begin{figure}
+\includegraphics{demo.png}
+\caption{demo: links und rechts}
+\label{demo}
+\end{figure}
+
+\begin{figure}
+\includegraphics{demoS.png}
+\caption{demo: stitched}
+\label{demoS}
+\end{figure}
+
+\begin{figure}
+\includegraphics{winter.png}
+\caption{winter: links und rechts}
+\label{winter}
+\end{figure}
+
+\begin{figure}
+\includegraphics{winterS.png}
+\caption{winter: stitched}
+\label{winterS}
+\end{figure}
+
+\begin{itemize}
+\item strand.png
+\item bunt.png
+\item tower.png
+\item sanmiguelito.png
+\item strand.png
+\item munich.png
+\item demo.png
+\en{itemize}
+
+\subsection{Diskussion der Evaluierungsfragen}
+
 \begin{itemize}
 	\item Werden sinnvolle Merkmale gefunden? 
 		Ja. Die gefundenen Keypoints befinden sich an geeigneten Stellen im Bild und zeigen die korrekte Umgebungsorientierung.
 	\item Werden übereinstimmende Bildpaare gefunden? 
 		Obwohl vereinzelt auch nicht zusammenpassende Keypointpaare detektiert werden, wird die Zuordnung generell erfolgreich ausgeführt.
 	\item Werden die Bilder korrekt zusammengefügt? 
-		Abhängig von der perspektivischen Verzerrung der Bilder funktioniert das Image Stitching generell gut bis sehr gut. In Bildbereichen, in denen keine Matches gefunden werden, können die Übergänge jedoch fehlerhaft sein.
+		Abhängig von der perspektivischen Verzerrung der Bilder funktioniert das Image Stitching generell gut bis sehr gut (siehe \figref{strand} und \figref{strandS} bzw \figref{skyline} und \figref{skylineS}). In Bildbereichen, in denen keine Matches gefunden werden, können die Übergänge jedoch teilweise fehlerhaft sein (siehe \figref{winter} und \figref{winterS} bzw \figref{demo} und \figref{demoS}).
 	\item Hat die Auflösung der Eingabebilder einen merklichen Einﬂuss auf das Ergebnis? 
 		Innerhalb des empfohlenen Rahmens gibt es keine ersichtlichen Unterschiede. Bei einer zu hohen Auflösung ist der Rechenaufwand zu groß und ein korrektes Ergebnis kann nicht garantiert werden. 
 	\item Welche Bilddaten / Szenen sind ungünstig für den Erfolg des Verfahrens? 
-		Das rechte Bild darf keine Bereiche darstellen, die links vom linken Bild liegen. Perspektivische Verzerrungen führen ebenfalls zu Fehlern, Rotationen dürfen also lediglich in der xy-Ebene stattfinden. Dazu sind unterschiedliche oder schlechte Lichtverhältnisse, wie z.B. am Abend vorherrschende, problematisch.
+		Das rechte Bild darf keine Bereiche darstellen, die links vom linken Bild liegen (siehe \figref{sanmiguelito} und \figref{sanmiguelitoS}). Perspektivische Verzerrungen führen ebenfalls zu Fehlern, Rotationen dürfen also lediglich in der xy-Ebene stattfinden (siehe \figref{munich} und \figref{munichS}). Dazu sind unterschiedliche oder schlechte , wie z.B. am Abend vorherrschende, Lichtverhältnisse problematisch.
 	\item Ist das GUI intuitiv aufgebaut?
 		Das GUI ist simpel gestaltet und selbsterklärend. Die Mouseover-Funktion liefert zusätzliche Informationen.
 \end{itemize}
